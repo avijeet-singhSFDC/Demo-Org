@@ -1,0 +1,4 @@
+<design:component label="Store Visit - Shelf Scanner">
+    <design:attribute name="modelId" default="UAN3GRU2NDOU46GPBRHHIUDICY" label="Model ID" description="Model ID of the trained Object Detection model" />
+    <design:attribute name="storeVisitId" label="Store Visit ID" description="" />
+</design:component>

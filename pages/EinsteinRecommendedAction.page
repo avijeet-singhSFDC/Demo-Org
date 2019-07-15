@@ -1,0 +1,224 @@
+<apex:page controller="EinsteinRemoter" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0"> 
+ 
+<html style="height:100%; background-color: #f4f6f9;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> 
+ 
+<head>
+ <title>My First Lightning Design System</title>
+ <apex:stylesheet value="{!URLFOR($Resource.SLDS212fijfij, '')}" />
+ <script type="text/javascript" src="//code.jquery.com/jquery-2.2.1.min.js"></script>
+ <script type='text/javascript' src='/canvas/sdk/js/publisher.js'/> 
+ <apex:includeScript value="/support/console/37.0/integration.js"/>
+     
+     <style>
+  
+     .slds-form-element {width: 50%; display: inline-block;}
+     .right-align {float:right;}
+     .slds-button.slds-button--neutral.slds-not-selected {width: 50%; margin-left:0rem}
+     .slds-card { background-color: #fff; margin:20px; }
+     .slds-card__body {margin-left: 10px; margin-right:0px;}
+     .slds-card__header {margin-left:0px; margin-right:10px; margin-top:10px; padding-top:10px; padding-bottom:10px;     margin-bottom: 10px;}
+     .slds-card__footer {padding-bottom:20px; clear:both;}
+     .card-col-split {width:45%;display: inline-block;}
+     .form-row {margin-bottom:10px;}
+     .form-body-container {margin:auto; padding-left:15px; padding-right:15px;}
+     .hide {display:none;}
+     .email-body {margin-left:25px; margin-right:25px;}
+
+.slds-form--inline .slds-form-element, .slds-form--inline .slds-form-element__label, .slds-form--inline .slds-form-element__control {
+display:block !important;
+}
+     .header {background-color: #e7edf4; font-size: 16px; font-family: 
+SalesforceSans-Light; height: 30px; padding-left:10px;}
+      .header img {display: inline-block; margin-top:-4px;}
+      .header h2 {display: inline-block; margin-top:2px;}
+     </style>
+<script>
+       
+      (function($) {
+       
+        Object.defineProperty(window.location, 'query', {
+          get: function() {
+            this._query = this._query || (function(a) {
+              if (a == '') return {}
+              var b = {}
+              for (var i = 0; i < a.length; ++i) {
+                var p = a[i].split('=')
+                if (p.length != 2) continue;
+                b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, ' '))
+              }
+              return b
+            })(this.search.substr(1).split('&'))
+            return this._query
+          }
+        })
+
+        var source = {
+          company: location.query['company'] || 'Rohde Corp',
+          people: parseInt(location.query['people'] || 150),
+          per_person: parseFloat(location.query['per_person'] || 290),
+          contact: location.query['contact'] || 'Mark Jaeckal',
+          event_date: location.query['event_date'] || '09/21/16',
+          plan: parseFloat(location.query['plan']) || 0.6,
+          deliveries: parseInt(location.query['deliveries']) || 5,
+          customer_status: location.query['customer_status'] || 'VIP',
+          lead_source: location.query['lead_source'] || 'Web Referral',
+          account_manager: location.query['account_manager'] || 'Jack Arthur'
+        }
+
+        function update() {
+          source['plan_name'] = $('#select-01').val(source['plan']).find(':selected').text()
+
+          $.each(source, function(key, val) {
+            var that = $('#' + key)
+            $('.' + key).val(val)
+
+            if (that.data('method')) {
+              val = val[that.data('method')].call(val)
+            }
+            that.text(val)
+          })
+        }
+
+        $(function() {
+          /** TABS **/
+            //$("#email").hide();  
+          
+          $('#apply').click(function() {
+            var frame = this.parent.getElementByIdCS('scc-lu-cmp-0');
+            frame.querySelectorAll('div[class="quickActionReadOnlyElement"]')[3].innerHTML = 'BRETT';
+            refreshSidebar();
+          })
+
+          $('#inputSample2').change(function() {
+            $(this).parents('.slds-form-element__control').hide()
+            $(this).parents('.slds-form-element').addClass('slds-has-error').find('.slds-input-has-icon').show().find('input').val($(this).val())
+            $(this).parents('.slds-form-element').find('.slds-form-element__help').show()
+          })
+        })
+        
+        function refreshSidebar() {
+            sforce.console.getFocusedSubtabObjectId(updateCase);
+        }
+        
+        var updateCase = function(result) {
+        
+            var subtabObjectId = result.id;
+       Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.EinsteinRemoter.updateCase}',
+            subtabObjectId, 
+            function(result, event){
+                if (event.status) {
+                    refreshTab();
+                } else if (event.type === 'exception') {
+                    document.getElementById("responseErrors").innerHTML = 
+                        event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                } else {
+                    document.getElementById("responseErrors").innerHTML = event.message;
+                }
+            }, 
+            {escape: true}
+        );
+            
+            
+        }
+        
+        var refreshTab = function() {
+            sforce.console.getFocusedSubtabId(refreshSubtab)
+            
+        }
+        
+        var refreshSubtab = function(result) {
+            sforce.console.refreshSubtabById(result.id, true, loadNewEmailPane);
+           
+        }
+        
+        var loadNewEmailPane = function() {
+            $("#emailclass").hide();
+            $("#email").show();    
+            
+        }
+        
+        function emailArticle(content) {
+
+           /* Sfdc.canvas.publisher.publish({name: 'publisher.selectAction', 
+         payload: { actionName: 'Case.Email'}}); 
+         Sfdc.canvas.publisher.publish({name: 'publisher.setActionInputValues', 
+         payload: {
+            actionName: 'Case.Email',
+            emailFields: { body: { value:content, format:'richtext', insert: true}}
+         }});
+         */
+     }
+          
+        var runMacro = function() {
+    sforce.console.selectMacro('0JZ2E0000009RW1', runMacro);
+        }
+          
+        $(update)
+      }(jQuery))
+    </script>
+</head> 
+ 
+<body> 
+ 
+ <!-- REQUIRED SLDS WRAPPER -->
+ <div class="slds wrapper"> 
+
+    <div class="header">
+    <apex:image url="{!URLFOR($Resource.einstein123, '')}"></apex:image>
+   <h2>Recommended Actions</h2>
+    </div>   
+ <!-- MASTHEAD -->
+ <!-- / MASTHEAD --> 
+ 
+ <!-- PRIMARY CONTENT WRAPPER -->
+ <div class="myapp "> 
+ 
+  
+ <section aria-labelledby="badges">
+     
+<div id="email">
+    
+<h2 id="badges" class="slds-text-heading--small slds-card__header slds-grid slds-m-vertical--large">Create Work Order</h2> 
+<div class="email-body">
+ <p class="slds-m-bottom--small">Create Work Order to Initiate Service Repair</p>
+ <b class="slds-text-heading--label slds-m-bottom--small"> <span class="days">97%</span> * Used 1302 Times</b>   
+ </div>
+ <div class="slds-button-group slds-card__footer" role="group">
+<button class="slds-button slds-button--neutral slds-not-selected" aria-live="assertive">
+  <span class="slds-text-not-selected">Ignore</span>
+</button>
+<button id="apply" class="slds-button slds-button--neutral slds-not-selected slds-button--brand" aria-live="assertive">
+  <span class="slds-text-not-selected">Use</span>
+</button>
+</div>   
+</div> 
+<!--     <div id="email2">
+    
+<h2 id="badges" class="slds-text-heading--small slds-card__header slds-grid slds-m-vertical--large">Email Service Manager</h2> 
+<div class="email-body">
+ <p class="slds-m-bottom--small">Send "Repair Notification" Email to Listed Service Manager</p>
+ <b class="slds-text-heading--label slds-m-bottom--small"> <span class="days">94%</span> * Used 1489 Times</b>   
+ </div>
+ <div class="slds-button-group slds-card__footer" role="group">
+<button class="slds-button slds-button--neutral slds-not-selected" aria-live="assertive">
+  <span class="slds-text-not-selected">Ignore</span>
+</button>
+<button id="apply" class="slds-button slds-button--neutral slds-not-selected slds-button--brand" aria-live="assertive">
+  <span class="slds-text-not-selected">Use</span>
+</button>
+</div>   
+</div>  -->
+ </section>     
+     
+ </div>
+ <!-- / PRIMARY CONTENT WRAPPER --> 
+ 
+ </div>
+ <!-- / REQUIRED SLDS WRAPPER --> 
+
+         
+ 
+</body>
+</html>
+</apex:page>

@@ -1,0 +1,109 @@
+<aura:component controller="StoreVisitCtrl" implements="force:lightningQuickActionWithoutHeader,force:hasRecordId">  
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="simpleRecord" type="Object"/>
+    <aura:attribute name="recordError" type="String"/>
+    <aura:attribute name="storeVisitId" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="body2" type="Aura.component[]"/>  
+    <force:recordData aura:id="recordLoader"
+                      recordId="{!v.recordId}"
+                      layoutType="FULL"
+                      targetRecord="{!v.record}"
+                      targetFields="{!v.simpleRecord}"
+                      targetError="{!v.recordError}"
+                      />
+    <div>
+        <div aura:id="storeDetails">
+            <div class="slds-text-heading_medium">Store Details</div>
+            <div class="slds-page-header" role="banner">
+                <p class="slds-text-heading_label">{!v.simpleRecord.Name}</p>
+            </div>
+            <div class="leftalign">
+                <button class="slds-button slds-button_neutral" onclick="{!c.EditAccountModal}">Edit Account</button>
+            </div>
+            <div class="slds-grid fieldsCont">
+                <div class="slds-size_1-of-2">
+                    <div class="slds-item_label">Contact Name:</div>
+                    <div class="slds-item_detail">{!v.simpleRecord.Default_Contact__r.Name}</div>
+                </div>
+                <div class="slds-size_1-of-2">
+                    <div class="slds-item_label">Phone:</div>
+                    <div class="slds-item_detail">{!v.simpleRecord.Phone}</div>
+                </div>
+            </div>
+            <hr/>
+            <div class="slds-grid fieldsCont">
+                <div class="slds-size_1-of-2">
+                    <div class="slds-item_label">Account Status:</div>
+                    <div class="slds-item_detail">{!v.simpleRecord.Account_Status_cg__c}</div>
+                </div>
+                <div class="slds-size_1-of-2">
+                    <div class="slds-item_label">Total Sales:</div>
+                    <div class="slds-item_detail"><ui:outputCurrency aura:id="curr" value="{!v.simpleRecord.Closed_Won_Value__c }" format="$##,##,###,###.00"/></div>
+                </div>
+            </div>
+            <hr/>
+            <div class="slds-grid fieldsCont">
+                <div class="slds-size_1-of-2">
+                    <div class="slds-item_label">Type:</div>
+                    <div class="slds-item_detail">{!v.simpleRecord.Store_Type__c}</div>
+                </div>
+                <div class="slds-size_1-of-2">
+                    <div class="slds-item_label">Tier:</div>
+                    <div class="slds-item_detail">{!v.simpleRecord.Tier__c}</div>
+                </div>
+            </div>
+            <div class="slds-text-align_right slds-m-top_medium">
+                
+                <button class="slds-button slds-button_brand" onclick="{!c.goToProducts}">Next</button>
+            </div>
+        </div>
+        <div aura:id="prodList" class=" slds-hide ">
+            <div class=" gmwidth">
+                {!v.body2}
+            </div>
+            <div class="slds-text-align_right slds-m-top_medium">
+                <button class="slds-button slds-button_brand" onclick="{!c.goToProducts}">Next</button>
+            </div>
+        </div>
+        <div aura:id="productList">
+            {!v.body}
+        </div>
+    </div>
+
+    <section role="dialog" aura:id="EditAccountModal" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-modal-shadow slds-fade-in-closed">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Edit Account</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <lightning:recordEditForm aura:id="edit" recordId="{!v.recordId}" 
+                                          objectApiName="Account"
+                                          onsuccess="{!c.handleAccountSaved}"
+				>
+                    <div aura:id="msg">
+                        <lightning:messages  />
+                    </div>
+                    <lightning:inputField fieldName="OwnerId" />
+                    <lightning:inputField fieldName="Store_Type__c" />
+                    <lightning:inputField fieldName="Phone"/>
+                    <lightning:inputField fieldName="Website"/>
+                    <lightning:inputField fieldName="Account_Status_cg__c" />
+					<lightning:inputField fieldName="Region__c "/>
+                    <lightning:inputField fieldName="Tier__c" />
+                    <lightning:inputField fieldName="Key_Issues__c " />
+                    
+                    <lightning:button variant="brand" type="submit" name="save" label="Save" class="slds-m-top_medium"/>
+                 </lightning:recordEditForm>
+            </div>
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral" onclick="{!c.CloseDialog}">Cancel</button>
+            </footer>
+        </div>
+        </section>
+    <div aura:id="overlay" class="slds-backdrop slds-backdrop_closed"></div>
+</aura:component>

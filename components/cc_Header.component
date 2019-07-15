@@ -1,0 +1,200 @@
+<apex:component id="cc_Header">
+  <script id="cc_HeaderDesktop" type="text/template">
+    <div class="top-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-12 cc_navbar_col_misc">
+            <!-- LEFT -->
+            <ul class="list-inline pull-left">
+              <!-- LOCALE -->
+              <li><span class="lssec cc_lssec hidden-xs"></span></li>
+              <!-- EFFECTIVE ACCOUNT -->
+              <li><span class="misc-function cc_misc_function hidden-xs"/></li>
+            </ul>
+
+            <!-- RIGHT -->
+            <ul class="list-inline pull-right">
+              <!-- MY ACCOUNT -->
+              <li class="cc_my_account">
+                <a href="#" id="goToAccount">
+                  <i class="fa fa-user hidden-xs" aria-hidden="true"></i>
+                  <i class="fa fa-user fa-2x visible-xs" aria-hidden="true"></i>
+                  <span class="hidden-xs">&#160;{{pageLabelMap 'Component_SiteHeader_MyAccount'}}</span></a>
+              </li>
+              <!-- LOG IN/OUT -->
+              <li class="loginoutsec cc_loginoutsec"></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /.top-header -->
+
+    <div class="middle-header p-y-0">
+      <div class="container-fluid">
+        <div class="row">
+
+          <div class="col-md-3 logo text-center">
+            <a href="#" id="logoUrl">
+              <div id="cc_store_logo_img" class="cc_store_logo_img center-block"></div>
+            </a>
+          </div>
+
+          <div class="col-sm-8 col-md-6 search-box m-t-2">
+            <div class="search_form cc_search_form"></div>
+          </div>
+
+          <div class="col-sm-4 col-md-3 cart-btn hidden-xs m-t-2 text-center">
+              <a href="#" id="cartHeader" class="btn btn-default chead cartHeaderLink"  data-toggle="popover" data-placement="bottom"></a>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /.middle-header -->
+	
+    <div id="modalSecNEW" />
+  </script>
+
+
+
+  <script id="cc_MenuDesktop" type="text/template">
+    <div id="secnav cc_secnav">
+      <nav class="navbar navbar-default navbar-static-top cc_navbar">
+        <div class="container-fluid cc_container">
+          <div class="navbar-header cc_navbar_header">
+            <button type="button" class="navbar-toggle collapsed cc_navbar_toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar cc_icon-bar"></span>
+              <span class="icon-bar cc_icon-bar"></span>
+              <span class="icon-bar cc_icon-bar"></span>
+            </button>
+          </div>
+
+          <div id="navbar" class="navbar-collapse collapse cc_navbar_collapse">
+            <ul class="nav navbar-nav cc_navbar-nav">
+              <li><a href="#" id="phoneLogo" class="cc_phone_logo"><span class="sr-only">Home</span><i class="fa fa-home" aria-hidden="true"></i></a></li>
+              {{#each .}}
+                {{#if children}}
+                  <li class="dropdown cc_dropdown">
+                    <a href="{{linkURL}}" class="dropdown-toggle cc_dropdown_toggle" data-toggle="dropdown" data-menuid="{{menuId}}" {{linkTarget openInNewWindow}} role="button" aria-haspopup="true" aria-expanded="false">{{displayName}}<span class="caret"></span></a>
+                    <ul class="dropdown-menu cc_dropdown-menu">
+                      {{> subMenuItem}}
+                    </ul>
+                  </li>
+                {{else}}
+                  {{#ifEquals mType 'Category'}}
+                    <li class="dropdown cc_dropdown"><a class="category cc_category" href="javascript:void(0);" data-id="{{linkURL}}" data-mType="{{mType}}" data-menuid="{{menuId}}" {{linkTarget openInNewWindow}}>{{displayName}}</a></li>
+                  {{/ifEquals}}
+
+                  {{#ifEquals mType 'Product'}}
+                    <li class="dropdown cc_dropdown"><a class="product cc_product" href="javascript:void(0);" data-id="{{linkURL}}" data-mType="{{mType}}" data-menuid="{{menuId}}" {{linkTarget openInNewWindow}}>{{displayName}}</a></li>
+                  {{/ifEquals}}
+
+                  {{#ifEquals mType 'URL'}}
+                    <li class="dropdown cc_dropdown"><a class="menuTypeURL cc_menu_type_url" href="javascript:void(0);" data-href="{{linkURL}}" data-mType="{{mType}}" data-menuid="{{menuId}}" {{linkTarget openInNewWindow}}>{{displayName}}</a></li>
+                  {{/ifEquals}}
+
+                  {{#ifEquals mType 'None'}}
+                    <li class="dropdown cc_dropdown"><a href="javascript:void(0);" class="cc_display_name" data-mType="{{mType}}" data-menuid="{{menuId}}">{{displayName}}</a></li>
+                  {{/ifEquals}}
+                {{/if}}
+              {{/each}}
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+                   <div id="DKPromo"><img class="img-responsive" src="https://i.imgur.com/KsaZ9WM.png"/img>
+                   </div>
+  </script>
+
+
+
+  <script id="CC-CartHeaderBrowser" type="text/template">
+    <i class="fa fa-shopping-cart hidden-xs" aria-hidden="true"></i>
+    <i class="fa fa-shopping-cart fa-2x visible-xs" aria-hidden="true"></i>
+    <span class="hidden-xs">{{pageLabelMap 'Component_SiteHeader_MyCart'}}: {{this.cartCount}} {{pageLabelMap 'Component_MiniCart_Item'}},&#160;{{price this.cartTotal}}</span>
+  </script>
+
+
+
+  <script id="CC-MyAccount-Desktop" type="text/template">
+    {{#if this}}
+     {{#ifEquals this.UserType 'Guest'}}
+      <a href="#login" class="goToLogin cc_goto_login">
+        <i class="fa fa-sign-in hidden-xs" aria-hidden="true"></i>
+        <i class="fa fa-sign-in fa-2x visible-xs" aria-hidden="true"></i>
+        <span class="hidden-xs">{{pageLabelMap 'Component_SiteHeader_Login'}}</span>
+      </a>
+     {{else}}
+      <a href="#logout" class="doLogout cc_do_logout">
+        <i class="fa fa-sign-out hidden-xs" aria-hidden="true"></i>
+        <i class="fa fa-sign-out fa-2x visible-xs" aria-hidden="true"></i>
+        <span class="hidden-xs">{{pageLabelMap 'Component_SiteHeader_Logout'}} {{{this.FirstName}}} {{{this.LastName}}}</span>
+      </a>
+     {{/ifEquals}}
+    {{else}}
+     <a href="#login" class="cc_login">
+       <i class="fa fa-sign-in hidden-xs" aria-hidden="true"></i>
+       <i class="fa fa-sign-in fa-2x visible-xs" aria-hidden="true"></i>
+       <span class="hidden-xs">{{pageLabelMap 'Component_SiteHeader_Login'}}</span>
+     </a>
+    {{/if}}
+  </script>
+
+
+
+  <script id="CC-productSearchTemplateDesktop" type="text/template">
+   {{#ifDisplay 'H.DisplSearch'}}
+    <!-- <div class="navbar-form cc_navbar_form" role="search"> -->
+     <div class="input-group cc_input-group">
+      <input id="searchText" type="text" class="form-control search_input cc_search_input" placeholder="{{pageLabelMap 'ProductSearch'}}" title="{{pageLabelMap 'ProductSearch_Tooltip'}}" data-trigger="focus" autocomplete="off">
+      <span class="input-group-btn">
+       <button id="doSearch" class="btn btn-default search_button" type="Submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+      </span>
+     </div>
+    <!-- </div> -->
+    <span id="cc_search_error" data-trigger="manual" data-placement="bottom" data-content="{{pageLabelMap 'ProductSearch_Tooltip'}}"></span>
+    <div class="searchTopBarErrorMessage searchBoxWidgetError" ></div>
+   {{/ifDisplay}}
+  </script>
+
+
+
+  <script type="text/javascript">
+    $(function() {
+      CCRZ.uiProperties.headerView.desktop.tmpl = "cc_HeaderDesktop";
+      CCRZ.uiProperties.cartHeaderView.desktop.tmpl = 'CC-CartHeaderBrowser'
+      CCRZ.uiProperties.myAccountHeaderView.desktop.tmpl = 'CC-MyAccount-Desktop'
+      CCRZ.uiProperties.productSearchView.desktop.tmpl = 'CC-productSearchTemplateDesktop'
+
+      CCRZ.uiProperties.Menu.desktop.tmpl = "cc_MenuDesktop";
+      CCRZ.pubSub.on('view:headerView:refresh', function() {
+	
+
+          
+          
+        $(window).scroll(function(){
+         var sticky = $('.middle-header'),
+         scroll = $(window).scrollTop();
+        if (scroll >= $('.cc_home_slider').offset().top){
+            sticky.addClass('sticky');
+            sticky.slideDown(200);
+        }else{
+            sticky.removeClass('sticky');
+            sticky.removeAttr("style"); //slideDown adds the style="block" which needs to be removed so that next time slideDown will work
+        }
+    });
+
+      });
+        
+        CCRZ.pubSub.on('view:Menu:refresh', function() {
+            $("#DKPromo").hide(); 
+			if(CCRZ.pagevars.queryParams.sku == "AC - 1234 - 5S" || CCRZ.pagevars.queryParams.sku == "AC - 1234 - 8S"){
+               $("#DKPromo").show(); 
+            }else{
+                $("#DKPromo").hide(); 
+            }
+        });
+        
+    });
+  </script>
+</apex:component>

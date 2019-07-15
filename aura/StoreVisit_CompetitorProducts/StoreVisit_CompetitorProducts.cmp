@@ -1,0 +1,60 @@
+<aura:component controller="StoreVisitCtrl" implements="lightning:availableForFlowScreens" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="newCompetitor" type="String[]" default="[‘Competitor__c’,’Quantity__c’,’Retail_Price__c’]" />
+    <aura:attribute name="storeVisit" type="String"/>
+    <aura:attribute name="products" type="Competitive_Product__c[]" default="null"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="quantity" type="String"/>
+    <aura:attribute name="price" type="Double"/>
+    <aura:attribute name="competitor" type="String"/>
+	<div class="slds">
+        Are competitor products present?
+        <lightning:input type="radio" label="Yes" name="comp" value="true" onchange="{!c.auditFields}" aura:id="yes"/>
+        <div class="errorMsg slds-hide" aura:id="errorMsg">
+            <lightning:select name="competitor" label="Competitor" value="{!v.competitor}">
+                <option value="choose">Choose One</option>
+                <option value="WarmUp">WarmUp</option>
+                <option value="OrganicsPlus">OrganicsPlus</option>
+                <option value="Ascent Products">Ascent Products</option>
+                <option value="Powerbar">Powerbar</option>
+                <option value="FitSmart">FitSmart</option>
+                <option value="SlimDown Foods">SlimDown Foods</option>
+                <option value="ProteinBar Company">ProteinBar Company</option>
+                <option value="Hiker Nutrition">Hiker Nutrition</option>
+                <option value="VeganPlus">VeganPlus</option>
+                <option value="HydroFit">HydroFit</option>
+            </lightning:select>
+			<lightning:input type="number" label="Retail Price" value="{!v.price}" formatter="currency" step="0.01"/>
+            <lightning:input type="text" label="Quantity" value="{!v.quantity}"/>
+            <lightning:button class="slds-button_brand" label="Add Competitor" onclick="{!c.AddCompetitorProduct}"/>
+			<div id="competitorlist" >
+            <aura:iteration items="{!v.products}" var="competitorproducts">
+                <aura:if isTrue="{!v.products != null}">
+                    <article class="slds-card ">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-contact" title="description of icon when needed">
+                                        <lightning:icon iconName="standard:forecasts" size="medium" />
+                                    </span>
+                                </div>
+                                <div class="slds-media__body slds-truncate_container_75">
+                                    <h2>
+                                        <p class="slds-text-heading_small slds-truncate">{!competitorproducts.Competitor_Name__c}</p> 
+                                    </h2>
+                                </div>
+                            </header>
+                       </div>
+                       <div class="slds-card__body slds-card__body_inner">
+                            <span class="slds-text-title--caps slds-line-height--reset">
+                                List Price: <ui:outputCurrency aura:id="curr" value="{!competitorproducts.Retail_Price__c}" format="$##,##,###,###.00"/> | Quantity: {!competitorproducts.Quantity__c}
+                            </span><br/>
+                        </div>
+                    </article>
+                </aura:if>
+            </aura:iteration>
+        </div>
+        </div>
+        <lightning:input type="radio" label="No" name="comp" value="false" onchange="" aura:id="no"/>
+    </div>
+</aura:component>

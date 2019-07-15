@@ -1,0 +1,84 @@
+<aura:component controller="FIDO">
+    <aura:attribute name="ScreenChoice" type="String"/>
+    <aura:attribute name="Industry" type="String"/>
+    <aura:attribute name="ComponentTitle" type="String" />
+    <aura:attribute name="ModalSelection" type="String" />
+    <aura:attribute name="Partners" type="String[]"/>
+    <aura:attribute name="MenuOpenClose" type="String" default='close'/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+		<div class="">
+            <div class="center">
+                <div class="slds-card minicard">
+                	<div class="slds-media">
+                    	<div class="slds-media__body"> 
+                        	<div class="center">
+                            	<h2 class="slds-page-header__title slds-truncate slds-align-middle padding h2borderbottom " title="Store Promotions">
+                                	Some of the Partners We've Worked With
+                                </h2>
+                            </div>    
+                    	</div>
+                    </div> 
+                    <div class="padding textleft">
+                    	<aura:iteration items="{!v.Partners}" var="partner">
+                            <aura:if isTrue="{!partner.industry__c  == v.Industry}">
+                                <aura:if isTrue="{!partner.isactive__c  == true}">
+                                    <div class="owner">
+                                        <div class="third borderright lightgreybg sidebar">
+                                             <h3 class="borderbottom">
+                                                    <div class="padding">
+                                                         <div class="imgleft"><lightning:icon iconName="standard:partners" size="small"/></div>    
+                                                        <span class="marginleft">{!partner.name}</span>
+                                                    </div>    
+                                             </h3>
+                                        <div class="padding">
+                                            <div class=" textleft">
+                                                <div class=" textleft sidebardesc">
+                                                    <aura:if isTrue="{!partner.logo_url__c != null}">
+                                                    	<img src="{!partner.logo_url__c}" class="subsolutionicon imgleft partnerlogo"/>
+                                                    </aura:if>
+                                                    <aura:unescapedHtml value="{!partner.description__c}"/>
+                                                    <div class="clear"></div>
+                                                    <aura:if isTrue="{!partner.contact_email__c != null}">
+                                                        <div class="center paddingtopbottom partneremail">
+                                                            <strong>Contact Email: </strong> <a href="{!partner.contact_email__c}">{!partner.contact_email__c}</a>
+                                                        </div>
+                                                    </aura:if>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            <div class="footer">
+                                                <div class="padding">
+                                                    <aura:if isTrue="{!partner.website__c != null}">
+                                                        <button class="slds-button slds-button_neutral"  aura:id="{!partner.website__c}" id="{!partner.website__c}" onclick="{!c.toURL}">
+                                                            Website                                                        
+                                                        </button>
+                                                    </aura:if>
+                                                    <aura:if isTrue="{!partner.landing_page_url__c != null}">
+                                                        <button class="slds-button slds-button_brand"  aura:id="{!partner.landing_page_url__c}" id="{!partner.landing_page_url__c}" onclick="{!c.toURL}">
+                                                            Demo Kit
+                                                        </button>
+                                                    </aura:if>
+                                                    <aura:if isTrue="{!partner.chatter_group_url__c != null}">
+                                                        <button class="slds-button slds-button_neutral"  aura:id="{!partner.chatter_group_url__c}" id="{!partner.chatter_group_url__c}" onclick="{!c.toURL}">
+                                                            Chatter
+                                                        </button>
+                                                    </aura:if>
+                                                    <div class="clear"></div>
+                                                </div>
+                                            </div>                               
+                                        </div>
+                                        <div class="twothirds">
+                                            <div class="padding">
+                                                <c:FIDO_Partners_Scripts PartnerId="{!partner.sfid}" Industry="{!v.Industry}" />
+                                            </div>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                </aura:if>
+                            </aura:if>
+                    	</aura:iteration>
+                    </div>
+                </div>
+            </div>
+        </div>
+</aura:component>

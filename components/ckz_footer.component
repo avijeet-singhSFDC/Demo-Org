@@ -1,0 +1,101 @@
+<!--
+ - Created by brandon.rogers on 9/24/18.
+ -->
+
+<apex:component id="ckz_Footer">
+    <script id="ckz_tmpl_Footer" type="text/template">
+        <div class="footerBrowser cc_footer_browser p-y-2">
+            <div class="row cc_footer_logo_row">
+                <div class="col-xs-12 cc_footer_logo_col">
+                    <img src="https://c1.sfdcstatic.com/content/dam/web/en_us/www/images/home/logo-salesforce.svg" class="center-block cc_footer_logo" height="50" width="auto" alt="Salesforce Logo">
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
+
+    <script type="text/javascript">
+        $(function () {
+            CCRZ.pubSub.on('view:myAccountHeaderView:refresh', function () {
+                console.log("ckz_Footer:view:myAccountHeaderView:refresh");
+
+                if (CCRZ.currentUser) {
+                    console.log("ckz_Header:CCRZ.currentUser: " + JSON.stringify(CCRZ.currentUser));
+
+                    var fName = CCRZ.currentUser.FirstName;
+                    var lName = CCRZ.currentUser.LastName;
+                    var utype = CCRZ.currentUser.UserType;
+                    var eMail = CCRZ.currentUser.Email;
+
+                    if (utype == "Guest") {
+                        fName = "";
+                        lName = "";
+                        eMail = "";
+                    }
+                }
+
+                var initESW = function (gslbBaseURL) {
+                    embedded_svc.settings.displayHelpButton = true; //Or false
+                    embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
+
+                    //embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
+                    //embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
+
+                    //embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+                    //embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+
+                    // Settings for Live Agent
+                    //embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+                    // Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
+                    // Returns a valid button ID.
+                    //};
+                    embedded_svc.settings.prepopulatedPrechatFields = {
+                        FirstName: fName,
+                        LastName: lName,
+                        Email: eMail,
+                        Subject: ""
+                    };
+                    //embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
+                    //embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
+
+                    embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+                    embedded_svc.settings.entryFeature = 'LiveAgent';
+                    
+                    // *** SNAP IN UPDATE BEGIN ***
+                    
+        embedded_svc.init(
+            'https://b2b-sdo-20190123-cc.my.salesforce.com',
+            'https://sdodemo-main-166ce2cf6b6-1687aef9110.force.com/consumer',
+            gslbBaseURL,
+            '00D2E000000XSdL',
+            'Snap_ins_Live_Agent',
+            {
+                baseLiveAgentContentURL: 'https://c.la2-c1-ph2.salesforceliveagent.com/content',
+                deploymentId: '5722E000000Cnou',
+                buttonId: '5732E000000H0C1',
+                baseLiveAgentURL: 'https://d.la2-c1-ph2.salesforceliveagent.com/chat',
+                eswLiveAgentDevName: 'EmbeddedServiceLiveAgent_Parent04I2E00000000skUAQ_161f7756989',
+                isOfflineSupportEnabled: false
+            }
+        );
+    };
+
+    if (!window.embedded_svc) {
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://b2b-sdo-20190123-cc.my.salesforce.com/embeddedservice/5.0/esw.min.js');
+        s.onload = function() {
+            initESW(null);
+        };
+        document.body.appendChild(s);
+    } else {
+        initESW('https://service.force.com');
+    }
+                // *** SNAP IN UPDATE END ***
+            })
+        });
+
+    </script>
+
+
+</apex:component>

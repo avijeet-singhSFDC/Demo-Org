@@ -1,0 +1,227 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+	<aura:attribute name="selectedTask" type="String" default=""/>
+    <aura:attribute name="task1done" type="Boolean" default="false"/> 
+    <aura:attribute name="task2done" type="Boolean" default="false"/> 
+    <aura:attribute name="task3done" type="Boolean" default="false"/> 
+    <aura:if isTrue="{!v.task1done == false}">
+    	<div class="slds-grid slds-gutters listview padding">
+          <div class="slds-col">
+            <span>Beverly Boyd</span>
+          </div>
+          <div class="slds-col">
+            <span>Preferred Client</span>
+          </div>
+          <div class="slds-col">
+            <span>1 Due</span>
+          </div>
+          <div class="slds-col">
+            <span><button class="slds-button slds-button_brand toprightbutton" id="1" onclick="{!c.OpenDialog}">View</button></span>
+          </div> 
+        </div>
+      </aura:if>
+      <aura:if isTrue="{!v.task2done == false}">
+		<div class="slds-grid slds-gutters listview padding">
+          <div class="slds-col">
+            <span>Nathan Paulk</span>
+          </div>
+          <div class="slds-col">
+            <span>Preferred Client</span>
+          </div>
+          <div class="slds-col">
+            <span>1 Due</span>
+          </div>
+          <div class="slds-col">
+            <span><button class="slds-button slds-button_brand toprightbutton" id="2" onclick="{!c.OpenDialog}">View</button></span>
+          </div> 
+        </div>
+      </aura:if>
+      <aura:if isTrue="{!v.task3done == false}">
+    	<div class="slds-grid slds-gutters listview padding">
+          <div class="slds-col">
+            <span>Diana Barger</span>
+          </div>
+          <div class="slds-col">
+            <span>Preferred Client</span>
+          </div>
+          <div class="slds-col">
+            <span>1 Due</span>
+          </div>
+          <div class="slds-col">
+            <span><button class="slds-button slds-button_brand toprightbutton" id="3" onclick="{!c.OpenDialog}">View</button></span>
+          </div> 
+        </div>
+    </aura:if> 
+    <section role="dialog" aura:id="TaskModal" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-closed">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Manage Task</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <aura:if isTrue="{!v.selectedTask == '1'}">
+                  <div class="slds-grid slds-gutters listview padding">
+                      <div class="slds-col">
+                        <span>
+                            <h3>Beverly Boyd</h3>
+                            <strong>Preferrred Client</strong><br/>
+                            Los Angeles, CA United States
+                        </span>
+                      </div>
+                      <div class="slds-col">
+                          <a href="javascript:void(0)">bboyd@example.com</a><br/>
+                          <a href="javascript:void(0)">(213) 555-9989</a><br/>
+                          <a href="javascript:void(0)">+ Add Follow-Up</a><br/>
+                      </div>
+                      <div class="slds-col">
+                          <a href="javascript:void(0)">Send Text Message</a><br/>
+                          <a href="javascript:void(0)">Add Notes</a><br/>
+                          <a href="javascript:void(0)">Messenger</a><br/>
+                      </div> 
+                    </div>
+                    <hr/>
+                    <div class="slds-grid slds-gutters listview padding">
+                       <div class="slds-col center"> 
+                        <div class="slds-form-element">
+                          <div class="slds-form-element__control">
+                            <span class="slds-checkbox">
+                              <input type="checkbox" name="options" id="checkbox-2" value="checkbox-2" />
+                              <label class="slds-checkbox__label" for="checkbox-2">
+                                <span class="slds-checkbox_faux"></span><br/>
+                                <span class="slds-form-element__label">Done</span>
+                              </label>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="slds-col">
+                        <span>
+                            <strong>Overdue</strong><br/>
+                            Has Beverly placed a reorder of #6514 purchased two weeks ago?<br/>
+                            If not, it's a great time to reach out. 
+                        </span><br/>
+                        <a href="javascript:void(0)" class="tasklink">Email Template</a>  
+                        <a href="javascript:void(0)" class="tasklink">Message Template</a>  
+                      </div>
+                      <div class="slds-col">
+                      	<button class="nostylebutton" onclick="{!c.CloseDialog}"><img src="{!$Resource.edit_icon}" /></button>
+                      </div>
+                      <div class="slds-col">
+                		  <button class="nostylebutton" onclick="{!c.CloseDialog}" ><img src="{!$Resource.trash_icon}" /></button>
+                      </div> 
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.selectedTask == '2'}">
+                  <div class="slds-grid slds-gutters listview padding">
+                      <div class="slds-col">
+                        <span>
+                            <h3>Nathan Paulk</h3>
+                            <strong>Preferrred Client</strong><br/>
+                            San Francisco, CA United States
+                        </span>
+                      </div>
+                      <div class="slds-col">
+                          <a href="javascript:void(0)">npaulk@example.com</a><br/>
+                          <a href="javascript:void(0)">(213) 555-5489</a><br/>
+                          <a href="javascript:void(0)">+ Add Follow-Up</a><br/>
+                      </div>
+                      <div class="slds-col">
+                          <a href="javascript:void(0)">Send Text Message</a><br/>
+                          <a href="javascript:void(0)">Add Notes</a><br/>
+                          <a href="javascript:void(0)">Messenger</a><br/>
+                      </div> 
+                    </div>
+                    <hr/>
+                    <div class="slds-grid slds-gutters listview padding">
+                       <div class="slds-col center"> 
+                        <div class="slds-form-element">
+                          <div class="slds-form-element__control">
+                            <span class="slds-checkbox">
+                              <input type="checkbox" name="options" id="checkbox-2" value="checkbox-2" />
+                              <label class="slds-checkbox__label" for="checkbox-2">
+                                <span class="slds-checkbox_faux"></span><br/>
+                                <span class="slds-form-element__label">Done</span>
+                              </label>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="slds-col">
+                        <span>
+                            <strong>Overdue</strong><br/>
+                            Has Nathan placed a reorder of #6514 purchased two weeks ago?<br/>
+                            If not, it's a great time to reach out. 
+                        </span><br/>
+                        <a href="javascript:void(0)" class="tasklink">Email Template</a>  
+                        <a href="javascript:void(0)" class="tasklink">Message Template</a>  
+                      </div>
+                      <div class="slds-col">
+                      	<button class="nostylebutton" onclick="{!c.CloseDialog}"><img src="{!$Resource.edit_icon}" /></button>
+                      </div>
+                      <div class="slds-col">
+                		  <button class="nostylebutton" onclick="{!c.CloseDialog}" ><img src="{!$Resource.trash_icon}" /></button>
+                      </div> 
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.selectedTask == '3'}">
+                  <div class="slds-grid slds-gutters listview padding">
+                      <div class="slds-col">
+                        <span>
+                            <h3>Diana Barger</h3>
+                            <strong>Preferrred Client</strong><br/>
+                            San Francisco, CA United States
+                        </span>
+                      </div>
+                      <div class="slds-col">
+                          <a href="javascript:void(0)">bboyd@example.com</a><br/>
+                          <a href="javascript:void(0)">(213) 555-7662</a><br/>
+                          <a href="javascript:void(0)">+ Add Follow-Up</a><br/>
+                      </div>
+                      <div class="slds-col">
+                          <a href="javascript:void(0)">Send Text Message</a><br/>
+                          <a href="javascript:void(0)">Add Notes</a><br/>
+                          <a href="javascript:void(0)">Messenger</a><br/>
+                      </div> 
+                    </div>
+                    <hr/>
+                    <div class="slds-grid slds-gutters listview padding">
+                       <div class="slds-col center"> 
+                        <div class="slds-form-element">
+                          <div class="slds-form-element__control">
+                            <span class="slds-checkbox">
+                              <input type="checkbox" name="options" id="checkbox-2" value="checkbox-2" />
+                              <label class="slds-checkbox__label" for="checkbox-2">
+                                <span class="slds-checkbox_faux"></span><br/>
+                                <span class="slds-form-element__label">Done</span>
+                              </label>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="slds-col">
+                        <span>
+                            <strong>Overdue</strong><br/>
+                            Has Diana placed a reorder of #6514 purchased two weeks ago?<br/>
+                            If not, it's a great time to reach out. 
+                        </span><br/>
+                        <a href="javascript:void(0)" class="tasklink">Email Template</a>  
+                        <a href="javascript:void(0)" class="tasklink">Message Template</a>  
+                      </div>
+                      <div class="slds-col">
+                      	<button class="nostylebutton" onclick="{!c.CloseDialog}"><img src="{!$Resource.edit_icon}" /></button>
+                      </div>
+                      <div class="slds-col">
+                		  <button class="nostylebutton" onclick="{!c.CloseDialog}" ><img src="{!$Resource.trash_icon}" /></button>
+                      </div> 
+                    </div>
+                </aura:if>
+            </div>
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral" onclick="{!c.CloseDialog}">Cancel</button>
+                <button class="slds-button slds-button_brand" onclick="{!c.CompleteTask}" >Mark As Done</button>
+            </footer>
+        </div>
+        </section>
+        <div aura:id="overlay" class="slds-backdrop slds-backdrop_closed"></div>
+</aura:component>

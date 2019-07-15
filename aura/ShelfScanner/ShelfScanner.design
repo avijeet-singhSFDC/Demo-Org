@@ -1,0 +1,3 @@
+<design:component label="Einstein Object Detection - Shelf Scanner">
+    <design:attribute name="modelId" default="UAN3GRU2NDOU46GPBRHHIUDICY" label="Model ID" description="Model ID of the trained Object Detection model" />
+</design:component>

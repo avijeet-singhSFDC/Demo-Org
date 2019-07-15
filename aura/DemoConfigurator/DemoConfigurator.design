@@ -1,0 +1,6 @@
+<design:component>
+	<design:attribute name="SetupScreenTitle" default="Lets Enable Stuff"/>
+    <design:attribute name="SetupScreenDecription" default="This tool is in Pilot for the Winter 19 initial release with plans to more formally release for our Final Release. Please help test this out and provide feedback send email to jchase@salesforce.com"/>
+    <design:attribute name="FinishScreenTitle" default="Lets Finish Up"/>
+    <design:attribute name="FinishScreenDecription" default="Please note, you will need to finish configurations in the Qhome Tab (Click Finish Setup Below). This tool simply configures what is available through the API. Please finish all setup items needed in your demo."/>
+</design:component>

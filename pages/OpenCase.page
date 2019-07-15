@@ -1,0 +1,132 @@
+<apex:page >
+<apex:includeScript value="/support/console/41.0/integration.js"/>
+<script src="../../soap/ajax/41.0/connection.js" type="text/javascript"></script>
+ 
+ 
+<apex:remoteObjects >
+    <apex:remoteObjectModel name="Case" fields="Id,SCQuickSetup__chatKey__c,Status,Type,Origin,RecordTypeId,Subject,CaseNumber"/>
+</apex:remoteObjects>
+
+
+<script type='text/javascript'>
+    sforce.connection.sessionId = '{!$Api.Session_ID}';
+
+    sforce.console.presence.getAgentWorks(function(result) {
+        debugger;
+        if (result.success) {
+            var works = JSON.parse(result.works);
+            var work = works[works.length - 1];
+            if (work){
+                console.log(work);
+                var liveChatTranscript = sforce.connection.query("SELECT ChatKey FROM LiveChatTranscript WHERE Id = '" + work.workItemId + "'");
+                var records = liveChatTranscript.getArray("records"); 
+                console.log(records);
+                var chatKey = records[0].ChatKey;
+                console.log("chatKey" + chatKey);
+                sforce.console.chat.getDetailsByChatKey(chatKey, getDetailsSuccess);
+
+            }
+            
+        }
+    });
+    
+
+    function getRecordType(){
+        var recordType = sforce.connection.query("SELECT Id,Name,SobjectType FROM RecordType WHERE SobjectType = 'Case' AND Name = 'Chat Live Agent'");
+        var records = recordType.getArray("records"); 
+        return records[0];
+    }
+
+    function getContact(email){
+        var contacts = sforce.connection.query("SELECT Id, Name FROM Contact Where email = '" + email +"'");
+        var records = contacts.getArray("records"); 
+        if (records.length > 0){
+            return records[0];
+        } else {
+            return undefined;
+        }
+    }
+
+    function getEmail(details){
+        var email = undefined;
+        if (details.customDetails.length > 0) {
+            if (details.customDetails[0].label == "SCQuickSetup__CurrentEmail__c") {
+                email = details.customDetails[0].value
+            }
+        }
+        return email
+    }
+
+    function getDetailsSuccess(result) {
+        if (result.success) {
+            var details = result.details;
+            var email = getEmail(details);
+            var caseObject = new SObjectModel.Case({ 
+                SCQuickSetup__chatKey__c: details.chatKey,
+                Status: "New", 
+                Type: "Other",
+                Origin:"Live Agent",
+                RecordTypeId:getRecordType().Id,
+            });
+
+            if (!email) {
+                caseObject._props.Subject = "Chat create by ....";
+            } else {
+                var contact = getContact(email);
+                if (contact) {
+                    caseObject._props.Subject = "Chat create by " + contact.Name;
+                    caseObject._props.ContactId = contact.Id
+                } else {
+                    caseObject._props.Subject = "Chat create by " + email;
+                }
+            }
+            createCase(caseObject);
+        }
+    }
+
+    function createCase(newCase) {
+        newCase.create( function( err, records, evt ) {
+
+                console.log( err );
+                console.log( records );
+                console.log( evt );
+                debugger;
+                if ( err ) {
+                    alert( err.message );
+                } else {
+
+                    sforce.console.getFocusedPrimaryTabId( function( primaryTabResult ) {
+
+                        console.log( 'getFocusedPrimaryTabId' );
+                        console.log( primaryTabResult );
+
+                        if ( primaryTabResult.success ) {
+
+                            console.log( 'primaryTabId: ' + primaryTabResult.id );
+                            console.log( 'caseId: ' + records[0] );
+
+                            sforce.console.openSubtab(
+                                primaryTabResult.id,
+                                '/' + records[0] + '/e',
+                                true,
+                                'Edit Case',
+                                null,
+                                function( openSubtabResult ) {
+                                    console.log( 'openSubtabResult' );
+                                    console.log( openSubtabResult );
+                                }
+                            ); // end open sub tab
+
+                        } // end if
+
+                    }); // end get focused primary tab id
+
+                } // end if
+
+            }); // end case create callback
+
+    }
+
+</script>
+
+</apex:page>

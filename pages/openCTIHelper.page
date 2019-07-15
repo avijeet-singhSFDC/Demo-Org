@@ -1,0 +1,221 @@
+<apex:page docType="html-5.0" showHeader="false" sidebar="false" Controller="openCTIHelperApex">
+<!-- applyHtmlTag="false" applyBodyTag="false" -->
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title> openCTIconfig Helper </title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" />
+
+    <style type="text/css">
+        @font-face {
+            font-family: 'ProximaNovaRegular';
+            src: url('https://www.sfdcstatic.com/cdn/fonts/ProximaNova/proximanova-reg-webfont.eot');
+            src: url('https://www.sfdcstatic.com/cdn/fonts/ProximaNova/proximanova-reg-webfont.eot?#iefix') format('embedded-opentype'),
+                 url('https://www.sfdcstatic.com/cdn/fonts/ProximaNova/proximanova-reg-webfont.woff') format('woff'),
+                 url('https://www.sfdcstatic.com/cdn/fonts/ProximaNova/proximanova-reg-webfont.ttf') format('truetype'),
+                 url('https://www.sfdcstatic.com/cdn/fonts/ProximaNova/proximanova-reg-webfont.svg#ProximaNovaRegular') format('svg');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'ProximaNovaLight';
+            src: url('https://www.sfdcstatic.com/cdn/fonts/ProximaNova/proximanova-light-webfont.eot');
+            src: url('https://www.sfdcstatic.com/cdn/fonts/ProximaNova/proximanova-light-webfont.eot?#iefix') format('embedded-opentype'),
+                 url('https://www.sfdcstatic.com/cdn/fonts/ProximaNova/proximanova-light-webfont.woff') format('woff'),
+                 url('https://www.sfdcstatic.com/cdn/fonts/ProximaNova/proximanova-light-webfont.ttf') format('truetype'),
+                 url('https://www.sfdcstatic.com/cdn/fonts/ProximaNova/proximanova-light-webfont.svg#ProximaNovaLight') format('svg');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'ProximaNovaSemiBold';
+            src: url('https://www.sfdcstatic.com/cdn/fonts/ProximaNova/proximanova-sbold-webfont.eot');
+            src: url('https://www.sfdcstatic.com/cdn/fonts/ProximaNova/proximanova-sbold-webfont.eot?#iefix') format('embedded-opentype'),
+                 url('https://www.sfdcstatic.com/cdn/fonts/ProximaNova/proximanova-sbold-webfont.woff') format('woff'),
+                 url('https://www.sfdcstatic.com/cdn/fonts/ProximaNova/proximanova-sbold-webfont.ttf') format('truetype'),
+                 url('https://www.sfdcstatic.com/cdn/fonts/ProximaNova/proximanova-sbold-webfont.svg#ProximaNovaSemiBold') format('svg');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            background-image: url('{!$Resource.wood_background}');
+            background-repeat: repeat;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Testing -->
+    <div id="testingButton" onclick="testingFunction()"></div>
+
+    <div id="screen1" style="display: block;">
+        <div style="margin-top: 150px; width: 50%; margin-left: auto; margin-right: auto; background-color: white; border-radius: 7px; padding: 30px; min-height: 200px;">
+            <h2>Choose Contact</h2>
+            <p>
+                Choose the Contact you'd like to use during the demo. <br/>
+                This Contact will appear as an incoming call within the softphone.
+            </p>
+            <br/>
+            <div style="float: left;">
+                <label style="float: left; margin-right: 20px;">Contact ID: </label>
+                <input id="contactId" type="text" style="float: left; width: 180px;"></input>
+                <div style="width: 100px; height: 26px; border-style: solid; float: left; text-align: center; border-width: 1px; margin-left: 20px; padding: 2px; margin-bottom: 40px;" onclick="idSubmitted()">Submit</div>
+            </div>
+            <div id="warningText" style="color: red; display: none;">
+                <br/>
+                <br/>
+                That's not a valid Contact ID.
+            </div>
+        </div>
+    </div>
+
+    <div id="screen2" style="display: none;">
+        <div style="margin-top: 150px; width: 50%; margin-left: auto; margin-right: auto; background-color: white; border-radius: 7px; padding: 30px; min-height: 200px;">
+            <div style="width: 100%; height: 100px;">
+                <h2>Contact Details</h2>
+                <p>
+                    You can edit the details below for your demo if they're incorrect or need adjustments. <br/>
+                </p>
+            </div>
+            <div style="width: 100%; height: 170px;">
+                <table style="margin-left: auto; margin-right: auto;">
+                    <tr>
+                        <td style="padding-right: 20px; margin-bottom: 10px;">Contact</td>
+                        <td><input id="contactBox" type="text"></input></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-right: 20px; margin-bottom: 10px;">Account</td>
+                        <td><input id="accountBox" type="text"></input></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-right: 20px; margin-bottom: 10px;">Title</td>
+                        <td><input id="titleBox" type="text"></input></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-right: 20px; margin-bottom: 10px;">Phone</td>
+                        <td><input id="phoneBox" type="text"></input></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-right: 20px; margin-bottom: 10px; padding-top: 20px;">isActive</td>
+                        <td><input id="activeBox" type="checkbox" style="margin-top: 20px;" checked="true"></input></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-right: 20px; margin-bottom: 10px; margin-top: 20px; padding-top: 15px;">Open Contact records on <br/> Incoming/Outgoing calls.</td>
+                        <td><input id="popContact" type="checkbox" checked="true"></input></td>
+                    </tr>
+                </table>
+            </div>
+            <p style="margin-top: 50px;">
+                You can only have one active configuration present at a time. <br/>
+                If you'd like to use this configuration for your demo, ensure the 'isActive' checkbox is marked.
+            </p>
+            <div style="margin-top: 40px; width: 100%; height: 40px;">
+                <div style="width: 150px; height: 30px; float: right; padding-right: 50px; border-style: solid; text-align: center; padding: 3px; border-width: 1px; border-radius: 5px;" onclick="allDone()">
+                    Done
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <script>
+    var screen1 = $('#screen1');
+    var screen2 = $('#screen2');
+
+    var myResult;
+
+    function idSubmitted() {
+        var contactId = $('#contactId').val();
+        console.log('contactId : ' + contactId);
+
+        if(contactId.length == 15 || contactId.length == 18) {
+            screen1.fadeOut( "slow", function() {
+                Visualforce.remoting.Manager.invokeAction(
+                    '{!$RemoteAction.openCTIHelperApex.getContactViaId}',
+                    contactId,
+                    function(result, event) {
+                        myResult = result;
+                        console.log('result : ' + result.Name);
+                        setTheBoxes(result);
+                        screen2.fadeIn( "slow", function() {});
+                    },
+                    {escape: true}
+                );
+            });
+        } else {
+            console.log('Thats not a contact ID');
+            $('#warningText').css('display', 'block');
+        }
+    }
+
+    function setTheBoxes(cn) {
+        $('#accountBox').val(cn.Account.Name);
+        $('#contactBox').val(cn.Name);
+        $('#titleBox').val(cn.Title);
+        $('#phoneBox').val(cn.Phone);
+    }
+
+    function allDone() {
+        var myContact = $('#contactBox').val();
+        var myAccount = $('#accountBox').val();
+        var myContactId = myResult.Id;
+        var myAccountId = myResult.AccountId;
+        var myTitle = $('#titleBox').val();
+        var myPhone = $('#phoneBox').val();
+        var myActive = document.getElementById('activeBox').checked;
+
+        var popContact = document.getElementById('popContact').checked;
+
+        console.log('myContact : ' + myContact);
+        console.log('myAccount : ' + myAccount);
+        console.log('myContactId : ' + myContactId);
+        console.log('myAccountId : ' + myAccountId);
+        console.log('myTitle : ' + myTitle);
+        console.log('myPhone : ' + myPhone);
+        console.log('myActive : ' + myActive);
+
+        console.log('popContact : ' + popContact);
+
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.openCTIHelperApex.createMyConfig}',
+            myContact,
+            myAccount,
+            myContactId,
+            myAccountId,
+            myTitle,
+            myPhone,
+            myActive,
+            popContact,
+            function(result, event){
+                if (event.status) {
+                    location.href = '/' + result;
+                }  else {
+                    console.log('Something has gone horribly wrong..');
+                }
+            },
+            {escape: true}
+        );
+    }
+
+
+
+    </script>
+</body>
+
+</html>
+
+</apex:page>

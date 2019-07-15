@@ -1,0 +1,121 @@
+<aura:component controller="FIDO">
+    <aura:attribute name="ScreenChoice" type="String"/>
+    <aura:attribute name="Settings" type="String[]" />
+    <aura:attribute name="Industry" type="String"/>
+    <aura:attribute name="ComponentTitle" type="String" />
+    <aura:attribute name="ModalSelection" type="String" />
+    <aura:attribute name="Brands" type="String[]"/>
+    <aura:attribute name="Pricebooks" type="PriceBook2[]" default=""/>
+    <aura:attribute name="MenuOpenClose" type="String" default='close'/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+		<div class="paddinglarge">
+            <div class="center">
+                <aura:iteration items="{!v.Brands}" var="brand">
+                    <aura:if isTrue="{!brand.industry__c == v.Industry}">
+                        <div class="slds-card minicard">
+                            <div class="slds-media">
+                                <div class="slds-media__body"> 
+                                    <div class="center">
+                                        <h2 class="slds-page-header__title slds-truncate slds-align-middle padding h2borderbottom " >
+                                            Meet {!brand.name}
+                                        </h2>
+                                    </div>    
+                                </div>
+                            </div> 
+                            <div class="padding textleft">
+                                <div class="third">
+                                    <div class="">
+                                        <img src="{!brand.logo__c}" class="brandlogo"/>
+                                    </div>
+                                </div>
+                                <div class="twothirds">
+                                    <div class="paddingleftright">
+                                        <ui:outputRichText value="{!brand.description__c}"/>
+                                        <aura:if isTrue="{!brand.brand_guidelines_url__c != null}">
+                                            <div class="paddingtopbottom">
+                                                <button class="slds-button slds-button_neutral" aura:id="{!brand.brand_guidelines_url__c}" id="{!brand.brand_guidelines_url__c}" onclick="{!c.toURL}">
+                                                    Brand Guidelines
+                                                </button>
+                                            </div>
+                                        </aura:if>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                                </div>
+                                <div class="footer">
+                                    <div class="padding">
+                                        <aura:iteration items="{!v.Settings}" var="setting">
+                                            <aura:if isTrue="{!setting.industry__c == v.Industry}">
+                                                <aura:if isTrue="{!setting.show_brand_accounts__c == true }">
+                                                    <button class="slds-button slds-button_neutral" aura:id="Accounts" id="Accounts" onclick="{!c.OpenDialog}">
+                                                        Accounts
+                                                    </button>
+                                                </aura:if>
+                                                <aura:if isTrue="{!setting.show_brand_contacts__c == true }">
+                                                    <button class="slds-button slds-button_neutral" aura:id="Contacts" id="Contacts" onclick="{!c.OpenDialog}">
+                                                        Contacts
+                                                    </button>
+                                                </aura:if>
+                                                <aura:if isTrue="{!setting.show_brand_pricebook__c == true }">
+                                                    <aura:if isTrue="{!setting.pricebook_name__c  != NULL }">
+                                                        <button class="slds-button slds-button_neutral" aura:id="Products" id="Products" onclick="{!c.OpenDialog}">
+                                                            Pricebooks and Products
+                                                        </button>
+                                                    </aura:if>
+                                                </aura:if>
+                                                <aura:if isTrue="{!setting.show_brand_apps__c  == true }">
+                                                    <button class="slds-button slds-button_neutral" aura:id="Apps" id="Apps" onclick="{!c.OpenDialog}">
+                                                        Apps
+                                                    </button>
+                                                </aura:if>
+                                                <aura:if isTrue="{!setting.show_brand_communities__c == true }">
+                                                    <button class="slds-button slds-button_neutral" aura:id="Communities" id="Communities" onclick="{!c.OpenDialog}">
+                                                        Communities
+                                                    </button>
+                                                </aura:if>  
+                                            </aura:if>
+                                        </aura:iteration>
+                                    </div>
+                                </div>
+                            </div>
+                    </aura:if>
+                </aura:iteration>
+            </div>
+        </div>
+    <div aura:id="overlay" class="slds-backdrop slds-backdrop_closed"></div>
+    <!-- Brand Modals -->
+    <section role="dialog" aura:id="BrandMoreModal" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-closed">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.ModalSelection}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <div class="padding">
+                        <aura:if isTrue="{!v.ModalSelection == 'Accounts'}">
+                            <c:FIDO_Brand_Accounts Industry="{!v.Industry}" />
+                        </aura:if>
+                        <aura:if isTrue="{!v.ModalSelection == 'Apps'}">
+                            <c:FIDO_Brand_Apps Industry="{!v.Industry}" />
+                        </aura:if>
+                        <aura:if isTrue="{!v.ModalSelection == 'Contacts'}">
+                            <c:FIDO_Brand_Contacts Industry="{!v.Industry}" />
+                        </aura:if>
+                        <aura:if isTrue="{!v.ModalSelection == 'Communities'}">
+                            <c:FIDO_Brand_Communities Industry="{!v.Industry}" />
+                        </aura:if>
+                        <aura:if isTrue="{!v.ModalSelection == 'Products'}">
+                            <aura:iteration items="{!v.Brands}" var="brand">
+                            	<c:FIDO_Brand_Pricebooks Industry="{!v.Industry}" BrandName="{!brand.name}" Settings="{!v.Settings}" />
+                            </aura:iteration>
+                        </aura:if>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                	<button class="slds-button slds-button_brand" onclick="{!c.CloseDialog}">Close</button>
+                </footer>
+            </div>
+	</section>
+</aura:component>

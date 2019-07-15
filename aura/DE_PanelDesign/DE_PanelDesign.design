@@ -1,0 +1,3 @@
+<design:component label="Highlight Panel">
+    <design:attribute name="panelDesign" label="Panel Design" datasource="apex://PanelDesign_DesignAttribute"/>
+</design:component>

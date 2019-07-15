@@ -1,0 +1,61 @@
+<apex:page sidebar="false" showHeader="true" docType="html-4.01-strict">
+<div id="tabstrip" style="display:none;"> <ul> 
+<li class="k-state-active">All Accounts</li>
+<li>My Accounts</li>
+<li>Recently Viewed</li>
+<li>Accounts w/ Assets</li>
+</ul>
+
+<!-- Accounts - All -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="Account" DelayLoad="false"  ViewID="a1K2E000006e8OIEAE" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+<!-- Accounts - My -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="Account" DelayLoad="true"  ViewID="aBs2E000000JHk0CAG" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+<!-- Accounts - Recently Viewed -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="Account" DelayLoad="true"  ViewID="aBs2E000000JHkACAW" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+ 
+ <!-- Accounts - with Assets related column exposed --> 
+<div style="overflow:hidden;"> 
+<p>Use this view to filter on the ASSETS related column to find Accounts that do or don't have a particular product</p>
+<CRMC_PP:Grid ObjectName="Account" DelayLoad="true"  ViewID="aBs2E000000JHk4CAW" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+</div>
+
+<!-- Accounts - NFL Teams -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="Account" DelayLoad="true"  ViewID="a1B2E000006c9cMEAM" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+</div>
+<script>
+$(document).ready(function() {
+    $("#tabstrip").kendoTabStrip({
+      activate: function(e){
+        setTimeout(function(){          $(window).resize();        });
+      }
+    });
+    $("#tabstrip").css("display", "block");
+});
+ </script>
+</apex:page>

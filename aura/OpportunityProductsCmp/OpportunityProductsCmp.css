@@ -1,0 +1,54 @@
+.THIS .slds-p-bottom_small {
+    padding-bottom: 1.75rem !important;
+}
+
+.THIS .header_div {
+    display: inline-block;
+    text-align: center;
+   /* margin-bottom: 10px;*/
+    border-bottom: 1px solid #ccc;
+    /*padding-bottom: 10px;*/
+}
+.THIS .header_text {
+    display: inline-block;
+    text-align: center;
+    /*padding-top: 5px;
+    padding-bottom: 5px;*/
+    width:100%;
+    background:#f3f3f3;
+    font-size: 11px;
+}
+.THIS h3 .slds-text-heading_large .slds-text-align_center .slds-m-top_small {
+    font-size: 18px;
+}
+.THIS .Row{
+    display: table;
+    width: 100%; 
+    /*table-layout: fixed; 
+    border-spacing: 10px;*/
+}
+.THIS .Column{
+    display: table-cell;
+}
+
+.THIS .column_text {
+    display: inline-block;
+    width: 59%;
+    text-align: center;
+    vertical-align:top;
+    margin-top: 16px;
+}
+
+.THIS .product_text{
+    font-size:20px !important;
+}
+
+.THIS .slds-p-top_small {
+    display: inline-block;
+    width: 20%;
+}
+
+.THIS .header_row {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 4px;
+}

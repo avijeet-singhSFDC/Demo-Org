@@ -1,0 +1,3 @@
+<design:component label="Display Image">
+    <design:attribute name="width" label="Width of Image" default="80"/>
+</design:component>

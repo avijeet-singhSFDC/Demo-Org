@@ -1,0 +1,24 @@
+    <ul>
+        <% if (viewStatus == "view"){  %>
+        <li>
+            <table class="camNoStyle"><tr><td>
+            <span class="cameditable" id="cameditbutton" style="border: 0px;">Data Category Group assigned to Chatter Answers: &nbsp;&nbsp;
+            </td><td>
+            <b><%= CA_Data_Category__c %></b></span><br/></td></tr>
+            <tr><td>
+            <span class="camsitebtn" style="border: 0px;">Is RichText enabled in Chatter Answers? :</td><td> <% if(richTextEditor__c){%><b>Enabled</b><%}else{%><b>Disabled</b><%}%></span>
+            </td></tr></table>
+            <input type="button" id="cameditbutton" class="camfloat cambtn" value="Edit" style="margin-top:-28px;">
+        </li>
+        <% }else{ %>
+        <li>
+            <form onsubmit="return false;">
+                <input type="text" class="caminputedit" placeholder="Chatter Answers Root Group Name" value="<%= CA_Data_Category__c %>"><br/>
+                &nbsp;&nbsp;Is RichText enabled in Chatter Answers? : <input type="checkbox" id="cameditrichtextenabled" <% if ( richTextEditor__c ) {%> checked <%}%> >
+                <input type="button" id="cameditcancelbutton" class="camfloat cambtn" style="margin-top:-30px;" value="Cancel">
+                <input type="button" id="cameditsavebutton" class="camfloat cambtn" style="margin-top:-30px;margin-right:60px;" value="Save">                
+            </form>
+            <span id="error" class="errorMsj" style="line-height:3;"></span>
+        </li>
+        <% } %>
+    </ul>

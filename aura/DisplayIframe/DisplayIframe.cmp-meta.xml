@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuraDefinitionBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>43.0</apiVersion>
+    <description>Component that allows you to set and display an external Website in an Iframe. Please note, it is not advised to use this in a real world scenario.</description>
+</AuraDefinitionBundle>

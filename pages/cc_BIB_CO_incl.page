@@ -1,0 +1,44 @@
+<apex:page id="cc_BIB_CO_incl" sidebar="false" showHeader="false" standardStylesheets="false">
+    <c:ckz_CO_LLI_OrderReview />
+    <c:ckz_CO_LLI_Payment />
+    <c:ckz_CO_AddressCarousel />
+    
+    
+    <script>
+        jQuery(function ($) {
+            // STANDARD FLOW
+            //CCRZ.pubSub.on('view:cartCheckoutView:awaitingSubViewInit', function (theView) {
+            //   if (CCRZ.Checkout.userInfo) {
+            //      CCRZ.Checkout.userInfo.register(theView);
+            //   }
+            //   if (CCRZ.Checkout.shipping) {
+                    // CCRZ.Checkout.shipping.register(theView);
+            //  }
+            //   if (CCRZ.Checkout.review) {
+            //       CCRZ.Checkout.review.register(theView);
+            //    }
+            //   if (CCRZ.Checkout.payment) {
+            //        CCRZ.Checkout.payment.register(theView);
+            //   }
+            //   CCRZ.pubSub.trigger('view:cartCheckoutView:subViewInit');
+            // });
+
+            //LLI FLOW
+             CCRZ.pubSub.on('view:LLIcartCheckoutView:awaitingSubViewInit',function(theView){
+                 if(CCRZ.Checkout.LLIshippingdetails){
+                     CCRZ.Checkout.LLIshippingdetails.register(theView);
+                 }
+                 if(CCRZ.Checkout.SubscReviewNew){
+                          CCRZ.Checkout.SubscReviewNew.register(theView);
+                 }
+                 if(CCRZ.Checkout.LLIorderreview){
+                     // CCRZ.Checkout.LLIorderreview.register(theView);
+                 }
+                 if(CCRZ.Checkout.LLIpayment){
+                     CCRZ.Checkout.LLIpayment.register(theView);
+                 }
+                 CCRZ.pubSub.trigger('view:LLIcartCheckoutView:subViewInit');
+             });
+        });
+    </script>
+</apex:page>

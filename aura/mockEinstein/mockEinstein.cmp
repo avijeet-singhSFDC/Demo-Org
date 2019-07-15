@@ -1,0 +1,111 @@
+<aura:component controller="EinsteinOffersCT" implements="forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes" >
+    <ltng:require styles="{!$Resource.circlecss}"></ltng:require>
+    <aura:attribute name="recordId" type="String" default="0032E00002QJkmiQAV"/>
+    
+    <!--<aura:attribute name="csat_score" type="Double"/>-->
+    <aura:attribute name="progressClass" type="String" default="c100 p72 small green"></aura:attribute>
+    <aura:attribute name="progressClass1" type="String" default="c100 p72 small green"></aura:attribute>
+    <aura:attribute name="progressClass2" type="String" default="c100 p72 small green"></aura:attribute>
+    
+    <aura:attribute name="customerData" type="Einstein_Prediction__c[]"></aura:attribute>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); transition: 0.3s;border:1px;border-radius:5px;" class="card">
+        <div style="padding: 2px 2px 3px;border:1px; border-radius: 5px;" class="container">
+            <div id="card0">
+                <article style="padding:2px;padding-bottom:10px;padding-top:4px;" class="slds-card">
+                    <div class="slds-card__header slds-grid">
+                        <header style="height:15px;" class="slds-media slds-media_center slds-has-flexi-truncate">
+                            <div style="margin-left: -9px;margin-top:2px;" class="slds-media__figure">
+                                <span class="slds-icon_container slds-icon-standard-contact" title="description of icon when needed">
+                                </span>
+                                <img id="einsteinLogo" style="zoom:6%;" src="{!$Resource.Einstein_Logo }"></img>
+                            </div>
+                            <div class="slds-media__body">
+                                <h2>
+                                    <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="[object Object]">
+                                        <span style="padding-left:14px" class="slds-text-heading_small">Einstein Discovery</span>
+                                    </a>
+                                </h2>
+                                
+                            </div>
+                            
+                        </header>
+                        <div class="slds-no-flex">
+                        </div>
+                    </div>
+                    <hr></hr>
+                    <div class="slds-card__header slds-grid">
+                        
+                        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                            <div style="margin-left: -9px;" class="slds-media__figure">
+                                <span class="slds-icon_container slds-icon-standard-contact" title="description of icon when needed">
+                                    
+                                </span>
+                                
+                                <div style="zoom:65%;" class="c100 p65 small">
+                                    <span>65</span>
+                                    <div class="slice">
+                                        <div class="bar" style="border-color:red !important;"></div>
+                                        <div class="fill"  style="border-color:red !important;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-media__body">
+                                <h2>
+                                    <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="[object Object]">
+                                        <span class="slds-text-heading_small">Predicted Engagement Likelihood</span>
+                                    </a>
+                                </h2>
+                                
+                            </div>
+                        </header>
+                    </div>
+                    <hr></hr>
+                    <div class="slds-card__body"> 
+                        <div class="dContent">
+                            <div class="slds-text-title_caps" style="font-size: 14px">Leading Causes</div>
+                            <div class="descriptionStyle">
+                                <table style="padding-top:8px; padding-bottom:8px; width:100%">
+                                    <tr>
+                                        <td class="rr" id="causePercent" style="width:25%;  padding-right:7.5%; text-align:right">-10.87</td>
+                                        <td style="width:75%">Because Weekly Activity Level is Less Than 2</td>                                             
+                                    </tr>
+                                    <tr>
+                                        <td class="rr" id="causePercent" style="width:25%;  padding-right:7.5%; text-align:right">-8.72</td>
+                                        <td style="width:75%">Because Sales Volume is 12</td>                                             
+                                    </tr>
+                                </table>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <hr></hr>
+                    <div class="slds-card__body">
+                        <div class="dContent">
+                            <div class="slds-text-title_caps" style="font-size: 14px">How to Improve This</div>
+                            <div class="prescriptionStyle">
+                                
+                                <table style="padding-top:8px; padding-bottom:8px; width:100%">
+                                    <tr>
+                                        <td class="gg" id="improvePercent" style="width:25%; padding-right:7.5%; text-align:right">+11.76</td>
+                                        <td style="width:75%">If You Change Days Since Last Video Check-in to 1</td> 
+                                    </tr>
+                                    <tr>
+                                        <td class="gg" id="improvePercent" style="width:25%; padding-right:7.5%; text-align:right">+9.32</td>
+                                        <td style="width:75%">If You Change Social Media Training Video to True</td> 
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="slds-card__footer">
+                        <!--<button onclick="{!c.nextPage1}" class="slds-button slds-button_neutral"><lightning:icon iconName="utility:chevronright" size="small"></lightning:icon></button>-->
+                    </footer>
+                    
+                </article> 
+            </div>
+            
+        </div>
+    </div>
+</aura:component>

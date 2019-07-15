@@ -1,0 +1,42 @@
+<aura:component controller="FIDO">
+    <aura:attribute type="String" name="PartnerId" />
+    <aura:attribute name="Industry" type="String"/>
+    <aura:attribute name="setScriptId" type="String" default='' />
+    <aura:attribute name="DemoScripts" type="String[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:iteration items="{!v.DemoScripts}" var="script">
+        <aura:if isTrue="{!script.demo_partner__c == v.PartnerId}">
+            <div class="relative textleft">
+                <h3 class="borderbottom">
+                    <div class="padding">
+                        <lightning:icon iconName="standard:reward" size="medium" alternativeText=""/> 
+                        <span class="marginleft">{!script.name}</span>
+                    </div>
+                </h3>
+                <div class="paddingmedium">
+                    <aura:unescapedHtml value="{!script.description__c}"/>  
+                </div>  
+                <div class="footer center">
+                    <div class="padding">
+    					<button class="slds-button slds-button_neutral" aura:id="{!script.id}" id="{!script.id}" onclick="{!c.OpenDialog}">More Information</button>
+                        <aura:if isTrue="{!script.video_link__c != null}">
+                            <button class="slds-button slds-button_brand" aura:id="{!script.video_link__c}" id="{!script.video_link__c}" onclick="{!c.toScript}">Demo Video</button>
+                        </aura:if>
+                        <button class="slds-button slds-button_neutral" aura:id="{!script.quip_doc__c}" id="{!script.quip_doc__c}" onclick="{!c.toScript}">View Script</button>
+                    </div>
+                </div>
+            </div> 
+        </aura:if>
+    </aura:iteration>
+    <div aura:id="overlay" class="slds-backdrop slds-backdrop_closed"></div>
+    <section role="dialog" aura:id="scriptModal" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-closed">
+            <div class="slds-modal__container">
+                <aura:if isTrue="{!v.setScriptId != '' }">
+            		<c:FIDO_DemoScript_Modal currentScript="{!v.setScriptId}" />
+                </aura:if>
+                <footer class="slds-modal__footer">
+                	<button class="slds-button slds-button_brand" onclick="{!c.CloseDialog}">Close</button>
+                </footer>
+            </div>
+	</section>
+</aura:component>

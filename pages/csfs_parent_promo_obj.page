@@ -1,0 +1,10 @@
+<apex:page standardController="Account" title="Parent Promotions" >
+
+<apex:relatedList list="StorePromotions__r" Subject="{!Account.parentid}"  >
+<apex:facet name="header"><h1 style="align:center;">Promotions</h1></apex:facet>
+</apex:relatedList>
+<apex:relatedList list="Store_Objectivies__r" Subject="{!Account.parentid}">
+<apex:facet name="header"><h1 style="align:center;">Store Objectives</h1></apex:facet>
+</apex:relatedList>
+
+</apex:page>

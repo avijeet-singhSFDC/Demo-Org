@@ -1,0 +1,27 @@
+<div class="row">
+	<div class="span11">
+		<div class="bs-docs-moderators">
+			<button class="btn btn-mini" style="margin-top:10px" type="button" id="newMod"><i class="icon-plus"></i>&nbsp;Add Moderator</button>
+        	<%if( typeof(m) == 'string'){%>
+			<div class="alert" style="margin-top:10px;">No moderators available.</div>
+			<%}else{%>
+			<table class="table table-hover table-condensed">
+				<thead>
+					<tr><th>Moderator Id</th>
+					<th>Moderator Name</th>
+					<th><!--Options--></th></tr>
+				</thead>
+				<tbody id="moderatorsList">
+					<% _.each(m,function(mod){%>
+					<tr <% if(mod.delete != undefined){ print('style="text-decoration: line-through;"'); } %>>
+						<td><%=mod.userId__c%></td>
+						<td><%=mod.userInfo__c%></td>
+						<td><a class="btn btn-small modRemove" data-id="<%=mod.Id%>" href="#"><i class="icon-remove"></i></a></td>
+					</tr>
+					<%},this)%>
+				</tbody>
+			</table>
+			<%}%>
+		</div>
+	</div>
+</div>

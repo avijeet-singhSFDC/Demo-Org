@@ -1,0 +1,16 @@
+<apex:page id="cc_BIB_PLP_incl" sidebar="false" showHeader="false" standardStylesheets="false">
+  <!-- <c:cc_POCproductListGrid /> -->
+  <c:cc_ProductListGrid />
+  <c:cc_CategoryWidget />
+  <c:cc_FilterWizard />
+
+  <script>
+    $(function(){
+      // $('.desktop_body').before('<div class="prodWizard"></div>');
+
+      // ADD PROD SPECS
+      // HIDE QUICK ORDER
+      $('.quick-order').hide();
+    });
+  </script>
+</apex:page>

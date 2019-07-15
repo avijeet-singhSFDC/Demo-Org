@@ -1,0 +1,482 @@
+<apex:component id="cc_PDP_DynKit_incl">
+    <script data-augment-config='{ "id": "f06c11635419ba2456637a8e48498c4b4c5b8cb68a3f74e9744e6748b15a0a50", "key": "f5a59a412E000001Mpaadf52db74fc64f57754ebfd858e80ee92382b87b3f89e" }' src="https://cdn.augment.com/web-sdk/0.5/snippet.js"></script>
+
+    <script src="https://cdn.augment.com/web-sdk/0.5/web_viewer_dependencies.js"></script>
+
+<script id="CC-DynKit-PProductDetail-Desktop" type="text/template">
+   <div class="panel panel-default product_detail_container product_type_dk cc_panel cc_product_detail_container cc_product_type_dk">
+    <div class="panel-heading cc_heading">
+     <h3 class="panel-title cc_title">{{this.product.prodBean.name}}</h3>
+    </div>
+    <div class="panel-body product_detail cc_body cc_product_detail phoneProductItem" >
+     <div class="messagingSection-Error" role="alert" style="display: none"></div>
+     <div class="messagingAction-Info" role="alert" style="display: none">
+      <button type="button" class="close cc_close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&#215;</span></button>
+     </div>
+     <div class="row">
+      <div class="col-md-5">
+          
+  
+
+          <div id="web-viewer-canvas" style="display: none; width: 400px; height: 380px;"></div>
+	
+             
+             
+       <div class="prod_media cc_prod_media">
+        {{#if this.mediaWrappers.[SVG Interactive Diagram]}}
+         {{#each this.mediaWrappers.[SVG Interactive Diagram]}}
+          <div class="interactive cc_interactive">{{displaySVG this 'mainProdImage prodDetail img-responsive'}}</div>
+         {{/each}}
+        {{/if}}
+        
+        
+        
+        <div id="altImageModal" class="modal fade cc_alt_image_modal" tabindex="-1" role="dialog">
+         <div class="modal-dialog cc_modal-dialg" role="document">
+          <div class="modal-content cc_modal-content">
+           <div class="modal-body cc_modal-body">
+            <img class="modalImg cc_modal_img" src=""/>
+            <p class="modalText cc_modal_text"></p>
+           </div>
+          </div>
+         </div>
+        </div>
+        {{#if this.product.mediaWrapper }}
+        <div class="cc_product_detail_photo_container" id="photoContainer">
+         <div class="row">
+          <div class="col-md-12">
+           <div class="cc_main_prod_image">{{displayImage this.product.mediaWrapper 'mainProdImage prodDetail img-responsive'}}</div>
+          </div>
+         </div>
+         {{#if this.mediaWrappers.[Alternate Images]}}
+         <div class="row">
+          {{#each this.mediaWrappers.[Product Image]}}
+          <div class="col-xs-3">
+           <img class="alternate cc_alternate img-responsive thumbnail" src="{{productImage this}}" data-id="{{this.uri}}"/>
+          </div>
+          {{/each}}
+          {{#each this.mediaWrappers.[Alternate Images]}}
+          <div class="col-xs-3">
+           <img class="alternate cc_alternate img-responsive thumbnail" src="{{productImage this}}" data-id="{{this.uri}}"/>
+          </div>
+          {{/each}}
+         </div>
+         {{/if}}
+        </div>
+        {{else}}
+         {{#if this.mediaWrappers.[SVG Interactive Diagram]}}
+         {{else}}
+          <div class="cc_product_detail_photo_container" id="photoContainer">
+           <div class="row">
+            <div class="col-md-12">
+             <div class="cc_main_prod_image img-responsive">{{displayImage this.product.mediaWrapper 'mainProdImage prodDetail'}}</div>
+            </div>
+           </div>
+          </div>
+         {{/if}}
+        {{/if}}
+       </div>
+      </div>
+      <div class="col-md-7">
+       <div class="product_detail_item phoneProductItem wishFinder cc_wish_finder" data-sku="{{this.product.prodBean.sku}}">
+        <h4 class="product_title cc_product_title">{{this.product.prodBean.name}}</h4>
+        {{#ifDisplay 'PD.DsplSku'}}
+         <div class="sku cc_sku">
+          <span class="cc_label">{{pageLabelMap 'ProductDetailsInc_SKU'}}</span>
+          <span class="value cc_value">{{this.product.prodBean.sku}}</span>
+         </div>
+        {{/ifDisplay}}
+        {{#ifDisplay 'PD.DsplUOM'}}
+         <div class="uom cc_uom">
+          <span class="cc_label">{{pageLabelMap 'ProductDetails_UnitOfMeasure'}}</span>
+          <span class="value cc_value">{{pageLabelPrefixMap 'UOM_' this.product.prodBean.UnitOfMeasure}}</span>
+         </div>
+        {{/ifDisplay}}
+        {{#ifDisplay 'PD.DsplAvlb'}}
+         <div class="inventory cc_inventory">
+          <span class="cc_label">{{pageLabelMap 'ProductDetails_Availability'}}</span>
+          {{#ifStoreSetting 'InventoryCheckFlag__c'}}
+           <span class="value cc_value">{{{this.product.inventory}}}</span>
+          {{else}}
+           <span class="value cc_value">{{{pageLabelMap this.product.availMsg}}}</span>
+          {{/ifStoreSetting}}
+         </div>
+        {{/ifDisplay}}
+        {{#ifDisplay 'PR.Enabled'}}
+         <div id="avgRating" class="rateit cc_rateit" data-rateit-value="{{this.product.avgRating}}" data-rateit-ispreset="true" data-rateit-readonly="true">
+          <span class="cc_label">{{pageLabelMap 'NumberofReviews' this.numberOfReviews }}</span>
+         </div>
+        {{/ifDisplay}}
+        {{#ifDisplay 'PD.DsplSDesc'}}
+         <div class="shortDesc cc_short_desc">
+          <p class="pblock cc_pblock">{{{this.product.prodBean.shortDesc}}}</p>
+         </div>
+        {{/ifDisplay}}
+        <hr>
+        <div class="row">
+         <div class="col-md-12">
+          {{#if this.product.showPricing}}
+           {{#ifDisplay 'PD.DsplPrc'}}
+            {{#if this.product.price}}
+             <div class="price_block cc_price_block">
+              {{#ifDisplay 'PD.DsplListPrc'}}
+               {{#if this.product.basePrice}}
+                <p class="baseprice cc_baseprice">
+                 <span class="cc_label">{{pageLabelMap 'ProductDetails_ListPrice'}}</span>
+                 <span class="value cc_value">{{price this.product.basePrice}}</span>
+                </p>
+               {{/if}}
+              {{/ifDisplay}}
+              <p class="price cc_price">
+               <span class="cc_label">{{pageLabelMap 'Price'}}</span>
+               <span class="value cc_value">{{price this.product.price}}</span>
+              </p>
+              {{#ifDisplay 'PD.DsplSvPrc'}}
+               {{#if this.product.savings}}
+                <p class="savings">
+                 <span class="cc_label">{{pageLabelMap 'YouSave'}}</span>
+                 <span class="value cc_value">{{price this.product.savings}}</span>
+                </p>
+               {{/if}}
+              {{/ifDisplay}}
+             </div>
+             <hr>
+            {{/if}}
+           {{/ifDisplay}}
+          {{/if}}
+         </div>
+        </div>
+        {{#if this.product.canAddtoCart}}
+         <div class="quantity_block gp_quantity_block cc_quantity_block">
+          {{#if this.product.qtySkipIncrement}}
+           <div class="row cc_qty_control_row">
+            <div class="col-md-10 col-md-offset-2">
+             <div class="form-group">
+              <div class="input-group cc_input_group">
+               <span class="input-group-btn cc_input_group_btn">
+                <input type="button" value="{{pageLabelMap 'Prod_QtyDecrFF'}}" class="btn btn-default btn-sm minusFF cc_minusff">
+                <input type="button" value="{{pageLabelMap 'Prod_QtyDecrSingle'}}" class="btn btn-default btn-sm minus cc_minus">
+               </span>
+               <input type="text" readonly="true" name="qty" value="0" class="entry form-control input-sm cc_entry" maxlength="7" />
+               <span class="input-group-btn cc_input_group_btn">
+                <input type="button" value="{{pageLabelMap 'Prod_QtyIncrSingle'}}" class="btn btn-default btn-sm plus cc_plus">
+                <input type="button" value="{{pageLabelMap 'Prod_QtyIncrFF'}}" class="btn btn-default btn-sm plusFF cc_plusff">
+               </span>
+              </div>
+             </div>
+            </div>
+           </div>
+          {{else}}
+           {{#ifEquals this.product.qtyIncrement 1}}
+            <div class="row cc_qty_control_row">
+             <div class="col-md-6 col-md-offset-6">
+              <div class="form-group">
+               <div class="input-group cc_input_group">
+                <span class="input-group-btn cc_input_group_btn">
+                 <input type="button" value="{{pageLabelMap 'Prod_QtyDecrSingle'}}" class="btn btn-default btn-sm minus cc_minus">
+                </span>
+                <input id="qty{{index}}" name="quickadd[{{index}}].qty" value="0" class="qty entry form-control input-sm cc_entry" maxlength="7" />
+                <span class="input-group-btn cc_input_group_btn">
+                 <input type="button" value="{{pageLabelMap 'Prod_QtyIncrSingle'}}" class="btn btn-default btn-sm plus cc_plus">
+                </span>
+               </div>
+              </div>
+             </div>
+            </div>
+           {{else}}
+            <div class="row cc_qty_control_row">
+             <div class="col-md-12">
+              <div class="form-horizontal">
+               <div class="form-group">
+                <label for="qty" class="col-sm-7 control-label cc_qty">{{pageLabelMap 'Qty'}}</label>
+                <div class="col-sm-5">
+                 <input type="text" id="qty" name="qty" value="1" class="input-text entry plus_minus cc_entry form-control" maxlength="7" />
+                </div>
+               </div>
+              </div>
+             </div>
+            </div>
+           {{/ifEquals}}
+          {{/if}}
+          <input type="hidden" name="qtyIncrement" value="{{this.product.qtySingleIncrement}}" class="item_qtyIncrement cc_item_qty_increment" />
+          <input type="hidden" name="qtySkipIncrement" value="{{this.product.qtySkipIncrement}}" class="item_qtySkipIncrement cc_item_qty_skip_increment" />
+         </div>
+         <div class="row">
+          <div class="col-md-10 col-md-offset-2">
+           <div class="wishButtons plus_minus cc_plus_minus pull-right"></div>
+          </div>
+         </div>
+         <div class="row">
+          <div class="col-md-8 col-md-offset-4">
+           <div class="action cc_action">
+            <button type="button" class="btn btn-default btn-sm addItem cc_add_item pull-right" data-sku="{{this.product.prodBean.sku}}">{{pageLabelMap 'Component_MiniwishList_AddToCart'}}</button>
+           </div>
+          </div>
+         </div>
+        {{/if}}
+       </div>
+      </div>
+     </div>
+     <div class="dynamicKitSection cc_dynamic_kit_section"></div>
+     <div class="row">
+      <div class="col-md-12">
+       {{#if this.showNewSubscriptionSelection}}
+        <div class="cc_subscription_selection_div">
+         <h4>{{pageLabelMap 'Subscribe_And_Save_Bundle_Label'}}</h4>
+         {{#each this.subProdTerms}}
+          {{#if this.CC_NO_SUBSCRIPTION}}
+           <div class="cc_item_container item_container">
+            <div class="radio cc_radio">
+             <label class="cc_radio_name">
+              <input value="nosuboption" data-nme="nosuboption" type="radio" name="subOptionGuider{{this.productSKU}}" {{this.checked}}/>
+              {{pageLabelMap 'Prod_NoSubscriptionOptionKit'}}</label>
+            </div>
+           </div>
+          {{else}}
+           <div class="cc_item_container item_container">
+            <div class="radio cc_radio">
+             <label class="cc_radio_name">
+              <input value="{{this.sfid}}" data-nme="{{this.name}}" type="radio" name="subOptionGuider{{this.productSKU}}" {{this.checked}}/>
+              {{#if this.modifierSubscriptions}}
+               {{insertTokens this.pdpDisplayName this.displayName (price this.productPrice) (price this.subscriptionPrice) (pageLabelPrefixMap 'Subscriptions_Frequency_' this.orderFrequencyUOM) (pageLabelPrefixMap 'Subscriptions_Frequency_' this.installmentFrequencyUOM) this.orderFrequency this.installmentFrequency this.installmentCount this.orderCount (price this.modifierSubscriptions.[0].productPrice) (price this.modifierSubscriptions.[0].subscriptionPrice) this.modifierSubscriptions.[0].orderCount this.modifierSubscriptions.[0].installmentCount this.recurringPricePercentage this.upfrontPricePercentage this.modifierSubscriptions.[0].recurringPricePercentage this.modifierSubscriptions.[0].upfrontPricePercentage }}
+              {{else}}
+               {{insertTokens this.pdpDisplayName this.displayName (price this.productPrice) (price this.subscriptionPrice) (pageLabelPrefixMap 'Subscriptions_Frequency_' this.orderFrequencyUOM) (pageLabelPrefixMap 'Subscriptions_Frequency_' this.installmentFrequencyUOM) this.orderFrequency this.installmentFrequency this.installmentCount this.orderCount this.recurringPricePercentage this.upfrontPricePercentage}}
+              {{/if}}
+             </label>
+            </div>
+           </div>
+          {{/if}}
+         {{/each}}
+        </div>
+       {{/if}}
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="dynamicKitSelSection"></div>
+   <div class="tabSection"></div>
+   <div class="widgetSection"></div>
+  </script>
+
+
+  <script id="CC-ProductDetail-DynamicSection-Desktop" type="text/template">
+   <div class="panel panel-default widget_container cc_panel cc_widget_container">
+    <div class="panel-heading cc_heading">
+     <h3 class="panel-title cc_title">{{pageLabelMap 'DynamicKitTitle'}}</h3>
+    </div>
+    <div class="panel-body cc_body">
+     <div class="widget_column cc_widget_column">
+      <div class="tabs_container cc_tabs_container cc_product_detail_container">
+       <ul class="nav nav-tabs cc_nav-tabs" id="kitTabs">
+        {{#each this}}
+         <li role="presentation" {{#ifEquals @index 0}} class="active" {{/ifEquals}}><a href="#kitTab{{@index}}" data-toggle="tab">{{pageLabelMap this.name}}</a></li>
+        {{/each}}
+       </ul>
+       <div class="tab-content cc_tab-content">
+        {{#each this}}
+         <div role="tabpanel" class="tab-pane cc_tab-pane {{#ifEquals @index 0}} active {{/ifEquals}}" id="kitTab{{@index}}" {{#ifEquals @index 0}} active {{/ifEquals}} >
+          {{#each this.relProducts}}
+           <div class="row quick_wishlist item_container cc_quick_wishlist">
+            <div class="col-sm-1 quick_wishlist_item cc_quick_wishlist_item {{product.prodBean.sku}}">
+             <div class="cc_checkbox control">
+              {{#if ../isMulti }}
+               <input data-grp="{{product.prodBean.sku}}" data-sku="{{product.prodBean.sku}}" data-nme="{{product.prodBean.name}}" data-prc="{{product.price}}" type="checkbox" aria-label="product"/>
+              {{else}}
+               <input data-grp="guider{{../sfid}}" data-sku="{{product.prodBean.sku}}" data-nme="{{product.prodBean.name}}" data-prc="{{product.price}}" type="radio" name="guider{{../sfid}}" aria-label="product"/>
+              {{/if}}
+             </div>
+            </div>
+            <div class="col-md-2">
+             {{#if product.mediaWrapper}}
+              <div class="cart_item_viewport cc_quick_wishlist_item">
+               <a href="#">{{{displayImage product.mediaWrapper 'prodDetailIncl img-responsive'}}}</a>
+              </div>
+             {{/if}}
+            </div>
+            <div class="col-md-5">
+             <p class="cc_name">
+              <a href="#" class="productName prodLink cc_product_name" data-id="{{product.prodBean.sku}}">{{product.prodBean.name}}</a>
+              <!-- <p class="cc_sku"><small>{{this.product.prodBean.sku}}</small></p> -->
+             </p>
+            </div>
+            <div class="col-md-2">
+              {{#ifNotEquals product.price 0}}
+              <p class="price cc_price">{{{price product.price}}}</p>
+              {{/ifNotEquals}}
+            </div>
+            <div class="col-md-2">
+             <div class="cc_pricing control">
+              {{#listFind ../displayType 'Single-Select Quantity|Multi-Select Quantity' true }}
+               <input class="form-control cc_min_qty quantity" type="text" value="{{this.product.minQty}}" />
+              {{else}}
+               <input class="form-control cc_min_qty quantity" type="text" value="{{this.product.minQty}}" readonly />
+              {{/listFind}}
+              <!-- <p class="price cc_price">{{{price product.price}}}</p> -->
+             </div>
+            </div>
+           </div>
+           <hr>
+          {{/each}}
+         </div>
+        {{/each}}
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </script>
+
+  <script id="cc_ProductDetail-DynamicSelSection-Desktop" type="text/template">
+   {{#if this}}
+    <div class="panel panel-default widget_container cc_panel cc_widget_container">
+     <div class="panel-heading cc_heading">
+      <h3 class="panel-title cc_title">{{pageLabelMap 'DynamicKitSelections'}}</h3>
+     </div>
+     <div class="panel-body cc_body">
+      <div class="row">
+       <div class="col-xs-12">
+        <div class="form-group form-inline">
+         <label for="configName" class="sr-only">Label</label>
+         <input id="configName" class="configName form-control input-sm cc_config_name" name="configName" placeholder="{{pageLabelMap 'Label'}}" />
+         <button type="button" class="btn btn-default btn-sm addToCart cc_add_to_cart">{{pageLabelMap 'Component_MiniwishList_AddToCart'}}</button>
+        </div>
+       </div>
+      </div>
+      <table class="table table-striped">
+      <thead>
+      <tr>
+       <th>
+        <span class="name cc_name">{{pageLabelMap 'Name'}}</span>
+       </th>
+       <th>
+        <span class="qty cc_qty">{{pageLabelMap 'sku'}}</span>
+       </th>
+       <th>
+        <span class="qty cc_qty">{{pageLabelMap 'Qty'}}</span>
+       </th>
+       <th>
+        <span class="price cc_price">{{pageLabelMap 'Price'}}</span>
+       </th>
+       </tr>
+       </thead>
+      {{#each this}}
+       <tr>
+        <th>
+         <p class="name cc_name"><strong>{{this.name}}</strong></p>
+        </th>
+        <th>
+         <p class="sku cc_sku"><small>{{this.sku}}</small></p>
+        </th>
+        <th>
+         <span class="qty cc_qty"><input type="text" class="form-control input-sm cc_qty_input" value="{{quantity}}" readonly /></th>
+        </div>
+        <th>
+         <span class="price cc_price">{{{price this.price}}}</span>
+        </th>
+       </tr>
+      {{/each}}
+      </table>
+     </div>
+    </div>
+   {{/if}}
+  </script>
+
+    <script>
+ var viewerResponse;
+
+function displayWebViewerButton() {
+  document.getElementById('web-viewer-button').style.display = 'block';
+}
+
+function displayWebViewer() {
+  // Generates the viewer in the defined canvas with the right size
+  // Makes sure that the canvas has the same size than the parameters given // here
+  viewerResponse.generateWebViewer(document.getElementById('web-viewer-canvas'), { width:400, height: 380 }, function() {
+    // The code here will be called when the 3D Viewer is
+    // fully ready
+  });
+  // Displays the 3D Viewer to the visitor
+  document.getElementById('web-viewer-canvas').style.display = 'block';
+}
+
+augment.initForProduct(
+  {
+
+    brand: 'none',
+    name: 'Alpine Fridge',
+    identifier: 'AC - 1234 - 5S'
+  }, function(error, response) {
+    // Checks for errors to avoid displaying the button in the following
+    // cases:
+    // - The requested product doesn't exist
+    // - The requested product has no 3D representation
+    // - Something went wrong (internet connection, ...)
+    if (!error) {
+      // Checks if the product is available in the 3D Viewer
+      if (response['product'] && response['product']['available_in_web_viewer']) {
+        // Stores the response to generate the Viewer when the visitor clicks
+        // on the call-to-action button
+        viewerResponse = response;
+        // Displays the call-to-action button
+        displayWebViewerButton();
+      }
+    }
+  }
+);
+             
+
+    
+    jQuery(function($) {
+
+                  
+        
+        
+        
+        
+        if (CCRZ.detailData.jsonProductData && CCRZ.detailData.jsonProductData.product) {
+            if (CCRZ.detailData.jsonProductData.product.prodBean.ProductType === 'Dynamic Kit') {
+                console.log("ProductType: Dynamic Kit");
+
+                CCRZ.uiProperties.productDetailView.desktop.tmpl = 'CC-DynKit-PProductDetail-Desktop';
+                CCRZ.uiProperties.dynamicKitView.desktop.tmpl = 'CC-ProductDetail-DynamicSection-Desktop';
+                CCRZ.uiProperties.dynamicKitSelView.desktop.tmpl = 'cc_ProductDetail-DynamicSelSection-Desktop';
+
+                CCRZ.pubSub.on('view:dynamicKitView:refresh', function(theView) {
+                    
+            $("#web-viewer-canvas").hide(); 
+			if(CCRZ.pagevars.queryParams.sku == "AC - 1234 - 5S" || CCRZ.pagevars.queryParams.sku == "AC - 1234 - 8S"){
+                // $("#web-viewer-canvas").show(); 
+                // $(".cc_prod_media").hide();
+                // displayWebViewer();
+            }else{
+                $("#web-viewer-canvas").hide(); 
+            }                    
+                  // ECO KIT
+                  if(CCRZ.detailData.jsonProductData.product.prodBean.sku === "YEOH080HSEM-ESK"){
+                    $("[data-sku='YEOH080HSEM']").click();
+                  }
+
+                  // COMFORT KIT
+                  if(CCRZ.detailData.jsonProductData.product.prodBean.sku === "YROH35HSEK-CSK"){
+                    $("[data-sku='YROH35HSEK']").click();
+                  }
+
+                  // LUX KIT
+                  if(CCRZ.detailData.jsonProductData.product.prodBean.sku === "YROH40HSEK-LSK"){
+                    $("[data-sku='YROH40HSEK']").click();
+                  }
+                    
+                    
+                    
+  
+
+                });
+            }
+        }
+    });
+    </script>
+    
+    <script>
+
+    </script>
+</apex:component>

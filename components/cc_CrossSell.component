@@ -1,0 +1,115 @@
+<apex:component id="cc_CrossSell">
+    <script id="CC-ProductDetail-ProductsSection-Desktop" type="text/template">
+        <div class="quick_wishlist cc_quick_wishlist">
+            <div class="row">
+                {{#each this.pageData}}
+                <div class="{{#ifEquals ../pageData.length 1}}col-xs-12{{else}}{{#ifEquals ../pageData.length 2}}col-xs-6{{else}}{{#ifEquals ../pageData.length 3}}col-xs-4{{else}}col-xs-3{{/ifEquals}}{{/ifEquals}}{{/ifEquals}}">
+                    <div class="row">
+                        <div class="quick_wishlist_item cc_quick_wishlist_item {{#ifEquals ../pageData.length 1}}col-xs-4{{else}}{{#ifEquals ../pageData.length 2}}col-xs-4{{else}}{{#ifEquals ../pageData.length 3}}col-xs-12 text-center{{else}}col-xs-12 text-center{{/ifEquals}}{{/ifEquals}}{{/ifEquals}}">
+                            <div class="cc_cart_item">
+                                <a href="javascript:void(0);">
+                                 {{{displayImage this.mediaWrapper 'img-thumbnail detailLink prodDetRel img-responsive' alt=this.prodBean.name dataId=this.prodBean.sku}}}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="{{#ifEquals ../pageData.length 1}}col-xs-8{{else}}{{#ifEquals ../pageData.length 2}}col-xs-8{{else}}{{#ifEquals ../pageData.length 3}}col-xs-12 text-center{{else}}col-xs-12 text-center{{/ifEquals}}{{/ifEquals}}{{/ifEquals}}">
+                            <p class="cc_prod_name">
+                                <a href="javascript:void(0);" class="productName detailLink cc_data_link" data-id="{{this.prodBean.sku}}">{{this.prodBean.name}}</a>
+                                <br>
+                                <span class="cc_sku_label">{{pageLabelMap 'ProductDetailsInc_SKU'}}</span>&#160;
+                                <span class="cc_sku_value">{{this.prodBean.sku}}</span>
+                            </p>
+                            <div>
+                                <input type="hidden" name="qtyIncrement" value="{{this.qtySingleIncrement}}" class="item_qtyIncrement" />
+                                <input type="hidden" name="qtySkipIncrement" value="{{this.qtySkipIncrement}}" class="item_qtySkipIncrement" /> {{#ifDisplay 'PD.DsplPrc' }} {{#if this.showNewSubscriptionSelection}}
+                                <p class="price priceSubscription cc_price_subscription">
+                                    <strong>{{pageLabelMap 'Prod_SubsAlternatePrice' (price this.price) (price this.minSubPrice) (price this.maxSubPrice)}}</strong>
+                                </p>
+                                {{else}} {{#if this.displayPrice}}
+                                <p class="price displayPrice cc_display_price">
+                                    {{pageLabelPrefixMap 'DisplayPrice_' this.displayPrice}}
+                                </p>
+                                {{else}} {{#if this.showPricing}} {{#if this.price}}
+                                <div class="cc_pricing">
+                                    <p class="price cc_price">{{price this.price}}</p>
+                                </div>
+                                {{/if}} {{/if}} {{/if}} {{/if}} {{/ifDisplay}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
+        <!-- <div class="row">
+            <div class="col-md-offset-9 col-md-3">
+                <div class="controls pull-right hidden-xs">
+                    <a class="left fa fa-chevron-left btn btn-success" href="#carousel-example"
+                        data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-success" href="#carousel-example"
+                            data-slide="next"></a>
+                </div>
+            </div>
+        <div class="quick_wishlist cc_quick_wishlist carousel slide hidden-xs" id="carousel-example" data-ride="carousel">
+            <div class="carousel-inner">
+            <div class="row">
+            <div class="item active">
+                {{#each this.pageData}}
+                <div class="{{#ifEquals ../pageData.length 1}}col-xs-12{{else}}{{#ifEquals ../pageData.length 2}}col-xs-6{{else}}{{#ifEquals ../pageData.length 3}}col-xs-4{{else}}col-xs-3{{/ifEquals}}{{/ifEquals}}{{/ifEquals}}">
+                    <div class="row">
+                        <div class="quick_wishlist_item col-md-4 cc_quick_wishlist_item">
+                            <div class="cc_cart_item">
+                                <a href="javascript:void(0);">
+                                 {{{displayImage this.mediaWrapper 'img-thumbnail detailLink prodDetRel img-responsive' alt=this.prodBean.name dataId=this.prodBean.sku}}}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <p class="cc_prod_name">
+                                <a href="javascript:void(0);" class="productName detailLink cc_data_link" data-id="{{this.prodBean.sku}}">{{this.prodBean.name}}</a>
+                                <br>
+                                <span class="cc_sku_label">{{pageLabelMap 'ProductDetailsInc_SKU'}}</span>&#160;
+                                <span class="cc_sku_value">{{this.prodBean.sku}}</span>
+                            </p>
+                            <div>
+                                <input type="hidden" name="qtyIncrement" value="{{this.qtySingleIncrement}}" class="item_qtyIncrement" />
+                                <input type="hidden" name="qtySkipIncrement" value="{{this.qtySkipIncrement}}" class="item_qtySkipIncrement" /> {{#ifDisplay 'PD.DsplPrc' }} {{#if this.showNewSubscriptionSelection}}
+                                <p class="price priceSubscription cc_price_subscription">
+                                    <strong>{{pageLabelMap 'Prod_SubsAlternatePrice' (price this.price) (price this.minSubPrice) (price this.maxSubPrice)}}</strong>
+                                </p>
+                                {{else}} {{#if this.displayPrice}}
+                                <p class="price displayPrice cc_display_price">
+                                    {{pageLabelPrefixMap 'DisplayPrice_' this.displayPrice}}
+                                </p>
+                                {{else}} {{#if this.showPricing}} {{#if this.price}}
+                                <div class="cc_pricing">
+                                    <p class="price cc_price">{{price this.price}}</p>
+                                </div>
+                                {{/if}} {{/if}} {{/if}} {{/if}} {{/ifDisplay}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            <div class="item">
+                <div class="col-xs-4">
+                    <p>test</p>
+                </div>
+                <div class="col-xs-4">
+                    <p>test</p>
+                </div>
+                <div class="col-xs-4">
+                    <p>test</p>
+                </div>
+            </div>
+            </div>
+            </div>
+        </div> -->
+    </script>
+    <script>
+    jQuery(function($) {
+        CCRZ.uiProperties.prodSectionView.desktop.main.tmpl = 'CC-ProductDetail-ProductsSection-Desktop';
+    });
+    </script>
+</apex:component>

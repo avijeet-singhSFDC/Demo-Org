@@ -1,0 +1,78 @@
+<aura:component access="global" implements="force:appHostable" controller="FIDO">
+    <aura:attribute name="Industry" type="String" default='' />
+    <aura:attribute name="Settings" type="String[]" />
+    <aura:attribute name="ScreenChoice" type="String" default='Home'/>
+    <aura:attribute name="MenuOpenClose" type="String" default='close'/>
+    <aura:attribute name="BrandCompleted" type="Integer" default="0" />
+    <aura:attribute name="PersonaCompleted" type="Integer" default="0" />
+    <aura:attribute name="SolutionsCompleted" type="Integer" default="0" />
+    <aura:attribute name="ResourcesCompleted" type="Integer" default="0" />
+    <aura:attribute name="PartnersCompleted" type="Integer" default="0" />
+    <aura:attribute name="FeaturesCompleted" type="Integer" default="0" />
+    <aura:attribute name="SetupCompleted" type="Integer" default="0" />
+    <aura:attribute name="CompetedTotal" type="Integer" default="0" />
+    <aura:attribute name="CompetedTotalPercent" type="Integer"  default="0"/>
+    <aura:attribute name="options" type="String[]" default="Home,Brand,Personas,Solutions,Resources"/>
+    <aura:attribute name="ComponentTitle" type="String" default="Getting to know the RCG IDO" />
+    <aura:handler name="change" value="{!v.Industry}" action="{!c.IndustryChange}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+	<div class="slds-card fido"> 
+        <div class="slds-media">
+        	<div class="slds-media__body"> 
+                <div class="center nav">
+                    <h1 class="slds-page-header__title slds-truncate slds-align-middle padding" >
+                        {!v.ComponentTitle}
+                    </h1>
+                     <aura:if isTrue="{!v.Industry != ''}">
+                        <div class="menu">
+                            <aura:if isTrue="{!v.ScreenChoice != 'Home'}">
+                                <button class="slds-button slds-button_neutral menuicon" onclick="{!c.toPreviousPage}">
+                                    <lightning:icon iconName="utility:left" size="small"/>
+                                </button>
+                            </aura:if>
+                            <button class="slds-button slds-button_neutral menuicon"  onclick="{!c.toHome}">
+                                <lightning:icon iconName="utility:home" size="small"/>
+                            </button>
+                            <button class="slds-button slds-button_neutral menuicon" onclick="{!c.OpenMenu}">
+                                <lightning:icon iconName="utility:rows" size="small"/>
+                            </button>
+                            <aura:if isTrue="{!v.ScreenChoice != 'Setup'}">
+                                <button class="slds-button slds-button_neutral menuicon" onclick="{!c.toNextPage}">
+                                    <lightning:icon iconName="utility:right" size="small"/>
+                                </button>
+                            </aura:if>
+                       </div>
+                    </aura:if>
+                </div>    
+            </div>
+        </div> 
+        <div class="content">
+            <aura:if isTrue="{!v.ScreenChoice == 'Home'}">
+                <c:FIDO_Industry ScreenChoice="{!v.ScreenChoice}" Industry="{!v.Industry}" ComponentTitle="{!v.ComponentTitle}" />
+            </aura:if>  
+            <aura:if isTrue="{!v.ScreenChoice == 'Brand'}">
+                <c:FIDO_Brand MenuOpenClose="{!v.MenuOpenClose}" ScreenChoice="{!v.ScreenChoice}" Industry="{!v.Industry}" ComponentTitle="{!v.ComponentTitle}" Settings="{!v.Settings}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.ScreenChoice == 'Personas'}">
+                <c:FIDO_Personas MenuOpenClose="{!v.MenuOpenClose}" ScreenChoice="{!v.ScreenChoice}" Industry="{!v.Industry}" ComponentTitle="{!v.ComponentTitle}" Settings="{!v.Settings}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.ScreenChoice == 'Solutions'}">
+                <c:FIDO_Solutions ScreenChoice="{!v.ScreenChoice}" Industry="{!v.Industry}" ComponentTitle="{!v.ComponentTitle}" Settings="{!v.Settings}" />
+            </aura:if>
+            <aura:if isTrue="{!v.ScreenChoice == 'Partners'}">
+                <c:FIDO_Partners ScreenChoice="{!v.ScreenChoice}" Industry="{!v.Industry}" ComponentTitle="{!v.ComponentTitle}" />
+            </aura:if>
+            <aura:if isTrue="{!v.ScreenChoice == 'Features'}">
+                <c:FIDO_Features MenuOpenClose="{!v.MenuOpenClose}" Industry="{!v.Industry}" ComponentTitle="{!v.ComponentTitle}" Settings="{!v.Settings}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.ScreenChoice == 'Resources'}">
+                <c:FIDO_Resources ScreenChoice="{!v.ScreenChoice}" Industry="{!v.Industry}" ComponentTitle="{!v.ComponentTitle}" Settings="{!v.Settings}"/>
+            </aura:if>
+            <aura:if isTrue="{!v.ScreenChoice == 'Setup'}">
+                <c:FIDO_Setup Industry="{!v.Industry}" />
+            </aura:if>
+            
+        </div>
+        <c:FIDO_WelcomeMat FeaturesCompleted="{!v.FeaturesCompleted}" SetupCompleted="{!v.SetupCompleted}" PartnersCompleted="{!v.PartnersCompleted}" BrandCompleted="{!v.BrandCompleted}"  PersonaCompleted="{!v.PersonaCompleted}" SolutionsCompleted="{!v.SolutionsCompleted}" ResourcesCompleted="{!v.ResourcesCompleted}" CompetedTotalPercent="{!v.CompetedTotalPercent}" CompetedTotal="{!v.CompetedTotal}" MenuOpenClose="{!v.MenuOpenClose}" ScreenChoice="{!v.ScreenChoice}" ComponentTitle="{!v.ComponentTitle}"/>
+    </div>    
+</aura:component>

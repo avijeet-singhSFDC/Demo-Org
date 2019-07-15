@@ -1,0 +1,18 @@
+<apex:page id="cc_BIB_CA_incl" sidebar="false" showHeader="false" standardStylesheets="false">
+
+	<c:cc_cart_spotlight />
+
+	<script>
+		jQuery(function($){
+			CCRZ.pubSub.on('view:CartDetailView:refresh', function() {
+				$('#rfq_submit').click(function(){
+					$('.messagingSection-Info').show().append('Quote has been submitted');
+				});
+		        if(CCRZ.cartDetailView.model.attributes.allowCheckout === false){
+		            $('.price, .grand_total').hide();
+		        }
+			});
+		});
+	</script>
+
+</apex:page>

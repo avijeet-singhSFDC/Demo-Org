@@ -1,0 +1,519 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" controller="DE_PanelDesignController">
+    <aura:attribute name="panelDesign" type="String"/>
+    <aura:attribute name="elements"  type="Panel_Design_Component__c[]" access="public" />
+    <aura:attribute name="pos1" type="Decimal"/>
+    <aura:attribute name="pos2" type="Decimal"/>
+    <aura:attribute name="pos3" type="Decimal"/>
+    <aura:attribute name="pos4" type="Decimal"/>
+    <aura:attribute name="isEditPage" type="Boolean" default="false"/>
+    <aura:attribute name="sObjectsList" type="List"/>
+    <aura:attribute name="panelDesign_record" type="Panel_Design__c" />
+    <aura:attribute name="panelComponentTypes" type="List"/>
+    <aura:attribute name="selectedSobjectFields" type="List"/>
+    <aura:attribute name="viewpanel_recordDetail" type="sObject"/>
+    <aura:attribute name="isValidRecordPage" type="Boolean" default="true"/>
+    <aura:attribute name="clone_PanelDesignName" type="String"/>
+    <aura:attribute name="fontSizes" type="List"/>
+    <aura:attribute name="errorMessage" type="String"/>
+    <aura:dependency resource="markup://force:editRecord" type="EVENT" />
+	<aura:handler event="force:refreshView" action="{!c.jsLoaded}" />
+
+    <ltng:require styles="/resource/jqueryui_css_hpanel" 
+                  scripts='/resource/jquery_hpanel,/resource/jquery_ui_hpanel' afterScriptsLoaded="{!c.jsLoaded}" />
+    
+    <div class="slds-card">
+        <aura:if isTrue="{!!v.isValidRecordPage}">
+            <div style="width:100%;text-align:center;">
+                <h1 style="font-size:30px;">
+                    Error
+                </h1>
+                <p>
+                    <aura:unescapedHtml value="{!v.errorMessage}"/>
+                </p>
+            </div>
+            <aura:set attribute="else">
+                <aura:if isTrue="{!v.isEditPage}">
+                    <table>
+                        <tr>
+                            <td style="width:50%;text-align:left;padding-left: 20px;padding-top: 20px;padding-bottom: 10px;">
+                                <div class="slds-text-heading_large" style="font-weight: bold;">{!v.panelDesign_record.Panel_Design_Name__c}</div>
+                            </td>
+                            <td style="width:50%;text-align:right;padding-right: 20px;padding-top: 20px;padding-bottom: 10px;">
+                                <aura:if isTrue="{!!v.panelDesign_record.isDefaultPanel__c}">
+                                    <lightning:button variant="destructive" label="Delete" onclick="{!c.onClickDeleteHighlightPanel}" />
+                                </aura:if>
+                                <lightning:button variant="brand" label="Clone" onclick="{!c.onClickClone}" />
+                                <lightning:button variant="brand" label="Save Changes" onclick="{!c.onClickSaveChanges}" />
+                                
+                            </td>
+                        </tr>
+                    </table>
+                </aura:if>
+                <div style="width:100%;height:140px;">
+                    <div class="card-body-container-layer mod-container" style="height:140px;width:100%;">
+                        <div class="card-body-container-layer-element" style="height:140px;width:100%">
+                            <div aura:id="containerImage" style="{!'height:100%;width:100%;background:'+v.panelDesign_record.Background_Image_URL__c}"/>                                
+                        </div>
+                    </div>
+                    <div class="card-body-container-layer" style="height:140px;width:100%;">
+                        <aura:iteration items="{!v.elements}" var="element" indexVar="index">
+                            <aura:if isTrue="{!v.isEditPage}">
+                                <aura:if isTrue="{!element.Component_Type__c == 'Image'}">
+                                    <div 
+                                         onmouseover ="{!c.onLoadDiv}"
+                                         id="{!'ELEMENT'+index}"
+                                         data-id="{!element.id}" 
+                                         data-index="{!index}"
+                                         class="card-body-container-layer-element is-active" 
+                                         draggable="true" 
+                                         ondragend="{!c.onDragEnd}" 
+                                         onmousedown="{!c.onMouseDown}"
+                                         onmouseup="{!c.onMouseUp}"
+                                         style="{!'background: url('+element.Image_URL__c+');border:1px dotted;background-repeat: no-repeat;background-size: contain; top:' + element.Offset_X__c + 'px;left:' + element.Offset_Y__c + 'px;line-height:50px;height:' + element.Height__c + 'px;padding:0px;margin:0px;display: inline-block;width:' + element.Width__c + 'px;cursor:move;box-shadow: 0 0 0 0px transparent;'}">
+                                    </div>
+                                </aura:if>
+                                <aura:if isTrue="{!element.Component_Type__c == 'Horizontal Line'}">
+                                    <div 
+                                         onmouseover ="{!c.onLoadDiv}"
+                                         id="{!'ELEMENT'+index}"
+                                         data-id="{!element.id}" 
+                                         data-index="{!index}"
+                                         class="card-body-container-layer-element is-active" 
+                                         draggable="true" 
+                                         ondragend="{!c.onDragEnd}" 
+                                         onmousedown="{!c.onMouseDown}"
+                                         onmouseup="{!c.onMouseUp}"
+                                         style="{!'min-width:40px;min-height:10px;border:1px dotted;background-repeat: no-repeat;background-size: contain; top:' + element.Offset_X__c + 'px;left:' + element.Offset_Y__c + 'px;line-height:50px;height:' + element.Height__c + 'px;padding:0px;margin:0px;display: inline-block;width:' + element.Width__c + 'px;cursor:move;box-shadow: 0 0 0 0px transparent;'}">
+                                        <div style="border-top: 1px solid #d2d2d2;width: 100%;">
+                                            
+                                        </div>
+                                    </div>
+                                </aura:if>
+                                <aura:if isTrue="{!element.Component_Type__c == 'Vertical Line'}">
+                                    <div 
+                                         onmouseover ="{!c.onLoadDiv}"
+                                         id="{!'ELEMENT'+index}"
+                                         data-id="{!element.id}" 
+                                         data-index="{!index}"
+                                         class="card-body-container-layer-element is-active" 
+                                         draggable="true" 
+                                         ondragend="{!c.onDragEnd}" 
+                                         onmousedown="{!c.onMouseDown}"
+                                         onmouseup="{!c.onMouseUp}"
+                                         style="{!'min-height:40px;min-width:10px;border:1px dotted;background-repeat: no-repeat;background-size: contain; top:' + element.Offset_X__c + 'px;left:' + element.Offset_Y__c + 'px;line-height:50px;height:' + element.Height__c + 'px;padding:0px;margin:0px;display: inline-block;width:' + element.Width__c + 'px;cursor:move;box-shadow: 0 0 0 0px transparent;'}">
+                                        <div style="border-left: 1px solid #d2d2d2;height: 100%;">
+                                            
+                                        </div>
+                                    </div>
+                                </aura:if>
+                                <aura:if isTrue="{!element.Component_Type__c == 'Icon'}">
+                                    <div 
+                                         id="{!'ELEMENT'+index}"
+                                         data-id="{!element.id}" 
+                                         data-index="{!index}"
+                                         class="card-body-container-layer-element is-active" 
+                                         draggable="true" 
+                                         ondragend="{!c.onDragEnd}" 
+                                         onmousedown="{!c.onMouseDown}"
+                                         onmouseup="{!c.onMouseUp}"
+                                         style="{!'top:' + element.Offset_X__c + 'px;left:' + element.Offset_Y__c + 'px;line-height:50px;height:' + element.Height__c + 'px;width:' + element.Width__c + 'px;padding:0px;margin:0px;display: inline-block;cursor:move;box-shadow: 0 0 0 0px transparent;'}">
+                                        <lightning:buttonIcon iconName="{!'utility:'+element.Icon_Name__c}" variant="bare" alternativeText="Icon" />
+                                    </div>
+                                </aura:if>  
+                                <aura:if isTrue="{!element.Component_Type__c == 'Static Text'}">
+                                    <div 
+                                         id="{!'ELEMENT'+index}"
+                                         data-id="{!element.id}" 
+                                         data-index="{!index}"
+                                         class="card-body-container-layer-element is-active" 
+                                         draggable="true" 
+                                         ondragend="{!c.onDragEnd}" 
+                                         onmousedown="{!c.onMouseDown}"
+                                         onmouseup="{!c.onMouseUp}"
+                                         style="{!'top:' + element.Offset_X__c + 'px;left:' + element.Offset_Y__c + 'px;padding:0px;margin:0px;display: inline-block;cursor:move;box-shadow: 0 0 0 0px transparent;'}">
+                                        <p style="{!element.Text_Font_Size__c!=0?'font-size:'+element.Text_Font_Size__c+'px;width:600px;':'font-size:14px;'}">
+                                            <lightning:formattedRichText value="{!element.Static_Text__c}" />
+                                        </p>
+                                    </div>
+                                </aura:if>
+                                <aura:if isTrue="{!element.Component_Type__c == 'Dynamic Text'}">
+                                    <div 
+                                         id="{!'ELEMENT'+index}"
+                                         data-id="{!element.id}" 
+                                         data-index="{!index}"
+                                         class="card-body-container-layer-element is-active" 
+                                         draggable="true" 
+                                         ondragend="{!c.onDragEnd}" 
+                                         onmousedown="{!c.onMouseDown}"
+                                         onmouseup="{!c.onMouseUp}"
+                                         style="{!'top:' + element.Offset_X__c + 'px;left:' + element.Offset_Y__c + 'px;padding:0px;margin:0px;display: inline-block;cursor:move;box-shadow: 0 0 0 0px transparent;'}">
+                                        <p style="{!element.Text_Font_Size__c!=0?'font-size:'+element.Text_Font_Size__c+'px;':'font-size:14px;'}">{{!element.Dynamic_Field_Name__c}}</p>   
+                                    </div>
+                                </aura:if>
+                                <aura:if isTrue="{!element.Component_Type__c == 'Combo Box'}">
+                                    <div 
+                                         id="{!'ELEMENT'+index}"
+                                         data-id="{!element.id}" 
+                                         data-index="{!index}"
+                                         class="card-body-container-layer-element is-active" 
+                                         draggable="true" 
+                                         ondragend="{!c.onDragEnd}" 
+                                         onmousedown="{!c.onMouseDown}"
+                                         onmouseup="{!c.onMouseUp}"
+                                         style="{!'top:' + element.Offset_X__c + 'px;left:' + element.Offset_Y__c + 'px;padding:0px;margin:0px;display: inline-block;cursor:move;box-shadow: 0 0 0 0px transparent;'}">
+                                        <table>
+                                            <tr>
+                                                <td style="padding:0px;margin:0px;display: inline-block;">
+                                                    <lightning:buttonIcon iconName="{!'utility:'+element.Icon_Name__c}" variant="bare" alternativeText="Icon" />
+                                                </td>
+                                                <td style="padding:0px;margin-left: 4px;display: inline-block;">
+                                                    <p style="{!element.Text_Font_Size__c!=0?'font-size:'+element.Text_Font_Size__c+'px;font-weight:bold':'font-size:14px;font-weight:bold'}">{!element.Static_Text__c+' : '}</p>
+                                                </td>
+                                                <td style="padding:0px;margin-left: 4px;display: inline-block;">
+                                                    <aura:if isTrue="{!element.Combo_Box_Type__c == 'Dynamic'}">
+                                                        <p style="{!element.Text_Font_Size__c!=0?'font-size:'+element.Text_Font_Size__c+'px;':'font-size:14px;'}">{{!element.Dynamic_Field_Name__c}}</p> 
+                                                        <aura:set attribute="else">
+                                                            <p style="{!element.Text_Font_Size__c!=0?'font-size:'+element.Text_Font_Size__c+'px;':'font-size:14px;'}">{!element.Dynamic_Field_Name__c}</p> 
+                                                        </aura:set>
+                                                    </aura:if>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div> 
+                                </aura:if>
+                                <aura:set attribute="else">
+                                    <div 
+                                         id="{!'ELEMENT'+index}"
+                                         data-id="{!element.id}" 
+                                         data-index="{!index}"
+                                         class="card-body-container-layer-element is-active" 
+                                         style="{!'top:' + element.Offset_X__c + 'px;left:' + element.Offset_Y__c + 'px;line-height:50px;height:' + element.Height__c + 'px;width:' + element.Width__c + 'px;padding:0px;margin:0px;display: inline-block;box-shadow: 0 0 0 0px transparent;'}">
+                                        
+                                        <aura:if isTrue="{!element.Component_Type__c == 'Image'}">
+                                            <img id="{!'STRIP'+element.id}" src="{!element.Image_URL__c}" style="height:100%;width:100%;"/>
+                                        </aura:if> 
+                                        <aura:if isTrue="{!element.Component_Type__c == 'Horizontal Line'}">
+                                            <div style="border-top: 1px solid #d2d2d2;width: 100%;">
+                                            </div>
+                                        </aura:if> 
+                                        <aura:if isTrue="{!element.Component_Type__c == 'Vertical Line'}">
+                                            <div style="border-left: 1px solid #d2d2d2;height: 100%;">
+                                            </div>
+                                        </aura:if> 
+                                        <aura:if isTrue="{!element.Component_Type__c == 'Icon'}">
+                                            <lightning:buttonIcon iconName="{!'utility:'+element.Icon_Name__c}" variant="bare" alternativeText="Icon" />
+                                        </aura:if>    
+                                        <aura:if isTrue="{!element.Component_Type__c == 'Static Text'}">
+                                            <p style="{!element.Text_Font_Size__c!=0?'font-size:'+element.Text_Font_Size__c+'px;width:600px;':'font-size:14px;'}">
+                                                <lightning:formattedRichText value="{!element.Static_Text__c}" />
+                                            </p>
+                                        </aura:if>
+                                        <aura:if isTrue="{!element.Component_Type__c == 'Dynamic Text'}">
+                                            <p style="{!element.Text_Font_Size__c!=0?'font-size:'+element.Text_Font_Size__c+'px;width:600px;':'font-size:14px;'}">
+                                                <aura:unescapedHtml value="{!element.Dynamic_Field_Name__c}"></aura:unescapedHtml>
+                                            </p>   
+                                        </aura:if>
+                                        <aura:if isTrue="{!element.Component_Type__c == 'Combo Box'}">
+                                            <table style="width:600px;">
+                                                <tr>
+                                                    <td style="padding:0px;margin:0px;display: inline-block;">
+                                                        <lightning:buttonIcon iconName="{!'utility:'+element.Icon_Name__c}" variant="bare" alternativeText="Icon" />
+                                                    </td>
+                                                    <td style="padding:0px;margin-left: 4px;display: inline-block;">
+                                                        <p style="{!element.Text_Font_Size__c!=0?'font-size:'+element.Text_Font_Size__c+'px;font-weight:bold':'font-weight:bold;font-size:14px;'}">{!element.Static_Text__c+' : '}</p>
+                                                    </td>
+                                                    <td style="padding:0px;margin-left: 4px;display: inline-block;">
+                                                        <p style="{!element.Text_Font_Size__c!=0?'font-size:'+element.Text_Font_Size__c+'px;':'font-size:14px;'}"><aura:unescapedHtml value="{!element.Dynamic_Field_Name__c}"></aura:unescapedHtml></p> 
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </aura:if>
+                                    </div>
+                                </aura:set>
+                            </aura:if>
+                        </aura:iteration>
+                    </div>
+                </div>
+                <aura:if isTrue="{!v.isEditPage}">
+                    <hr style="margin-left:100px;margin-right:100px;margin-top: 2rem;margin-bottom: 0px;"/>
+                    <div>
+                        <div class="slds-grid slds-gutters">
+                            <div class="slds-col" style="padding:20px;width:30%">
+                                <label class="slds-form-element__label" for="30:422;a" data-aura-rendered-by="34:422;a" style="display:  block;">
+                                    <span class="" data-aura-rendered-by="36:422;a">Place Panel on</span>
+                                </label>
+                                <lightning:select label="sObject Name" value="{!v.panelDesign_record.sObject_Name__c}" class="selectBox" onchange="{!c.onChangeSobjectName}">
+                                    <aura:iteration items="{!v.sObjectsList}" var="sObject">
+                                        <option text="{!sObject.label}" value="{!sObject.value}" selected="{!sObject.isSelected}"/>
+                                    </aura:iteration>
+                                </lightning:select>
+                            </div>
+                            <div class="slds-col" style="padding:20px;width:30%">
+                                <lightning:input class="colorPicker" type="color" name="color" label="Backgroud Color" value="{!v.panelDesign_record.Background_Image_URL__c}"/>
+                            </div>
+                            <div class="slds-col" style="padding:20px;width:40%">
+                                <aura:if isTrue="{!!v.panelDesign_record.isDefaultPanel__c}">
+                                    <div  style="background:#f3f3f3;text-align:center;width:397px;height:185px;float:right;">
+                                        <p>New field will render here. Drag and drop into the panel above</p> 
+                                        <div id="newComponentBox" style="background:#ffffff;width:367px;height:140px;margin-bottom: 15px;margin-left: 15px;margin-top: 10px;margin-right: 15px;">
+                                            
+                                        </div>
+                                    </div>
+                                </aura:if>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="margin-left:100px;margin-right:100px;margin-top:0px;margin-bottom: 0px;"/>
+                    <table>
+                        <tr>
+                            <td style="width:50%;text-align:left;padding-left: 20px;padding-top: 20px;padding-bottom: 10px;">
+                                <h1 class="slds-text-heading--small">Fields</h1>
+                            </td>
+                            <td style="width:50%;text-align:right;padding-right: 20px;padding-top: 20px;padding-bottom: 10px;">
+                                <aura:if isTrue="{!!v.panelDesign_record.isDefaultPanel__c}">
+                                    <lightning:button label="Add New" title="Add New" onclick="{! c.onClickAddPanelComponent }"/>
+                                </aura:if>
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="padding:20px;">
+                        <table style="background:#f3f3f3;border: 1px solid rgb(221, 219, 218);" class="slds-table slds-table_bordered slds-table_resizable-cols slds-table_fixed-layout" role="grid">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th style="width:25%;text-align:center;" aria-sort="none" class="slds-is-sortable slds-is-resizable slds-text-title_caps" aria-label="Account Name" scope="col">
+                                        <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="-1">
+                                            <span class="slds-assistive-text">Sort by: </span>
+                                            <span class="slds-truncate" title="Type">Type</span>
+                                        </a>
+                                        <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true">Sorted none</span>
+                                    </th>
+                                    <th style="width:60%;text-align:center;" aria-sort="none" class="slds-is-sortable slds-is-resizable slds-text-title_caps" aria-label="Close Date" scope="col">
+                                        <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="-1">
+                                            <span class="slds-assistive-text">Sort by: </span>
+                                            <span class="slds-truncate" title="Value">Value</span>
+                                        </a>
+                                        <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true">Sorted none</span>
+                                    </th> 
+                                    <aura:if isTrue="{!!v.panelDesign_record.isDefaultPanel__c}">
+                                        <th style="width:10%;text-align:center;" aria-sort="none" class="slds-is-sortable slds-is-resizable slds-text-title_caps" aria-label="Close Date" scope="col">
+                                            <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="-1">
+                                                <span class="slds-assistive-text">Sort by: </span>
+                                                <span class="slds-truncate" title="Font Size">Font Size (px)</span>
+                                            </a>
+                                            <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true">Sorted none</span>
+                                        </th> 
+                                    </aura:if>
+                                    <th style="width:5%;text-align:center;" aria-sort="none" class="slds-is-sortable slds-is-resizable slds-text-title_caps" aria-label="Close Date" scope="col">
+                                        <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="-1">
+                                            <span class="slds-assistive-text">Sort by: </span>
+                                            <span class="slds-truncate" title=""></span>
+                                        </a>
+                                        <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true">Sorted none</span>
+                                    </th> 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.elements}" var="element" indexVar="index">
+                                    <tr class="slds-hint-parent">
+                                        <td role="gridcell">
+                                            <div class="slds-truncate" title="Type">
+                                                <lightning:select class="selectBox" value="{!element.Component_Type__c}" onchange="{!c.reRenderElements}">
+                                                    <aura:iteration items="{!v.panelComponentTypes}" var="panelComponentType">
+                                                        <option text="{!panelComponentType.label}" value="{!panelComponentType.value}" selected="{!panelComponentType.isSelected}"/>
+                                                    </aura:iteration>
+                                                </lightning:select> 
+                                            </div>
+                                        </td>
+                                        <td role="gridcell">
+                                            <div class="slds-truncate" title="Value">
+                                                <aura:if isTrue="{!element.Component_Type__c == 'Static Text'}">
+                                                    <lightning:inputRichText disabledCategories="FORMAT_FONT,ALIGN_TEXT,REMOVE_FORMATTING" value="{!element.Static_Text__c}" onblur="{!c.reRenderElements}"/>
+                                                </aura:if>
+                                                <aura:if isTrue="{!element.Component_Type__c == 'Dynamic Text'}">
+                                                    <lightning:select class="selectBox" value="{!element.Dynamic_Field_Name__c}" onchange="{!c.reRenderElements}">
+                                                        <aura:iteration items="{!v.selectedSobjectFields}" var="selectedSobjectField">
+                                                            <option text="{!selectedSobjectField.label+' - '+selectedSobjectField.fieldType}" value="{!selectedSobjectField.value}" selected="{!selectedSobjectField.isSelected}"/>
+                                                        </aura:iteration>
+                                                    </lightning:select>
+                                                </aura:if>
+                                                <aura:if isTrue="{!element.Component_Type__c == 'Image'}" >
+                                                    <table style="border: 1px solid rgb(221, 219, 218);background: white">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="width:50%;text-align:center;" >
+                                                                    <lightning:fileUpload name="{!index}" label="Background Image" accept=".png,.PNG,.jpg,.JPG,.jpeg,.JPEG" recordId="{!element.Id}" onuploadfinished="{!c.onImageUploadFinished_Component}" />
+                                                                </td>
+                                                                <td style="width:50%;text-align:center;" >
+                                                                    <img src="{!element.Image_URL__c}" draggable="false" style="height:40px;width:40px;"/>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </aura:if>
+                                                <aura:if isTrue="{!element.Component_Type__c == 'Icon'}">
+                                                    <table style="border: 1px solid rgb(221, 219, 218);background: white">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="text-align: center;width:33%;background: white">
+                                                                    <lightning:buttonIcon iconName="utility:info" variant="bare"  alternativeText="Info" onclick="{!c.onClickShowUtilityIcons}"/>
+                                                                </th> 
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="text-align:center;width:33%;">
+                                                                    <ui:inputText class="field" value="{!element.Icon_Name__c}" change="{!c.reRenderElements}"/>   
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </aura:if>
+                                                <aura:if isTrue="{!element.Component_Type__c == 'Combo Box'}">
+                                                    <table style="border: 1px solid rgb(221, 219, 218);background: white">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="text-align: left;width:33%;background: white;padding-left:15px;">
+                                                                    Label
+                                                                </th>
+                                                                <th style="text-align: center;width:33%;background: white;padding-left:10px;">
+                                                                    <fieldset id="{!'checkbox'+element.Id}">
+                                                                        <div id="{!'ComboBoxType~Static~'+index}" onclick="{!c.onClickComboBoxType}" style="float:left;margin:5px;">
+                                                                            <input type="radio" value="static" name="{!'checkbox'+element.Id}" checked="{!element.Combo_Box_Type__c == 'Static'?'true':'true'}" style="margin-right:10px;"/><b>Static</b>
+                                                                        </div>
+                                                                        <div id="{!'ComboBoxType~Dynamic~'+index}" onclick="{!c.onClickComboBoxType}" style="float:left;margin:5px;">
+                                                                            <input type="radio" value="dynamic" name="{!'checkbox'+element.Id}" checked="{!element.Combo_Box_Type__c == 'Dynamic'?'true':'false'}" style="margin-right:10px;"/><b>Dynamic</b>
+                                                                        </div>
+                                                                    </fieldset>
+                                                                </th>
+                                                                <th style="text-align:left;width:33%;background: white;padding-left:15px;">
+                                                                    Icon
+                                                                    <lightning:buttonIcon iconName="utility:info" variant="bare"  alternativeText="Info" onclick="{!c.onClickShowUtilityIcons}"/>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="width:33%;">
+                                                                    <ui:inputText class="field" value="{!element.Static_Text__c}" placeholder="Label" change="{!c.reRenderElements}"/>   
+                                                                </td>
+                                                                <td style="width:33%;">
+                                                                    <aura:if isTrue="{!element.Combo_Box_Type__c == 'Dynamic'}">
+                                                                        <lightning:select class="selectBox" value="{!element.Dynamic_Field_Name__c}" onchange="{!c.reRenderElements}">
+                                                                            <aura:iteration items="{!v.selectedSobjectFields}" var="selectedSobjectField">
+                                                                                <option text="{!selectedSobjectField.label+' - '+selectedSobjectField.fieldType}" value="{!selectedSobjectField.value}" selected="{!selectedSobjectField.isSelected}"/>
+                                                                            </aura:iteration>
+                                                                        </lightning:select>
+                                                                        <aura:set attribute="else">
+                                                                            <ui:inputText class="field" value="{!element.Dynamic_Field_Name__c}" placeholder="Value" change="{!c.reRenderElements}"/>   
+                                                                        </aura:set>
+                                                                    </aura:if>
+                                                                </td>
+                                                                <td style="width:33%;">
+                                                                    <ui:inputText class="field" value="{!element.Icon_Name__c}" placeholder="Icon" change="{!c.reRenderElements}"/> 
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                        <aura:if isTrue="{!!v.panelDesign_record.isDefaultPanel__c}">
+                                            <td role="gridcell">
+                                                <div class="slds-truncate" title="Value">
+                                                    <aura:if isTrue="{!element.Component_Type__c == 'Static Text'}">
+                                                        <lightning:select class="selectBox" value="{!element.Text_Font_Size__c}" onchange="{!c.reRenderElements}">
+                                                            <aura:iteration items="{!v.fontSizes}" var="fontSize">
+                                                                <option text="{!fontSize.label}" value="{!fontSize.value}" selected="{!fontSize.value == element.Text_Font_Size__c}"/>
+                                                            </aura:iteration>
+                                                        </lightning:select> 
+                                                    </aura:if>
+                                                    <aura:if isTrue="{!element.Component_Type__c == 'Dynamic Text'}">
+                                                        <lightning:select class="selectBox" value="{!element.Text_Font_Size__c}" onchange="{!c.reRenderElements}">
+                                                            <aura:iteration items="{!v.fontSizes}" var="fontSize">
+                                                                <option text="{!fontSize.label}" value="{!fontSize.value}" selected="{!fontSize.value == element.Text_Font_Size__c}"/>
+                                                            </aura:iteration>
+                                                        </lightning:select> 
+                                                    </aura:if>
+                                                    <aura:if isTrue="{!element.Component_Type__c == 'Image'}">
+                                                    </aura:if>
+                                                    <aura:if isTrue="{!element.Component_Type__c == 'Icon'}">
+                                                    </aura:if>
+                                                    <aura:if isTrue="{!element.Component_Type__c == 'Combo Box'}">
+                                                    </aura:if>
+                                                </div>
+                                            </td>
+                                        </aura:if>
+                                        <td style="text-align: center;">
+                                            <div onclick="{!c.onClickDelete}" id="{!index}">
+                                                <lightning:buttonIcon iconName="utility:delete" variant="bare" alternativeText="Delete" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                    </div>
+                    <table>
+                        <tr>
+                            <td style="width:50%;text-align:left;padding-left: 20px;padding-top: 20px;padding-bottom: 10px;">
+                                
+                            </td>
+                            <td style="width:50%;text-align:right;padding-right: 20px;padding-top: 20px;padding-bottom: 10px;">
+                                <aura:if isTrue="{!!v.panelDesign_record.isDefaultPanel__c}">
+                                    <lightning:button label="Add New" title="Add New" onclick="{! c.onClickAddPanelComponent }"/>
+                                </aura:if>
+                            </td>
+                        </tr>
+                    </table>
+                </aura:if>
+            </aura:set>
+        </aura:if>
+    </div>
+    
+    <div class="slds-hide" style="height: 640px;" aura:id="clonePopup">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button onclick="{!c.closeClonePopup}" class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                        <lightning:buttonIcon iconName="utility:close" variant="bare" alternativeText="Delete" />
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Clone Highlight Panel</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <ui:inputText class="field" label="Panel Design Name" value="{!v.clone_PanelDesignName}"/>  
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick="{!c.closeClonePopup}">Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick="{!c.onClickClonePanelDesign}">Clone</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    
+    <div class="slds-hide" style="height:1200px;" aura:id="iconDesignsPopup">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width:1200px;max-width:none;">
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="height:500px;">
+                    <iframe src="/apex/UtilityIcons" style="width:100%;height:100%"/> 
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick="{!c.closeUtilityIconPopup}">Close</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    
+    <div aura:id="loadingDiv" class="demo-only demo--inverse slds-hide" style="height: 6rem;">
+        <div class="slds-spinner_container">
+            <div role="status" class="slds-spinner slds-spinner_medium">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </div>
+    
+</aura:component>

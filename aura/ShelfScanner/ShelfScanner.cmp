@@ -1,0 +1,49 @@
+<aura:component controller="ShelfScanner" implements="lightning:availableForFlowScreens,force:appHostable,flexipage:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
+    
+    <aura:attribute name="spinnerWaiting" type="Boolean" default="false" />
+    <aura:attribute name="showDatatable" type="Boolean" default="false" />
+    
+    <aura:attribute name="modelId" type="String" />
+    <aura:attribute name="imageType" type="String" />
+    
+    <aura:attribute name="files" type="Object[]" />
+    <aura:attribute name="predictions" type="Einstein_PredictionResult" />
+    <aura:attribute name="rawPredictions" type="String" />
+    <aura:attribute name="shelfData" type="Object[]" />
+    <aura:attribute name="shelfDataColumns" type="List" />
+    <aura:attribute name="pictureSrc" type="String" />
+    <aura:attribute name="fileName" type="String" />
+    
+    <ltng:require scripts="{!$Resource.resize}"  />
+    
+    <aura:handler name="init" value="{! this }" action="{! c.init }" />
+    
+    <lightning:card >
+        <center>
+            <lightning:input aura:id="fileInput" type="file" name="file" multiple="false" accept="image/*;capture=camera" files="{!v.files}"
+                             onchange="{! c.readFile }" label="Image (max. 10MB):" />
+            
+            <div class="image-container">
+                <img aura:id="imgItself" src="{!v.pictureSrc}"/>
+                <div aura:id="imgContainer" class="after">
+                </div>
+            </div>
+        </center>
+        
+        <aura:if isTrue="{!v.showDatatable}">
+            <lightning:datatable keyField="label" data="{!v.shelfData}" columns="{!v.shelfDataColumns}" hideCheckboxColumn="true" />
+        </aura:if>
+        
+        <aura:if isTrue="{! v.spinnerWaiting }">
+            <lightning:spinner size="small" />
+        </aura:if>
+        
+        <aura:set attribute="footer">
+            <div class="slds-text-align_right">
+                <lightning:button label="Submit" onclick="{!c.store}" variant="brand"></lightning:button>
+            </div>
+        </aura:set>
+
+    </lightning:card>
+    
+</aura:component>

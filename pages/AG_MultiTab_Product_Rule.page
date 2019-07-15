@@ -1,0 +1,51 @@
+<apex:page showHeader="true" docType="html-4.01-strict">
+<div id="tabstrip" style="display:none;"> <ul> 
+<li class="k-state-active">Product Rules</li>
+<li>Configuration Rules</li>
+<li>Error Conditions</li>
+<li>Actions</li>
+</ul>
+<!-- PRODUCT RULES -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="SBQQ__ProductRule__c" DelayLoad="true"  ViewID="aBs2E000000JHjuCAW" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+ 
+<!-- Configuration Rules -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="SBQQ__ConfigurationRule__c" DelayLoad="false"  ViewID="aBs2E000000JHjvCAW" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+<!-- Error Conditions -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="SBQQ__ErrorCondition__c" DelayLoad="true"  ViewID="aBs2E000000JHkFCAW" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+<!-- Actions -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="SBQQ__ProductAction__c" DelayLoad="true"  ViewID="aBs2E000000JHkCCAW" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+</div>
+<script>
+$(document).ready(function() {
+    $("#tabstrip").kendoTabStrip({
+      activate: function(e){
+        setTimeout(function(){          $(window).resize();        });
+      }
+    });
+    $("#tabstrip").css("display", "block");
+});
+ </script>
+</apex:page>

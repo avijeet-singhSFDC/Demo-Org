@@ -1,0 +1,14 @@
+.THIS .show{
+    display:block;
+}
+.THIS .hide{
+    display:none;
+}
+.THIS .addprod{
+    font-size:10px;
+    margin:5px 0;
+    display:block;
+}
+.THIS .center{
+    text-align:center;
+}

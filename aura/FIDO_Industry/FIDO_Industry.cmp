@@ -1,0 +1,20 @@
+<aura:component >
+    <aura:attribute name="ScreenChoice" type="String"/>
+    <aura:attribute name="Industry" type="String"/>
+    <aura:attribute name="ComponentTitle" type="String" />
+	<div class="paddinglarge">
+            <div class="minicard industry">
+                <div class="padding center">
+                    <h2>Choose an industry</h2>
+                    <button class="slds-button slds-button_neutral bigbutton" aura:id="Retail" id="Retail" onclick="{!c.IndustryChoice}">
+                        <lightning:icon iconName="utility:cart" size="x-small"/> 
+                        Retail 
+                    </button>
+                    <button class="slds-button slds-button_neutral bigbutton" aura:id="Consumer Goods" id="Consumer Goods" onclick="{!c.IndustryChoice}">
+                        <lightning:icon iconName="utility:company" size="x-small"/> 
+                        Consumer Goods
+                    </button>
+                </div>
+            </div>
+        </div>
+</aura:component>

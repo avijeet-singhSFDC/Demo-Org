@@ -1,0 +1,217 @@
+<apex:page title="Assignment Kanban" showHeader="false" sidebar="false" docType="html-5.0" standardStylesheets="false" standardController="Project_Task__c" extensions="CPGKanbanCtrl">
+    <head>
+        <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js" />
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+        <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" />
+        <link rel="stylesheet" href="/resource/CPG_SLDS203/assets/styles/salesforce-lightning-design-system.css"/>
+        <style>
+            @import "compass/css3";
+            @import "compass/utilities/general/min";
+            
+            $minimumCardHeight: 45px;
+            $cardMargins: 5px;
+            
+            body {
+                padding: 10px;
+            }
+            
+            #page-header{ 
+                border-bottom: 1px solid #d8dde6;
+                padding: 10px;
+            }
+            
+            ul {
+                padding-left: 0 !important;
+            }
+            
+            .ui-state-default{
+                @include min-height($minimumCardHeight);
+            }
+            
+            .sortable{
+            div {
+                margin-bottom: $cardMargins;
+                padding: 3px;}
+            }
+            
+            #page-header {
+                margin: 0;
+            }
+            
+            #kanban-board{
+            width:100%;}
+            
+            .sortable-wrapper{
+                float:left;
+                border-right: 1px solid #d8dde6;
+                padding: 5px;
+            }
+            .sortable-wrapper:last-child {
+                border-right: none;
+            }
+            
+            .ghost{
+            @include opacity(0.4);
+            border-style: dashed;}
+            
+            .dragging{ 
+            @include rotate(-5deg);
+            @include opacity(0.8);}
+            
+            .drag-place-holder {
+                height:0px !important;
+                margin-top: -1 * $cardMargins; 
+                overflow: hidden;
+                border-bottom: 2px dashed blue;
+            }  
+            
+            .slds-has-dividers--around-space > .slds-item {
+                margin: 0.5rem !important;
+            }
+            
+            .project-name {
+                padding: 3px 6px;
+            }
+            
+            li:hover {
+                cursor: pointer;
+            }
+            
+            ul.slds-has-dividers--around-space {
+                padding-left: 20px;
+            }
+            
+            .slds-col.sortable-wrapper {
+                max-height: 535px !important;
+                min-height: 483px !important;
+            }
+            
+            .slds-col { max-width: 465px !important;}
+            
+            .sortable-wrapper ul {
+                min-height: 50px;
+            }
+            
+            .scrollable {
+                overflow-y: auto;
+            }
+            
+            
+            <!--UI State Styles-->
+            .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+                background: none;
+            }
+        </style>
+        <script>
+        $(function() {
+            var boardWidth = $('#kanban-board').width();
+            var $columns = $('.sortable-wrapper');
+            var columnCount = $columns.length;
+            var columnMargin = 10;
+            $columns.width(Math.floor((boardWidth - (columnMargin*(columnCount + 1))) / columnCount));
+            $( ".sortable" ).sortable({
+                revert: true,
+                placeholder: 'drag-place-holder',
+                forcePlaceholderSize: true, 
+                connectWith: ".sortable",
+                helper:function(event, element){
+                    return $(element).clone().addClass('dragging');
+                }, 
+                start: function (e, ui) {
+                    ui.item.show().addClass('ghost')
+                }, 
+                stop: function (e, ui) { 
+                    ui.item.show().removeClass('ghost');
+                    
+                    /* When the task is dropped on the project column, the data-employee attribute
+                       will be set to null. When this happens we clear the assigned to field and
+                       set the priority to 0. Otherwise, it passes the employee id. */
+                    var tempNull = ui.item[0].parentElement.dataset.employee == "null" ? null : ui.item[0].parentElement.dataset.employee;
+                    
+                    // Set the task priority by passing the entire <ul> to the priority function
+                    setPriority(ui, tempNull);
+                }, 
+                cursor:'move'
+            })
+            .disableSelection();;
+        });
+        
+        /* This function take an array of <li> elements and builds two arrays from it.
+           An item array and a priority array that are indexed and passed to a backend 
+           function that updates the priorites. */
+        
+        function setPriority(ui, tempNull){
+            
+            var listArr = ui.item[0].parentElement.children;
+            
+            var tempArrItem = [];
+            var tempArrPriority = [];
+            
+            // for each <li> in <ul>, set the data-priority attribute to the arrayIndex+1
+            for(i = 0; i < listArr.length; i++){
+                listArr[i].dataset.priority = i+1;
+                tempArrPriority[i] = i+1;
+                
+                tempArrItem[i] = listArr[i].dataset.item;
+            }
+            
+            // This function passes the employeeId, item array, and priority array to a
+            // back-end function that updates the Priority__c field and updates the record.
+            CPGKanbanCtrl.updateTaskPriority(tempNull, tempArrItem, tempArrPriority, 
+                                             function(callBack){
+                                                 //console.log(res);
+                                             });
+        }
+        </script>
+    </head>
+    <body>
+        <div class="slds">
+            <div id='kanban-board'>
+                <div class="slds-grid--pull-padded" id="page-header">
+                    <div class="slds-col--padded slds-size--1-of-1">
+                        <div class="slds-text-heading--large">Task Assignment</div>
+                    </div>
+                </div>
+                <div class="slds-grid">
+                    <div class="slds-col sortable-wrapper scrollable">
+                        <apex:repeat value="{!projectWrapperList}" var="p" >
+                            <div class="slds-text-heading--medium project-name">{!p.project.Name}</div>
+                            <ul class="slds-has-dividers--around-space sortable" data-employee="null">
+                                <apex:repeat value="{!p.itemList}" var="item">
+                                    <li class="slds-item ui-state-default" data-item="{!item.Id}" data-priority="">
+                                        <div class="slds-tile slds-tile--board">
+                                            <h3 class="slds-truncate" title="Anypoint Connectors">{!item.Name}</h3>
+                                            <div class="slds-tile__detail slds-text-body--small">
+                                                <p class="slds-text-heading--medium">{!p.project.name}</p>
+                                                <p class="slds-truncate">{!p.project.End_Date__c}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </apex:repeat>
+                            </ul>
+                        </apex:repeat>
+                    </div>
+                    <apex:repeat value="{!empList}" var="e" >
+                        <div class="slds-col sortable-wrapper scrollable">
+                            <div class="slds-text-heading--medium project-name" >{!e.User.FirstName} {!e.User.LastName}</div>
+                            <ul class="slds-has-dividers--around-space sortable" data-employee="{!e.user.Id}">
+                                <apex:repeat value="{!e.itemList}" var="i">
+                                    <li class="slds-item ui-state-default" data-item="{!i.Id}" data-priority="">
+                                        <div class="slds-tile slds-tile--board">
+                                            <h3 class="slds-truncate" title="Anypoint Connectors">{!i.Name}</h3>
+                                            <div class="slds-tile__detail slds-text-body--small">
+                                                <p class="slds-text-heading--medium">{!i.Project__r.Name}</p>
+                                                <p class="slds-truncate">{!i.Project__r.End_Date__c}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </apex:repeat>
+                            </ul>
+                        </div>
+                    </apex:repeat>
+                </div>
+            </div>
+        </div>
+    </body>
+</apex:page>

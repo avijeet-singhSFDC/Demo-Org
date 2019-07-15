@@ -1,0 +1,24 @@
+<div class="modal hide fade" id="modalKaDC">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Knowledge Base Data Categories</h3>
+  </div>
+  <div class="modal-body">
+    <div class="input-prepend input-append">
+      <span class="add-on" style="width:160px;text-align:left;">Data Category Group</span>
+      <input class="span4" maxlength="255" id="dataCategoryGroup__c" type="text" placeholder="data category group..." value="<%if(data.dataCategoryGroup__c.length > 0){ print(data.dataCategoryGroup__c); }%>">
+    </div>
+    <div class="input-prepend input-append">
+      <span class="add-on" style="width:160px;text-align:left;">Data Category Api Name</span>
+      <input class="span4" maxlength="255" id="dataCategory__c" type="text" placeholder="data category api name..." value="<%if(data.dataCategory__c.length > 0){ print(data.dataCategory__c); }%>">
+    </div>
+    <div class="input-prepend input-append">
+      <span class="add-on" style="width:160px;text-align:left;">Public Name</span>
+      <input class="span4" maxlength="255" id="publicName__c" type="text" placeholder="public name..." value="<%if(data.publicName__c.length > 0){ print(data.publicName__c); }%>">
+    </div>
+    <div class="alert" id="err" style="display:none;"></div>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary" id="done">Done</a>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+.THIS .icon{
+    margin: 0.5em 0.2em 0.5em 0.5em;
+    position: relative;
+    bottom: 3px;
+}
+
+.THIS .iconPerson {
+    margin-right: 0.5em !important;
+}

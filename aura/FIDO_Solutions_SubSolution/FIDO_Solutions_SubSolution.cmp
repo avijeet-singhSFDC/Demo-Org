@@ -1,0 +1,31 @@
+<aura:component controller="FIDO">
+    <aura:attribute name="ScreenChoice" type="String"/>
+    <aura:attribute name="Industry" type="String"/>
+    <aura:attribute name="ComponentTitle" type="String" />
+    <aura:attribute name="SolutionParentId" type="String" />
+    <aura:attribute name="Solutions" type="String[]"/>
+    <aura:iteration items="{!v.Solutions}" var="solution">
+    	<aura:if isTrue="{!solution.parent_demo_solution__c == v.SolutionParentId}">
+            <aura:if isTrue="{!solution.isactive__c == true}">
+                    <div class="">
+                        <div class="slds-media">
+                            <div class="slds-media__body"> 
+                                <div class="center">
+                                    <h2 class="slds-page-header__title slds-truncate slds-align-middle padding h2borderbottom textleft" title="Store Promotions">
+                                        <img src="{!solution.icon_url__c}" class="subsolutionicon imgleft"/>  
+                                        <div class="solutiontitle">
+                                            {!solution.name}	
+                                            <span class="subsolutiondesc"><aura:unescapedHtml value="{!solution.description__c}"/></span>
+                                        </div>
+                                    </h2>
+                                </div>    
+                             </div>
+                         </div> 
+                         <div class="padding">
+                            <c:FIDO_Solutions_DemoScripts SolutionId="{!solution.sfid }" Industry="{!v.Industry}" />
+                         </div>
+                     </div>
+                </aura:if>
+        	</aura:if>
+    	</aura:iteration>
+</aura:component>

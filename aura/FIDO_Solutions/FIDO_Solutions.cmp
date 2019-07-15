@@ -1,0 +1,68 @@
+<aura:component controller="FIDO">
+    <aura:attribute name="ScreenChoice" type="String"/>
+    <aura:attribute name="Settings" type="String[]" />
+    <aura:attribute name="SolutionView" type="String" default="Single" />
+    <aura:attribute name="Industry" type="String"/>
+    <aura:attribute name="ComponentTitle" type="String" />
+    <aura:attribute name="Solutions" type="String[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <div class="slds-card largecard">
+    	<div class="slds-media">
+        	<div class="slds-media__body"> 
+            	<div class="center">
+                	<h2 class="slds-page-header__title slds-truncate slds-align-middle padding h2borderbottom " title="Store Promotions">
+                    	{!v.Industry} Solutions
+                    </h2>
+                </div>    
+            </div>
+        </div> 
+        <div class="textleft padding">
+            <aura:iteration items="{!v.Settings}" var="setting">
+                <aura:if isTrue="{!setting.industry__c  == v.Industry}">
+                    <aura:if isTrue="{!setting.demo_solution_view__c == 'Two Level Solution View'}">
+                        <aura:iteration items="{!v.Solutions}" var="solution">
+                            <aura:if isTrue="{!solution.industry__c == v.Industry}">
+                                <aura:if isTrue="{!solution.parent_demo_solution__c == null }">
+                                    <aura:if isTrue="{!solution.isactive__c == true}">
+                                        <div class="owner">
+                                            <div class="third borderright lightgreybg sidebar">
+                                                <h3 class="borderbottom">
+                                                    <div class="padding center"> 
+                                                        <aura:if isTrue="{!solution.icon_url__c != null}">
+                                                            <img src="{!solution.icon_url__c}" class="solutionicon"/> 
+                                                            <aura:set attribute="else">
+                                                                <div class="imgleft iconwhite"><lightning:icon iconName="standard:solution" size="small"/></div>    
+                                                            </aura:set>
+                                                        </aura:if>
+                                                        <span class="center">{!solution.name}</span>
+                                                    </div>    
+                                                </h3>
+                                                <div class="padding">
+                                                    <div class=" textleft">
+                                                        <div class="paddingtopbottom textleft">
+                                                            <aura:unescapedHtml value="{!solution.description__c}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>                    
+                                            </div>
+                                            <div class="twothirds">
+                                                <div class="padding">
+                                                    <c:FIDO_Solutions_SubSolution Industry="{!v.Industry}" SolutionParentId="{!solution.sfid}" Solutions="{!v.Solutions}"/> 
+                                                </div>
+                                            </div>
+                                            <div class="clear"></div>
+                                        </div>
+                                    </aura:if>
+                                </aura:if>
+                            </aura:if>
+                       </aura:iteration>
+                       <aura:set attribute="else">
+                           <c:FIDO_Solutions_OneLevel Industry="{!v.Industry}" />
+                       </aura:set>
+                    </aura:if>
+                </aura:if>
+            </aura:iteration>
+           <div class="clear"></div>
+    	</div>
+    </div>
+</aura:component>

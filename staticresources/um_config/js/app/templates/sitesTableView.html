@@ -1,0 +1,31 @@
+<td><%=id%></td>
+<td><%=apiName%></td>
+<td style="text-align:center;">
+<%if(canswerEnabled == true){%>
+<a href="#" data-toggle="tooltip" title="Chatter Answers Enabled" class="ttip"><i class="icon-ok"></i></a>
+<%}else{%><a href="#" data-toggle="tooltip" title="Chatter Answers Disabled" class="ttip"><i class="icon-remove"></i></a><%}%>
+</td>
+<td style="text-align:center;">
+<%if(contactEnabled == true){%>
+<a href="#" data-toggle="tooltip" title="Contact Us Enabled" class="ttip"><i class="icon-ok"></i></a>
+<%}else{%><a href="#" data-toggle="tooltip" title="Contact Us Disabled" class="ttip"><i class="icon-remove"></i></a><%}%>
+</td>
+<td style="text-align:center;">
+<%if(knowledgeEnabled == true){%>
+<a href="#" data-toggle="tooltip" title="Knowledge Base Enabled" class="ttip"><i class="icon-ok"></i></a>
+<%}else{%><a href="#" data-toggle="tooltip" title="Knowledge Base Disabled" class="ttip"><i class="icon-remove"></i></a><%}%>
+</td>
+<td style="text-align:center;">
+<%if(casesEnabled == true){%>
+<a href="#" data-toggle="tooltip" title="Cases Enabled" class="ttip"><i class="icon-ok"></i></a>
+<%}else{%><a href="#" data-toggle="tooltip" title="Cases Disabled" class="ttip"><i class="icon-remove"></i></a><%}%>
+</td>
+<td style="text-align:center;">
+<%if(authEnabled == true){%>
+<a href="#" data-toggle="tooltip" title="Authentication Enabled" class="ttip"><i class="icon-ok"></i></a>
+<%}else{%><a href="#" data-toggle="tooltip" title="Authentication Disabled" class="ttip"><i class="icon-remove"></i></a><%}%>
+</td>
+<td style="text-align:right;"><div class="btn-group">
+<a class="btn btn-small" href="#" id="siteTableViewEdit"><i class="icon-pencil"></i></a>
+<a class="btn btn-small" href="#" id="siteTableViewRemove"><i class="icon-remove"></i></a>
+</div></td>

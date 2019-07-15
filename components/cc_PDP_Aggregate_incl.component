@@ -1,0 +1,86 @@
+<apex:component id="cc_PDP_Aggregate_incl">
+    <script id="CC-Aggregate-ProductDetail-Desktop" type="text/template">
+        <div class="panel panel-default product_detail_container product_type_aggregate cc_panel cc_product_detail_container cc_product_type_aggregate">
+            <div class="panel-heading cc_heading">
+                <h3 class="panel-title cc_title">{{this.product.prodBean.name}}</h3>
+            </div>
+            <div class="panel-body product_detail cc_body cc_product_detail phoneProductItem">
+                <div class="product_detail_item phoneProductItem wishFinder cc_wishfinder" data-sku="{{this.product.prodBean.sku}}">
+                    <div class="row">
+                        <div class="pd_content cc_pd_content">
+                            {{> mainContentDesktop}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7 col-md-offset-5">
+                            <p class="aggSection cc_agg_section"></p>
+                            {{#ifDisplay 'PD.DsplSDesc'}}
+                            <p class="shortDesc plus_minus cc_short_desc cc_plus_minus">{{{this.product.prodBean.shortDesc}}}</p>
+                            {{/ifDisplay}}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12 text-right" id="CCQtyBlock">
+                            <div class="quantity_block gp_quantity_block cc_quantity_block addSection hidden">
+                                {{#if this.product.qtySkipIncrement}}
+                                <div class="form-group">
+                                    <div class="input-group cc_input_group">
+                                        <span class="input-group-btn cc_input_group_btn">
+                                                 <input type="button" value="{{pageLabelMap 'Prod_QtyDecrFF'}}" class="btn btn-default btn-sm minusFF cc_minusff">
+                                                 <input type="button" value="{{pageLabelMap 'Prod_QtyDecrSingle'}}" class="btn btn-default btn-sm minus cc_minus">
+                                                </span>
+                                        <input type="text" readonly="true" name="qty" value="0" class="entry form-control input-sm cc_entry" maxlength="7" />
+                                        <span class="input-group-btn cc_input_group_btn">
+                                                 <input type="button" value="{{pageLabelMap 'Prod_QtyIncrSingle'}}" class="btn btn-default btn-sm plus cc_plus">
+                                                 <input type="button" value="{{pageLabelMap 'Prod_QtyIncrFF'}}" class="btn btn-default btn-sm plusFF cc_plusff">
+                                                </span>
+                                    </div>
+                                </div>
+                                {{else}} {{#ifEquals this.product.qtyIncrement 1}}
+                                <div class="form-group">
+                                    <div class="input-group cc_input_group">
+                                        <span class="input-group-btn cc_input_group_btn">
+                                                <input type="button" value="{{pageLabelMap 'Prod_QtyDecrSingle'}}" class="btn btn-default btn-sm minus cc_minus">
+                                               </span>
+                                        <input id="qty{{index}}" name="quickadd[{{index}}].qty" value="0" class="qty entry form-control input-sm cc_entry" maxlength="7" />
+                                        <span class="input-group-btn cc_input_group_btn">
+                                                <input type="button" value="{{pageLabelMap 'Prod_QtyIncrSingle'}}" class="btn btn-default btn-sm plus cc_plus">
+                                               </span>
+                                    </div>
+                                </div>
+                                {{else}}
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="qty" class="col-sm-6 control-label cc_qty">{{pageLabelMap 'Qty'}}</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" id="qty" name="qty" value="1" class="input-text entry plus_minus cc_entry form-control" maxlength="7" />
+                                        </div>
+                                    </div>
+                                </div>
+                                {{/ifEquals}} {{/if}}
+                                <input type="hidden" name="qtyIncrement" value="{{this.product.qtySingleIncrement}}" class="item_qtyIncrement" />
+                                <input type="hidden" name="qtySkipIncrement" value="{{this.product.qtySkipIncrement}}" class="item_qtySkipIncrement" />
+                            </div>
+                            <div class="wishButtons plus_minus addSection cc_add_section cc_wish_buttons hidden"></div>
+                            <div class="action cc_action">
+                                <button type="button" class="btn btn-default btn-sm addSection addItem cc_add_item hidden" data-sku="{{this.product.prodBean.sku}}" data-parent="{{this.product.prodBean.id}}">{{pageLabelMap 'Component_MiniwishList_AddToCart'}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tabSection"></div>
+        <div class="widgetSection"></div>
+    </script>
+    <script>
+    jQuery(function($) {
+        if (CCRZ.detailData.jsonProductData && CCRZ.detailData.jsonProductData.product) {
+            if (CCRZ.detailData.jsonProductData.product.prodBean.ProductType === 'Aggregated') {
+                CCRZ.uiProperties.productDetailView.desktop.tmpl = 'CC-Aggregate-ProductDetail-Desktop';
+            }
+        }
+    });
+    </script>
+</apex:component>

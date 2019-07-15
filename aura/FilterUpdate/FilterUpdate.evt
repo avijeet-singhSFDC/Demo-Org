@@ -1,0 +1,6 @@
+<aura:event type="COMPONENT" description="Event template" >
+    <aura:attribute name="freq" type="String" />
+    <aura:attribute name="callDay" type="String" />
+    <aura:attribute name="target" type="String" />
+    <aura:attribute name="store" type="String" />
+</aura:event>

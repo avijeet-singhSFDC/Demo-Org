@@ -1,0 +1,58 @@
+<aura:component controller="Customer360Apex" implements="lightning:availableForFlowScreens,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="metric1" type="String"></aura:attribute>
+    <aura:attribute name="metric2" type="String"></aura:attribute>
+    <aura:attribute name="metric3" type="String"></aura:attribute>
+    <aura:attribute name="metric4" type="String"></aura:attribute>
+    <aura:attribute name="metric1Name" type="String"></aura:attribute>
+    <aura:attribute name="metric2Name" type="String"></aura:attribute>
+    <aura:attribute name="metric3Name" type="String"></aura:attribute>
+    <aura:attribute name="metric4Name" type="String"></aura:attribute>
+    <aura:attribute name="field0" type="String" access="global" />
+    <aura:attribute name="field1" type="String" access="global" />
+    <aura:attribute name="field2" type="String" access="global" />
+    <aura:attribute name="field3" type="String" access="global" />
+    <aura:attribute name="b1color" type="String" access="global" default="#1a97f0" />
+    <aura:attribute name="b2color" type="String" access="global" default="#1a97f0" />
+    <aura:attribute name="b3color" type="String" access="global" default="#1a97f0" />
+    <aura:attribute name="b4color" type="String" access="global" default="#1a97f0" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    
+    <div class="slds-grid slds-wrap slds-size_1-of-1">
+        <div class="slds-grid slds-wrap slds-size_1-of-1">
+            <div class="slds-grid slds-wrap slds-size_1-of-4 slds-p-around_small">
+                <aura:if isTrue="{!v.field0}">
+                    <div class="slds-box box1 slds-grid slds-wrap slds-size_1-of-1" style="{!'background-color: ' + v.b1color + ';'}">
+                        <div class="metric  slds-grid slds-wrap slds-size_1-of-1 slds-text-heading_large">{!v.field0}</div>
+                        <div class="metric-name slds-grid slds-wrap slds-size_1-of-1 slds-text-body_regular">{!v.metric1Name}</div>
+                    </div>
+                </aura:if>
+            </div>
+            <div class="slds-grid slds-wrap slds-size_1-of-4 slds-p-around_small">
+                <aura:if isTrue="{!v.field1}">
+                    <div class="slds-box box2 slds-grid slds-wrap slds-size_1-of-1" style="{!'background-color: ' + v.b2color + ';'}">
+                        <div class="metric  slds-grid slds-wrap slds-size_1-of-1 slds-text-heading_large">{!v.field1}</div>
+                        <div class="metric-name slds-grid slds-wrap slds-size_1-of-1 slds-text-body_regular">{!v.metric2Name}</div>
+                    </div>
+                </aura:if>
+            </div>
+            <div class="slds-grid slds-wrap slds-size_1-of-4 slds-p-around_small">
+                <aura:if isTrue="{!v.field2}">
+                    <div class="slds-box box3 slds-grid slds-wrap slds-size_1-of-1" style="{!'background-color: ' + v.b3color + ';'}">
+                        <div class="metric  slds-grid slds-wrap slds-size_1-of-1 slds-text-heading_large">{!v.field2}</div>
+                        <div class="metric-name slds-grid slds-wrap slds-size_1-of-1 slds-text-body_regular">{!v.metric3Name}</div>
+                    </div>
+                </aura:if>
+            </div>
+            <div class="slds-grid slds-wrap slds-size_1-of-4 slds-p-around_small">
+                <aura:if isTrue="{!v.field3}">
+                    <div class="slds-box box4 slds-grid slds-wrap slds-size_1-of-1" style="{!'background-color: ' + v.b4color + ';'}">
+                        <div class="metric  slds-grid slds-wrap slds-size_1-of-1 slds-text-heading_large">{!v.field3}</div>
+                        <div class="metric-name slds-grid slds-wrap slds-size_1-of-1 slds-text-body_regular">{!v.metric4Name}</div>
+                    </div>
+                </aura:if>
+            </div>
+        </div>
+    </div>
+    
+</aura:component>

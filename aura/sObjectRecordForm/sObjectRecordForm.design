@@ -1,0 +1,9 @@
+<design:component>
+    <design:attribute name="title" Label="Section Title" default="Case Details"/>
+    <design:attribute name="iconName" Label="Icon Name" default="standard:case"/>
+    <design:attribute name="columns" Label="Number of columns" default="2"/>
+    <design:attribute name="objectApiName" Label="sObject API Name" default="Case" required="true"/>
+    <design:attribute name="recId" Label="Record Id"/>
+    <design:attribute name="fieldSetName" Label="Field Set API Name"/>
+    <design:attribute name="viewMode" Label="mode" datasource="view,readonly,edit"/>
+</design:component>

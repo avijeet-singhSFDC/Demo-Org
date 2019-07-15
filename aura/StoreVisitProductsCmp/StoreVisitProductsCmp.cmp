@@ -1,0 +1,123 @@
+<aura:component controller="StoreVisitCtrl" implements="lightning:availableForFlowScreens" access="global">
+	<aura:attribute name="recordId" type="String" default=""/>
+    <aura:attribute name="searchProd" type="String" default="" />
+    <aura:attribute name="lstOppProducts" type="List[]" default=""/>
+    <aura:attribute name="selectedProducts" type="List[]" default=""/>
+    <aura:attribute name="storeVisitId" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.searchProd}" action="{!c.productSearch}"/>
+    <div aura:id="storeDetails">
+        <div class="header_div slds-p-bottom_small">
+            <div class="header_row">
+                <div class="Column slds-p-top_small">
+                    <button class="slds-button slds-button_neutral slds-float_left" onclick="{!c.cancel}">Cancel</button>
+                </div>
+                <div class="Column column_text">
+                    <h3 class="slds-text-heading_large product_text">Add Products</h3><!-- class="slds-text-heading_large slds-text-align_center"-->
+                </div>
+                <div class="Column slds-p-top_small">
+                    <button class="slds-button slds-button_brand slds-float_right" onclick="{!c.selectedProducts}">Next</button>
+                </div>
+            </div>
+        </div>
+        <div class="slds-form-element slds-p-bottom_medium">
+            <!--label class="slds-form-element__label" for="input-unique-id">Search Products: </label-->
+            <div class="slds-form-element__control">
+                <ui:inputText value="{!v.searchProd}" placeholder="Search Products"/>
+            </div>
+        </div>
+        <aura:iteration items="{!v.lstOppProducts}" var="record">
+            <article class="slds-card">
+                <div class="slds-card__header slds-grid">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container slds-icon-standard-contact" title="description of icon when needed">
+                                 <lightning:icon iconName="standard:product" size="medium" />
+                                <!--c:svgIcon svgPath="/resource/SLDS0120/assets/icons/standard-sprite/svg/symbols.svg#product" category="standard" size="medium" name="product" /-->
+                            </span>
+                        </div>
+                        <div class="slds-media__body slds-truncate_container_75">
+                            <h2>
+                                <p class="slds-text-heading_small slds-truncate">{!record.sProductName}</p> 
+                            </h2>
+                        </div>
+                    </header>
+                    <div class="slds-no-flex">
+                        <ui:inputCheckbox value="{!record.bSelect}" class="slds-float_right"/>
+                    </div>
+                </div>
+                <div class="slds-card__body slds-card__body_inner">
+                    <span class="slds-text-title--caps slds-line-height--reset">Product Code :</span><ui:outputText value="{!record.sProductCode}" class="noSpace" /><br/>
+                </div>
+                
+            </article>
+        </aura:iteration>
+        <!--div class="slds-p-bottom_medium slds-align_absolute-center">
+            <button class="slds-button slds-button_brand" onclick="{!c.selectedProducts}">Next</button>
+        </div-->
+        <br/>
+        <br/>
+        <br/>
+	</div>
+    <div aura:id="mainWrap" class="mainWrap slds-hide">
+        <ui:scrollerWrapper class="scrollerSize">
+            <div class="header_main_div">
+                <div class="header_text">
+                    <!--lightning:icon iconName="standard:product" size="small" /-->
+                    <h3 class="slds-text-heading_large slds-text-align_center slds-m-top_small">Edit Selected Products 
+                    </h3>
+                </div>
+            </div>
+            <!--/ui:scrollerWrapper-->
+            <div class="slds">
+                <aura:iteration items="{!v.selectedProducts}" var="record">
+                    <div class="selectedprodwrapper">
+                        <div class="header_text">
+                            Product Details
+                        </div>
+                        <div class="slds-form--inline">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label" for="inputSample2">Product</label>
+                                <div class="slds-form-element__control">
+                                    <ui:outputText value="{!record.sProductName}" class="noSpace" />
+                                </div>
+                            </div>
+                            
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label" for="inputSample2">Product Code</label>
+                                <div class="slds-form-element__control">
+                                    <ui:outputText value="{!record.sProductCode}" class="noSpace" />
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label" for="inputSample2">Sales Price</label>
+                                <div class="slds-form-element__control">
+                                    <ui:inputCurrency value="{!record.sUnitPrice}" class="slds-input1"  />
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label" for="inputSample2">Quantity</label>
+                                <div class="slds-form-element__control">
+                                    <ui:inputNumber value="{!record.sQuantity}" class="slds-input1"  />
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <ui:inputSelect aura:id="Location/Aisle"  value="{!record.sLocation}" label="Location/Aisle" change="{!c.FindAllChanges}">                       
+                                	<ui:inputSelectOption text="Shelf Display" value="Shelf Display"  label="Shelf Display"  />
+                                    <ui:inputSelectOption text="End Cap Display" value="End Cap Display"  label="End Cap Display"  />
+                                    <ui:inputSelectOption text="Cooler Display" value="Cooler Display"  label="Cooler Display"  />
+                                </ui:inputSelect>    
+                            </div>
+                        </div>
+                    </div>
+                    <!--/ui:scrollerWrapper-->
+                </aura:iteration>
+                <div class="alignright">
+                	<button value="Submit" class="slds-button slds-button_neutral slds-m-top_small slds-m-left_small" onclick="{!c.redirectBack}">Back</button>
+                	<button value="Submit" class="slds-button slds-button_brand slds-m-top_small slds-m-left_small" onclick="{!c.saveProducts}">Save</button>
+                </div>
+            </div>
+        </ui:scrollerWrapper>
+    </div>
+</aura:component>

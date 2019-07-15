@@ -1,0 +1,53 @@
+<apex:page showHeader="false">
+    <style>
+        body{ background-color:#ffffff;  }
+        #web-viewer-button{
+            background-image:none!important;
+            background:#45A94D!important;;
+            color:#ffffff;
+            padding:10px;
+        }
+        #web-viewer-canvas{
+            padding:0!important;
+            margin:0!important;
+            width:100%;
+            height:100%;
+            position:relative;
+            top:-250px;
+        }
+      </style>
+  <script src="https://cdn.augment.com/web-sdk/0.5/web_viewer_dependencies.js"></script>
+
+    <button id="web-viewer-button" onclick="displayWebViewer()" style="display: none" >View in 3D</button>
+    <div id="web-viewer-canvas" style="display: none; width: 640px; height: 480px;"></div>
+    <script data-augment-config='{ "id": "f06c11635419ba2456637a8e48498c4b4c5b8cb68a3f74e9744e6748b15a0a50", "key": "f5a59a412E000001Mpaadf52db74fc64f57754ebfd858e80ee92382b87b3f89e" }' src="https://cdn.augment.com/web-sdk/0.5/snippet.js"></script>
+    <script type="text/javascript">
+        var viewerResponse;
+        function displayWebViewerButton() {
+          document.getElementById('web-viewer-button').style.display = 'block';
+        }
+        function displayWebViewer() {
+          viewerResponse.generateWebViewer(document.getElementById('web-viewer-canvas'), { width:1200, height: 800 }, function() {
+        
+          });
+          document.getElementById('web-viewer-canvas').style.display = 'block';
+        }
+        augment.initForProduct(
+          {
+            brand: 'alpine',
+            name: 'Alpine Cooler-5',
+            identifier: 'AC - 1234 - 5S - iot',
+        
+          }, function(error, response) {
+            if (!error) {
+              if (response['product'] && response['product']['available_in_web_viewer']) {
+                viewerResponse = response;
+                //displayWebViewerButton();
+                displayWebViewer();
+              }
+            }
+          }
+        );
+
+</script>
+</apex:page>

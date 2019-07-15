@@ -1,0 +1,14 @@
+<apex:page controller="DE_HighlightPanelConfigController">
+    <apex:form >
+    	<apex:pageBlock title="Highlight Panel Builder - DIY">
+        	<apex:pageBlockSection collapsible="false" title="Setup Standard Highlight Panels" id="pbSetupStandardPanel">
+            	<apex:commandButton rendered="{!!orgHasStandardPanelDesigns}" value="Create Standard Highlight Panels" action="{!createStandardHighlightPanels}"
+                                    reRender="pbSetupStandardPanel"
+                                    oncomplete="alert('Standard Highlight Panels are created. You can start using Higlight Panel Builder.');javascript:return 0;"/>
+                <apex:outputPanel rendered="{!orgHasStandardPanelDesigns}">
+                    Standard Highlight Panels are created in your org.
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

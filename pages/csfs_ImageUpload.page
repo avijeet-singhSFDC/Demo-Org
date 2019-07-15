@@ -1,0 +1,8 @@
+<apex:page standardController="csfs_Promotion__c" extensions="csfs_ImageUpload">
+  <apex:form >
+      <apex:pageBlock title="Upload Attachment">
+            <apex:inputFile style="width:100%" id="fileToUpload" value="{!fileBody}" filename="{!fileName}" />
+            <apex:commandButton value="Upload Attachment" action="{!UploadFile}"/>
+       </apex:pageBlock>
+  </apex:form>
+</apex:page>

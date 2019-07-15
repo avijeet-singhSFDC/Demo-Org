@@ -1,0 +1,45 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" 
+                access="global" controller="ArticleFeedbackCtrl">
+    
+    <aura:attribute name="initLiked" type="Boolean" default="false" />
+    <aura:attribute name="liked" type="Boolean" default="false" />
+    <aura:attribute name="unlikeDescription" type="String" />    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="title" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:attribute name="options" type="List" default="[
+                                                        {'label': 'Outdated', 'value': 'Outdated'},
+                                                        {'label': 'Doesnot Work', 'value': 'Doesnot Work'},
+                                                        {'label': 'Poorly Written', 'value': 'Poorly Written'},
+                                                        {'label': 'Other', 'value': 'Other'}
+                                                        ]"/>
+    <aura:attribute name="value" type="String" />
+    
+    <lightning:card title="Was this article helpful ?">
+        <center><lightning:spinner variant="brand" size="small" aura:id="spinner" class="slds-hide"/></center>
+        <aura:set attribute="actions">
+            <lightning:buttonIconStateful class="slds-float_right" iconName="utility:dislike" selected="{!v.liked}" onclick="{! c.handleToggleDislike }" />
+            <lightning:buttonIconStateful class="slds-float_right slds-m-right_large" iconName="utility:like" selected="{!!v.liked &amp;&amp; v.initLiked}" onclick="{! c.handleToggleLike }"/>
+        </aura:set>
+        <p class="slds-p-horizontal_medium">
+            <div aura:id="unlikeCard">
+                Tell us how it could be more helpful.
+                <!--lightning:radioGroup name="radioButtonGroup"
+                                      label="Choose a general reason:"
+                                      options="{! v.options }"
+                                      value="{! v.value }"
+                                      type="button"/-->
+                <lightning:combobox name="comboGroup" label="Choose a general reason:" value="{! v.value }" placeholder="Select reason" options="{! v.options }" />
+                <br></br>
+                <lightning:textarea name="myTextArea" value="{!v.unlikeDescription}" label="Description" />
+                <br></br>
+                <center>
+                	<lightning:button variant="brand" label="Submit" onclick="{! c.handleClick }" />
+                </center>
+            </div>
+        </p>
+    </lightning:card>
+    
+    
+</aura:component>

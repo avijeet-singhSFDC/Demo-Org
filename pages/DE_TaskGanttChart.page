@@ -1,0 +1,170 @@
+<apex:page showHeader="false" sidebar="false" standardController="DE_Project__c" extensions="DE_TaskGanttChart_CT">
+    <link rel="stylesheet" href="/resource/CPG_SLDS203/assets/styles/salesforce-lightning-design-system.min.css"/>
+    <apex:includeScript value="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"/>
+    
+    <html>
+        <style>
+            body {
+            height: 400px;
+            display: block;
+            overflow: scroll;
+            padding: 0px !important;
+            }
+            text{
+            font-family: 'Arial','Helvetica',sans-serif !important;
+            fill: rgb(94, 151, 246);
+            }
+            
+        </style>
+        <head>
+            
+            <script src="../../soap/ajax/37.0/connection.js" type="text/javascript"></script>
+            <script src="/soap/ajax/37.0/apex.js"></script> 
+            
+            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+            <script type="text/javascript">
+                sforce.connection.sessionId='{!GETSESSIONID()}';
+            
+            var j$ = jQuery.noConflict();
+            j$("iframe").each(function(){
+                j$(this).load(function() {
+                    j$(this).height( j$(this).contents().find("body").height() );
+                });
+            });
+            
+            
+            
+            google.charts.load('current', {'packages':['gantt']});
+            google.charts.setOnLoadCallback(drawChart); 
+            
+            
+            function drawChart() {
+                var myUserContext = "{!$User.UITheme}";
+                
+                var recordId='{!$currentPage.parameters.id}';
+                
+                DE_TaskGanttChart_CT.getTaskLineItems(recordId, function(result, event){
+                    
+                    for(var i=0; i < result.length; i++){
+                        
+                        var newChartDiv = document.createElement('div');
+                        newChartDiv.id = 'chart' + i;
+                        newChartDiv.setAttribute('id', 'chart' + i);
+                        
+                        var titleDiv = document.createElement('div'),
+                            parentDiv = document.getElementById('chartDiv');
+                            parentDiv.appendChild(titleDiv);
+                            parentDiv.appendChild(newChartDiv);
+                        
+                        var chart = new google.visualization.Gantt(newChartDiv);
+                        
+                        var data;
+                        var rowHeight = 32;
+                        var totalRows = 0;
+                        var selectedRow;
+                        
+                        data = new google.visualization.DataTable();
+                        
+                        data.addColumn('string', 'Task ID');
+                        data.addColumn('string', 'Task Name');
+                        data.addColumn('string', 'Owner');
+                        data.addColumn('date', 'Start Date');
+                        data.addColumn('date', 'End Date');
+                        data.addColumn('number', 'Duration');
+                        data.addColumn('number', 'Percent Complete');
+                        data.addColumn('string', 'Dependencies');
+                        
+                        var r = result[i];
+                        var task = r.task;
+                        
+                        titleDiv.innerHTML = task.Name;
+                        titleDiv.className = 'slds-text-heading--medium';
+                        parentDiv.appendChild(titleDiv);
+                        
+                        var startDate = new Date(task.Start_Date__c).toISOString();
+                        startDate = startDate.substring(0,10);
+                        startDate = startDate.replace(/-/g, ', ');
+                        
+                        var endDate = new Date(task.End_Date__c).toISOString();
+                        endDate = endDate.substring(0,10);
+                        endDate = endDate.replace(/-/g, ', ');
+                        
+                        
+                        /*data.addRow([task.Id, task.Name, null, new Date(startDate), new Date(endDate), null, null, null ]);
+                          totalRows++;*/
+                        
+                        for(var x = 0; x < r.lineItems.length; x++){
+                            var lineItem = r.lineItems[x];
+                            var previousItem = null;
+                            var dependency = null;
+                            
+                            if(x > 0){
+                                previousItem = r.lineItems[x-1];
+                            }
+                            
+                            var liStartDate = new Date(lineItem.Start_Date__c).toISOString();
+                            liStartDate = liStartDate.substring(0,10);
+                            liStartDate = liStartDate.replace(/-/g, ', ');
+                            
+                            var liEndDate = new Date(lineItem.End_Date__c).toISOString();
+                            liEndDate = liEndDate.substring(0,10);
+                            liEndDate = liEndDate.replace(/-/g, ', ');
+                            
+                            if(previousItem != null && (previousItem.Project_Checklist__c == lineItem.Project_Checklist__c)){
+                                dependency = previousItem.Id;
+                            }
+                            
+                            data.addRow([lineItem.Id, lineItem.Name, lineItem.Assigned__c != undefined ? lineItem.Assigned__r.Name : 'Unassigned', new Date(liStartDate), new Date(liEndDate), null, lineItem.Progress__c, dependency]);
+                            totalRows++;
+                        }
+                        
+                        var options = {
+                            height: totalRows * rowHeight + (rowHeight * 2),
+                            width: 800,
+                            gantt: {
+                                trackHeight: rowHeight,
+                                shadowColor: '#5e97f6'
+                            }
+                        };
+                        
+                        google.visualization.events.addListener(chart, 'onmouseover', function(e){
+                            console.log('MOUSEOVER', e);
+                            selectedRow = e.row;
+                        });
+                        
+                        google.visualization.events.addListener(chart, 'select', (function(c,e){
+                            return function(){
+                                var selection = c.getSelection()[0];
+                                console.log('SELECTION', selection);
+                                console.log(chart.getSelection(),c.getSelection(),e);
+                                console.log('ROW:', selection.row, 'COLUMN:', selection.column);
+                                
+                                var taskid = e.lineItems[selectedRow].Id;
+
+                                console.log(taskid);
+                                
+                                if( (typeof sforce != "undefined") && (sforce != null) && (typeof sforce.one != "undefined")){
+                                    sforce.one.navigateToSObject(taskid);
+                                }
+                                else {
+                                    window.top.location.href = '/' + taskid;
+                                }
+                            }
+                        })(chart, result[i]));
+                        
+                        parentDiv.appendChild(newChartDiv);
+                        chart.draw(data, options);
+                        
+                        //var selectedItem;
+                        
+                    }
+                });
+            }
+            
+            </script>
+        </head>
+        <body>
+            <div id="chartDiv" class="slds"></div>
+        </body>
+    </html>
+</apex:page>

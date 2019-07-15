@@ -1,0 +1,134 @@
+<li>
+    <% if ( viewStatus=="view" && viewMode=="updateable" ){%>
+<b><%= publicName__c  %></b>
+
+        <input type="button" id="camcommunitydeletebutton" class="camfloat cambtn camsitebtn" value="Remove" style="margin-top:-6px;">
+        <input type="button" id="camcommunityeditbutton" class="camfloat cambtn camsitebtn" value="Edit" style="margin-top:-6px;margin-right:6px;">
+        <%} if ( viewStatus=="edit" && viewMode=="updateable" ){%>
+<span style="text-decoration: underline;font-size: 120%;font-style: italic;font-weight: bold;">Editing Zone: <b><%=publicName__c%></b></span>
+            <br/>
+            <br/>
+            <form onsubmit="return false;">
+                <table>
+                    <tr>
+                        <td>Zone &nbsp;</td>
+                        <td>
+                            <input type="button" id="updateableCName" class="camsiteinputedit cambtn camalignleft" value="Zone: <%=communityName__c%>" style="width:500px;text-align:left;">
+                            <img src="<%=window.baseUrlFragment%>/camimgs/camsearch.png" class="camSearchIcon">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Name of the zone as displayed in the Mobile Home Page&nbsp;</td>
+                        <td>
+                            <input type="text" id="updateableCPublicName" class="camsiteinputedit" placeholder="Name of the zone as displayed in the Mobile Home Page" value="<%=publicName__c%>" maxlength="255" style="width:490px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Top Level Data Category Unique Name&nbsp;</td>
+                        <td>
+                            <input type="text" id="updateableCDCapiName" class="camsiteinputedit" placeholder="Top Level Data Category Unique Name" value="<%=communityDCApiName__c%>" maxlength="255" style="width:490px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Top Level Data Category Name&nbsp;</td>
+                        <td>
+                            <input type="text" id="updateableCDCLabel" class="camsiteinputedit" placeholder="Top Level Data Category Name" value="<%=communityDCLabel__c%>" maxlength="255" style="width:490px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Specific Static Resource File for this Zone&nbsp;</td>
+                        <td>
+                            <input type="button" id="updateableCStaticResource" class="camsiteinputedit cambtn camalignleft" value="Static Resource: <%=staticResourceName__c%>" style="width:500px;text-align:left;">
+                            <img src="<%=window.baseUrlFragment%>/camimgs/camsearch.png" class="camSearchIcon">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Icon path (in the Static Resource)&nbsp;</td>
+                        <td>
+                            <input type="text" id="updateableCIconPath" class="camsiteinputedit" placeholder="Icon Path (inside static resource)" value="<%=iconPath__c%>" style="width:490px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Background Image path (in the Static Resource)&nbsp;</td>
+                        <td>
+                            <input type="text" id="updateableCBackgroundImagePath" class="camsiteinputedit" placeholder="Background Path (inside static resource)" value="<%=backgroundImagePath__c%>" style="width:490px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PKB Article Number</td>
+                        <td>
+                            <input type="text" id="updateableCkaNumber" class="camsiteinputedit" placeholder="Knowledge Base Article number" value="<%=knowledgeArticle__c%>" style="width:490px;">
+                        </td>
+                    </tr>
+                </table>
+                <input type="button" id="updateableCSaveButton" class="cambtn camsitebtn" value="Update">
+                <input type="button" id="updateableCCancelButton" class="cambtn camsitebtn" value="Cancel">
+                <br/>
+<span id="error" class="errorMsj"></span>
+
+            </form>
+            <%} if ( viewMode=="createNew" ){%>
+<span style="text-decoration:underline;">New Zone</span>
+                <br/>
+                <br/>
+                <form onsubmit="return false;">
+                    <table>
+                        <tr>
+                            <td>Zone &nbsp;</td>
+                            <td>
+                                <input type="button" id="newCName" class="camsiteinputedit cambtn camalignleft" value="Select Zone" style="width:500px;text-align:left;">
+                                <img src="<%=window.baseUrlFragment%>/camimgs/camsearch.png" class="camSearchIcon">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Name of the zone as displayed in the Mobile Home Page&nbsp;</td>
+                            <td>
+                                <input type="text" id="newCPublicName" class="camsiteinputedit" placeholder="Name of the zone as displayed in the Mobile Home Page" value="" maxlength="255" style="width:490px;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Top Level Data Category Unique Name&nbsp;</td>
+                            <td>
+                                <input type="text" id="newCDCapiName" class="camsiteinputedit" placeholder="Top Level Data Category Unique Name" value="" maxlength="255" style="width:490px;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Top Level Data Category Name&nbsp;</td>
+                            <td>
+                                <input type="text" id="newCDCLabel" class="camsiteinputedit" placeholder="Top Level Data Category Name" value="" maxlength="255" style="width:490px;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Specific Static Resource File for this Zone&nbsp;</td>
+                            <td>
+                                <input type="button" id="newCStaticResource" class="camsiteinputedit cambtn camalignleft" value="Select Static Resource" style="width:500px;text-align:left;">
+                                <img src="<%=window.baseUrlFragment%>/camimgs/camsearch.png" class="camSearchIcon">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Icon path (in the Static Resource)&nbsp;</td>
+                            <td>
+                                <input type="text" id="newCIconPath" class="camsiteinputedit" placeholder="Icon Path (inside static resource)" value="<%=iconPath__c%>" style="width:490px;">
+                            </td>
+                        </tr>
+                    <tr>
+                        <td>Background Image path (in the Static Resource)&nbsp;</td>
+                        <td>
+                            <input type="text" id="newCBackgroundImagePath" class="camsiteinputedit" placeholder="Background Path (inside static resource)" value="<%=backgroundImagePath__c%>" style="width:490px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PKB Article Number</td>
+                        <td>
+                            <input type="text" id="newCkaNumber" class="camsiteinputedit" placeholder="Knowledge Base Article number" value="<%=knowledgeArticle__c%>" style="width:490px;">
+                        </td>
+                    </tr>
+                    </table>
+                    <input type="button" id="newCSaveButton" class="cambtn camsitebtn" value="Save">
+                    <input type="button" id="newCCancelButton" class="cambtn camsitebtn" value="Cancel">
+                    <br/>
+<span id="error" class="errorMsj" style="line-height:3;"></span>
+
+                </form>
+                <%}%>
+</li>

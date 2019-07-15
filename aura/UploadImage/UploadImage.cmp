@@ -1,0 +1,12 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" >
+    
+    <aura:attribute name="recordId" type="Id"/>
+    
+    <lightning:fileUpload label="Attach receipt"
+        name="fileUploader" 
+        multiple="true" 
+        accept=".pdf, .png, .jpg "
+        recordId="{!v.recordId}" 
+        onuploadfinished="{!c.handleUploadFinished}" />
+	
+</aura:component>

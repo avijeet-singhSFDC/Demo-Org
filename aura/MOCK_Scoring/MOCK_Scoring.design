@@ -1,0 +1,4 @@
+<design:component label="Mock Lead/Opportunity Scoring">
+	<design:attribute name="componentLabel" label="Component Label"></design:attribute>
+	<design:attribute name="parentObjectType" label="Object Type" datasource="Lead, Opportunity"></design:attribute>
+</design:component>

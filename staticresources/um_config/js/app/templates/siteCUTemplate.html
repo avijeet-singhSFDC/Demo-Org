@@ -1,0 +1,59 @@
+<div class="bs-docs-siteInfo">
+	<div class="input-prepend">
+  	<span id="openModalSite" class="add-on" style="width:210px;text-align:left;cursor:pointer;"><i class="icon-search"></i>&nbsp;Site unique name (API name)</span>
+  	<input class="span7" id="umSite_apiName__c" type="text" placeholder="site api name..." value="<%if(m.get("umSite_apiName__c") != null){ print(m.get("umSite_apiName__c"));}%>" disabled>
+	</div>
+	<div class="input-prepend">
+  	<span id="openModalResource" class="add-on" style="width:210px;text-align:left;cursor:pointer;"><i class="icon-search"></i>&nbsp;Global Static Resource</span>
+  	<input class="span7" id="umSite_staticResource__c" type="text" placeholder="static resource..." value="<%if(m.get("umSite_staticResource__c") != null){ print(m.get("umSite_staticResource__c"));}%>" disabled>
+	</div>
+	<div class="accordion" id="accordionBackground">
+	  <div class="accordion-group">
+	    <div class="accordion-heading">
+	      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionBackground" href="#collapseBack">
+	        Background & Logo
+	      </a>
+	    </div>
+	    <div id="collapseBack" class="accordion-body collapse in">
+	      <div class="accordion-inner">
+	      	<div class="input-prepend">
+				<span class="add-on" style="width:200px;text-align:left;">HEX color</span>
+				<input class="span6" id="umSite_backgroundColor__c" type="text" placeholder="solid color hex value..." value="<%if(m.get("umSite_backgroundColor__c")!=null){ print(m.get("umSite_backgroundColor__c")); }%>">
+			</div>
+			<div class="input-prepend">
+				<span class="add-on" style="width:200px;text-align:left;">Background image path</span>
+				<input class="span6" id="umSite_backgroundImage__c" type="text" placeholder="background image path..." value="<%if(m.get("umSite_backgroundImage__c")!=null){ print(m.get("umSite_backgroundImage__c")); }%>">
+			</div>
+			<div class="input-prepend">
+				<span class="add-on" style="text-align:left;width:200px;">Logo image path</span>
+			  	<input class="span6" id="umSite_iconImage__c" type="text" placeholder="logo image path..." value="<%if(m.get("umSite_iconImage__c")!=null){print(m.get("umSite_iconImage__c"));}%>">
+			</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<div class="checkbox">
+  		<input type="checkbox" value="umSite_announcements__c" id="umSite_announcements__c" <%if(m.get("umSite_announcements__c")==true){print("checked");}%>>
+  		<div class="input-prepend input-append">
+  			<span class="add-on">Announcements area enabled</span>
+			<input class="span6" id="umSite_announcementsKaId__c" type="text" placeholder="article number..." value="<%if(m.get("umSite_announcementsKaId__c")!=null){ print(m.get("umSite_announcementsKaId__c"));}%>">
+			<span class="add-on">Knowledge article number</span>
+		</div>
+	</div>
+	<label>Labels customization</label>
+	<div class="input-prepend">
+  		<span class="add-on" style="width:200px;text-align:left;">Welcome message</span>
+  		<input class="span7" id="umSite_welcomeMessage__c" type="text" placeholder="welcome message..." value="<%if(m.get("umSite_welcomeMessage__c")!=null){print(m.get("umSite_welcomeMessage__c"));}%>">
+	</div>
+	<div class="input-prepend">
+  		<span class="add-on" style="width:200px;text-align:left;">Search banner label</span>
+  		<input class="span7" id="umSite_searchBannerLabel__c" type="text" placeholder="search banner label..." value="<%if(m.get("umSite_searchBannerLabel__c")!=null){print(m.get("umSite_searchBannerLabel__c"));}%>">
+	</div>
+</div>
+
+<div class="bs-docs-fbSignUp">
+	<div class="input-prepend">
+  	<span id="openModalProfile" class="add-on" style="width:210px;text-align:left;cursor:pointer;"><i class="icon-search"></i>&nbsp;New User's Profile</span>
+  	<input class="span7" id="signUpProfile__c" type="text" placeholder="site api name..." value="<%if(m.get("signUpProfile__c") != null){ print(m.get("signUpProfile__c"));}%>" disabled>
+	</div>
+</div>

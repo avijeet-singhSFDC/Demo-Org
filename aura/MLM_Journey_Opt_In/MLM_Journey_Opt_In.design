@@ -1,0 +1,3 @@
+<design:component label="Journey Opt In">
+    <design:attribute name="ShowData" datasource="Yes,No" default="No" Label="Show Journey Data"/>
+</design:component>

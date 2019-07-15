@@ -1,0 +1,18 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global">
+    <aura:attribute name="eyeLevel" type="Boolean"/>
+    <aura:attribute name="options" type="List" default="[
+                                                        {'label': 'Yes', 'value' : 'true'},
+                                                        {'label': 'No', 'value' : 'false'}]"/>
+    
+    <div class="slds">
+        Were all of our products displayed at eye-level?
+        <lightning:radioGroup aura:id="grp"
+                              label=""
+                              options="{!v.options}"
+                              value="{!v.eyeLevel}"
+                              onchange="{!c.assignValue}"/>
+        <div class="slds-hide errorMsg" aura:id="errorMsg">
+            All of our products are supposed to be displayed at eye-level according to our agreements with this retailer. Please work with the department manager to reorganize the shelf to ensure proper eye-level placement of all of our products.
+        </div>
+    </div>
+</aura:component>

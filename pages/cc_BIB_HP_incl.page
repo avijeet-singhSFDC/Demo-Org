@@ -1,0 +1,14 @@
+<apex:page id="cc_BIB_HP_incl" sidebar="false" showHeader="false" standardStylesheets="false">
+    <c:cc_Carousel />
+    <c:ckz_HomePageRecentOrders />
+    <c:cc_SpotlightProducts />
+    <c:cc_homepageOrderTemplate />
+    <script>
+        jQuery(function ($) {
+            CCRZ.pubSub.on('view:quickWishlistView:refresh', function () {
+                //Collapse HP Wishlists
+                $('#collapseTemplateEntry').removeClass('in');
+            });
+        });
+    </script>
+</apex:page>

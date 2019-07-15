@@ -1,0 +1,88 @@
+.THIS .metric{
+    font-weight:700;
+    text-align: right;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+.THIS .metric-name{
+    font-weight:700;
+    text-align: right;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+    bottom: 10px;
+    position: absolute;
+    font-size: 16px;
+}
+.THIS .box1{
+    background-color: #1a97f0;
+    color: #ffffff;
+    border: 0px;
+    position: relative;
+    width: 100%;
+    max-height: 150px;
+    min-height: 150px;
+    
+}
+.THIS .box2{
+    background-color: #1a97f0;
+    color: #ffffff;
+    border: 0px;
+    position: relative;
+    width: 100%;
+    max-height: 150px;
+    min-height: 150px;
+    
+}
+.THIS .box3{
+    background-color: #1a97f0;
+    color: #ffffff;
+    border: 0px;
+    position: relative;
+    width: 100%;
+    max-height: 150px;
+    min-height: 150px;
+    
+}
+.THIS .box4{
+    background-color: #1a97f0;
+    color: #ffffff;
+    border: 0px;
+    position: relative;
+    width: 100%;
+    max-height: 150px;
+    min-height: 150px;
+    
+}
+
+/*Blues:
+#c2f5ff
+#006efc
+#1436d9
+#0a1c6b
+
+Pinks:
+#faccd4
+#d166bd
+#b0008f
+#85006b
+
+Purples:
+#ccccf0
+#6666d1
+#5839b5
+#430078
+
+Oranges:
+#f2ebc8
+#ffbea6
+#ff954f
+#ff5919
+
+Greens:
+#c1faf2
+#00d5c3
+#00a795
+#078b89
+*/

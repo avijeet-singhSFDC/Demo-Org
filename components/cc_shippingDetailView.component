@@ -1,0 +1,155 @@
+<apex:component id="cc_shippingDetailView">
+  <script id="CC-Shipping-Detail-LLI-Desktop" type="text/template">
+    <div class="cc_shipping_detail_lli">
+      <div class="row cc_message_row">
+        <div class="col-xs-12">
+          <div class="messagingSection-Error" style="display: none"></div>
+          <div class="messagingSection-Info" style="display: none"></div>
+          <div class="messagingSection-Warning" style="display: none"></div>
+        </div>
+      </div> <!-- /.row -->
+
+      <div class="row shippingContainer">
+        <div class="col-sm-8">
+          <div class="shipGroups">
+            <div class="panel panel-default cc_panel cc_buyerInfo">
+              <div class="panel-heading cc_heading">
+                <h4 class="panel-title cc_title">
+                  <a role="button" data-toggle="collapse" data-target=".buyerInfo">{{pageLabelMap 'LLICheckOut_ContactInformation'}}</a>
+                </h4>
+              </div>
+
+              <div class="panel-body cc_body buyerInfo">
+                {{#with this.cartData}}
+                <form id="buyerInfo" class="form buyerInfoForm cc_buyerinfo_form">
+                  <div class="col-sm-6">
+                    <label for="buyerFirstName" class="control-label cc_firstname_label">{{pageLabelMap 'LLICheckOut_FirstName'}}</label>
+                    <input id="buyerFirstName" type="text" value="{{buyerFirstName}}" class="form-control contactField cc_firstname" maxlength=100 name="buyerFirstName" />
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="buyerLastName" class="control-label cc_lastname_label">{{pageLabelMap 'LLICheckOut_LastName'}}</label>
+                    <input id="buyerLastName" type="text" value="{{buyerLastName}}" class="form-control contactField cc_lastname" maxlength=100 name="buyerLastName" />
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="buyerPhone" class="control-label cc_phone_label">{{pageLabelMap 'LLICheckOut_Phone'}}</label>
+                    <input id="buyerPhone" type="text" value="{{buyerPhone}}" class="form-control contactField cc_phone" maxlength=40 name="buyerPhone" />
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="buyerEmail" class="control-label cc_email_label">{{pageLabelMap 'LLICheckOut_Email'}}</label>
+                    <input id="buyerEmail" type="text" value="{{buyerEmail}}" class="form-control contactField cc_email" maxlength=80 name="buyerEmail" />
+                  </div>
+                </form>
+                {{/with}}
+              </div>
+            </div>
+
+            <p class="shippingGuidingText cc_shipping_guiding_text">
+              {{pageLabelMap 'LLICheckOut_ShippingGuidingText'}}
+            </p>
+
+            <form id="shipForm" class="form cc_ship_form">
+              {{#each this.cartData.ECartItemGroupsS.models}}
+                {{#with this.attributes}}
+                  <div class="panel panel-default cc_panel shippingGroupPanel{{sfid}} cc_shipping_group_panel" data-id="{{sfid}}">
+                    <div class="panel-heading cc_heading">
+                      <h4 class="panel-title cc_title shipGroupTitle{{sfid}}">
+                        <a role="button" data-toggle="collapse" data-target=".shipGroupBody{{sfid}}">
+                          <span class="cc_label cc_label_groupheader">{{pageLabelMap 'LLICheckOut_GroupHeader'}}</span>
+                          <span class="cc_label cc_xofy cc_xofy{{@index}}">{{XofY @index ../../this.cartData.ECartItemGroupsS.models}}</span>
+                          <span class="cc_value">{{groupName}}</span>
+                        </a>
+                      </h4>
+                    </div>
+
+                    <div class="panel-body cc_body shipGroupBody{{sfid}}">
+                      <div class="LLIshipOptions cc_lli_shipoptions">
+                        <div class="addressEntry col-sm-6 cc_address_entry">
+                          <label for="groupAddress" class="control-label cc_group_address_label">{{pageLabelMap 'LLICheckOut_ShipAddrHeader'}}</label>
+                          <div id="groupAddress" class="groupAddress cc_group_address">
+                            <input type="hidden" name="shipToId_{{sfid}}" value="{{shipTo.sfid}}" /> {{>addressDisplay this.shipTo}}
+                          </div>
+
+                          {{#if shipTo}}
+                            <p class="cc_edit_addr_section">
+                              <a href="" class="editAddr cc_edit_addr" data-id="{{sfid}}" data-toggle="modal">{{pageLabelMap 'LLICheckOut_EditAddr'}}</a>
+                            </p>
+                          {{else}}
+                            <p class="cc_edit_addr_section">
+                              <a href="" class="editAddr cc_edit_addr" data-id="{{sfid}}" data-toggle="modal">{{pageLabelMap 'LLICheckOut_EnterAddr'}}</a>
+                            </p>
+                          {{/if}}
+                        </div>
+
+                        <div class="shipInfo col-sm-6 cc_ship_info">
+                          {{#if this.ECartItemsS}}
+                            {{#ifDisplay 'SO.DsplShipOptions'}}
+                              {{#if this.shippingOptions}}
+                                <label for="shippingMethod_{{sfid}}" class="control-label cc_shipping_method_label">{{pageLabelMap 'LLICheckOut_ShippingMethod'}}</label>
+                                <select id="shippingMethod_{{sfid}}" class="shippingOptions form-control shippingOptions{{sfid}} cc_shipping_method" name="shippingMethod_{{sfid}}">
+                                  {{#each this.shippingOptions}}
+                                    <option value="{{this.uniqueId}}" {{#ifEquals ../shipMethod this.uniqueId}} selected {{/ifEquals}}>
+                                      {{price this.price}} - {{this.provider}} - {{pageLabelMap this.serviceName}}
+                                    </option>
+                                  {{/each}}
+                                </select>
+                              {{/if}}
+                            {{/ifDisplay}}
+
+                            {{#ifDisplay 'SO.ShowReqDate'}}
+                              {{#if shipTo}}
+                                <div class="deliveryDateMessages_{{shipTo.sfid}} cc_delivey_date_messages" id="deliveryDateMessages"></div>
+
+                                {{#unless ../../this.requestDateData.ApiError}}
+                                  <label for="requestedDateStr_{{sfid}}" class="control-label cc_requested_date_label">{{pageLabelMap 'LLICheckout_RequestedDeliveryDt'}}</label>
+                                  <input name="requestedDateStr_{{sfid}}" value="{{requestDate}}" class=" form-control requestedDate requestedDate{{sfid}} cc_requested_date" data-sfid="{{shipTo.sfid}}">
+                                {{/unless}}
+                              {{/if}}
+                            {{/ifDisplay}}
+
+                            {{#ifDisplay 'SO.DsplShipNotes'}}
+                              <div class="ship_notes cc_ship_notes">
+                                <label for="shippingInst_{{sfid}}" class="control-label cc_shipping_inst_label">{{pageLabelMap 'LLICheckOut_ShippingNotes'}}</label>
+                                <textarea id="shippingInst_{{sfid}}" name="shippingInst_{{sfid}}" rows="6" class="form-control cc_shipping_inst">{{note}}</textarea>
+                              </div>
+                            {{/ifDisplay}}
+                          {{/if}}
+                        </div>
+                      </div>
+
+                      <div class="groupItems cc_group_items">
+                        {{> cartItemsDesktop productList=../../productList}}
+                      </div>
+                    </div>
+                  </div>
+                {{/with}}
+              {{/each}}
+            </form>
+          </div>
+
+          <p class="cc_additem_group_action">
+            <input class="btn btn-default btn-sm cc_btn cc_btn_primary addItemGroupBtn cc_additem_group" type="button" value="{{pageLabelMap 'LLICheckOut_AddItemGroup'}}"></input>
+          </p>
+        </div>
+
+        <div class="col-sm-4">
+          <div class="summaryWidget cc_summary_widget">
+            {{> cartSummaryWidget}}
+
+            <div class="checkoutNav cc_checkout_nav">
+              <input class="btn btn-default btn-sm processBack cc_process_back" type="button" value="{{pageLabelMap 'Back'}}" alt="{{pageLabelMap 'LLICheckOut_Back'}}" />
+              <input class="btn btn-default btn-sm processLLIShippingInfo proceed cc_proceed" type="button" value="{{pageLabelMap 'LLICheckOut_Proceed'}}" alt="{{pageLabelMap 'LLICheckOut_Proceed'}}" />
+            </div>
+          </div>
+        </div>
+      </div> <!-- /.row -->
+
+      <div id="modalSec"></div>
+    </div>
+  </script>
+
+  <script type="text/javascript">
+    $(function() {
+      CCRZ.uiProperties.LLIShippingDetailView.desktop.tmpl = 'CC-Shipping-Detail-LLI-Desktop';
+    });
+  </script>
+</apex:component>

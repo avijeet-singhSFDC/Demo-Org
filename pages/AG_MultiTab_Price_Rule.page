@@ -1,0 +1,51 @@
+<apex:page showHeader="true" docType="html-4.01-strict">
+<div id="tabstrip" style="display:none;"> <ul> 
+<li class="k-state-active">PRICE RULES</li>
+<li>Price Conditions</li>
+<li>Lookup Queries</li>
+<li>Price Actions</li>
+</ul>
+<!-- PRICE RULES -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="SBQQ__PriceRule__c" DelayLoad="true"  ViewID="aBs2E000000JHjsCAG" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+ 
+<!-- Price Conditions -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="SBQQ__PriceCondition__c" DelayLoad="false"  ViewID="aBs2E000000JHjtCAW" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+<!-- Lookup Queries -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="SBQQ__LookupQuery__c" DelayLoad="true"  ViewID="aBs2E000000JHkMCAG" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+<!-- Price Actions -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="SBQQ__PriceAction__c" DelayLoad="true"  ViewID="aBs2E000000JHkLCAG" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+</div>
+<script>
+$(document).ready(function() {
+    $("#tabstrip").kendoTabStrip({
+      activate: function(e){
+        setTimeout(function(){          $(window).resize();        });
+      }
+    });
+    $("#tabstrip").css("display", "block");
+});
+ </script>
+</apex:page>

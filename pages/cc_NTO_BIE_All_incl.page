@@ -1,0 +1,14 @@
+<apex:page id="cc_BIE_All_incl" sidebar="false" showHeader="false" standardStylesheets="false">
+    <c:cc_Header_v1 />
+    <c:cc_socialWidget />
+    <c:ckz_footer />
+
+    <script type="text/javascript">
+        $(function () {
+            $(".container").toggleClass("container container-fluid");
+
+            var pageName = "ckz_" + CCRZ.pagevars.currentPageName.slice(6);
+            $("body").addClass(pageName);
+        });
+    </script>
+</apex:page>

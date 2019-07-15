@@ -1,0 +1,24 @@
+<div class="row">
+	<div class="span12">
+		<div class="bs-docs-sites">
+			<button class="btn btn-mini" style="margin-top:10px" type="button" id="newSite"><i class="icon-plus"></i>&nbsp;New Site</button>
+        	<%if( sites.length < 1 ){%>
+			<div class="alert" style="margin-top:10px;">No sites available.</div>
+			<%}else{%>
+			<table class="table table-hover table-condensed">
+				<thead>
+					<tr><th>#Id</th>
+					<th>Site API Name</th>
+					<th style="text-align:center;">Q&A</th>
+					<th style="text-align:center;">Contact</th>
+					<th style="text-align:center;">K.Base</th>
+					<th style="text-align:center;">Cases</th>
+					<th style="text-align:center;">Authentication</th>
+					<th><!--Options--></th></tr>
+				</thead>
+				<tbody id="sitesList"></tbody>
+			</table>
+			<%}%>
+		</div>
+	</div>
+</div>

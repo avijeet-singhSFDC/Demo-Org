@@ -1,0 +1,6 @@
+<aura:component >
+	<aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:attribute name="acctId" type="String"/>
+    <aura:attribute name="storeVisitId" type="String"/>    
+    <lightning:flow aura:id="storeVisit" onstatuschange="{!c.goToStoreVisit}"/>
+</aura:component>

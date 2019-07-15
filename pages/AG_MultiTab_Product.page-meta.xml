@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>34.0</apiVersion>
+    <availableInTouch>true</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>AG_PricebookEntry;AG_Pricebook2;AG_Product2;AG_SBQQ__ProductAction__c;AG_SBQQ__ProductFeature__c;AG_SBQQ__ProductOption__c;AG_SBQQ__ProductRule__c;AG_SBQQ__PriceCondition__c;AG_SBQQ__PriceRule__c;AG_SBQQ__DiscountSchedule__c;AG_SBQQ__QuoteTemplate__c</description>
+    <label>Conga Grid MultiTab Product</label>
+    <packageVersions>
+        <majorNumber>1</majorNumber>
+        <minorNumber>89</minorNumber>
+        <namespace>CRMC_PP</namespace>
+    </packageVersions>
+</ApexPage>

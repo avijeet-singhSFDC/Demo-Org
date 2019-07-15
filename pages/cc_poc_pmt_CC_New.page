@@ -1,0 +1,138 @@
+<apex:page id="cc_poc_pmt_CC_New" controller="cc_poc_ctrl_pmt_CC_New" applyHtmlTag="false"
+    docType="html-5.0" sidebar="false" showHeader="false" standardStylesheets="false">
+
+<script id="MyAccount-MyWalletMCC-Both" type="text/template">
+    <div class="myWalletCCOuterContainer">
+        <h2 class="title">{{pageLabelMap 'MyWallet_AddPymtMtd'}}</h2>
+        <div class="main_content_large_right_container">
+
+            <div class="alert alert-error error_messages_section" style="display:none;"></div>
+
+            <form id="newCCForm" action="" class="newCCForm" forceSSL="true">
+                <fieldset>
+                    <legend>New Credit Card</legend>
+                    <p>Enter your payment data below</p>
+                    <p>Name:</p><p><input type="text" name="displayName" id="displayName" maxlength="50" /></p>
+                    <p>Card Type:</p>
+                    <p>
+                        <select name="paymentType">
+                            <option value="Visa">Visa</option>
+                            <option value="MC">Master Card</option>
+                            <option value="Amex">American Express</option>
+                            <option value="Disc">Discover Card</option>
+                        </select>
+                    </p>
+                    <p>Card Number:</p><p><input type="text" name="accountNumber"/></p>
+                    <p>Expiration:</p><p>M:<select name="expirationMonth">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10" selected>10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                    &nbsp;Y:<select name="expirationYear">
+                        <option value="2017">2017</option>
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                        <option value="2020">2021</option>
+                    </select></p>
+                    <p>Enabled for Checkout:</p><p><input type="checkbox" name="isEnabled" id="isEnabled" /></p>
+                </fieldset>
+                <p class="two_buttons">
+                    <div class="right">
+                        <input type="button" class='button cancelCC' id="cancelCC" value="{{pageLabelMap 'MyWallet_Cancel'}}" />
+                        <input type="button" class='button saveCC' id="saveCC" value="{{pageLabelMap 'MyWallet_SaveToWall'}}" />
+                    </div>
+                </p>
+                <p>&nbsp;</p>
+            </form>
+        </div>
+    </div>
+</script>
+
+<script>
+    jQuery(function($) {
+        CCRZ.models.StoredPaymentsCCModel = CCRZ.CloudCrazeModel.extend({
+            className : "cc_poc_ctrl_pmt_CC_New",
+            saveCCNumber: function(ccData, callback) {
+                this.invokeContainerLoadingCtx($('body'), "saveCCNumber", JSON.stringify(ccData),
+                    function(response){
+                        if(response && response.success ) {
+                            callback();
+                        }
+                    },
+                    {nmsp: false}
+                );
+            },
+        });
+
+        CCRZ.views.StoredPaymentsCCView = CCRZ.CloudCrazeView.extend({
+            viewName : "StoredPaymentsCCView",
+            templateDesktop : CCRZ.util.template("MyAccount-MyWalletMCC-Both"),
+            templatePhone : CCRZ.util.template("MyAccount-MyWalletMCC-Both"),
+            init : function(){
+                this.render();
+            },
+            events: {
+                "click #saveCC" : "saveNewCCNumber",
+                "click #cancelCC" : "cancelNewCCNumber"
+            },
+            initValidation : function() {
+                $('#newCCForm').validate({
+                    invalidHandler : function(event, validator) {
+                        CCRZ.handleValidationErrors(event, validator, 'error_messages_section', false);
+                    },
+                    rules : {
+                        accountNumber : { required : true }
+                    },
+                    messages : {
+                        accountNumber : { required : 'CC Number is required' }
+                    },
+                    errorPlacement : function(error, element) { }
+                });
+            },
+            renderDesktop : function(){
+                $(CCRZ.uiProperties.StoredPaymentsPOView.phone.selector).empty();
+                this.setElement($(CCRZ.uiProperties.StoredPaymentsPOView.desktop.selector));
+                this.$el.html(this.templateDesktop({}));
+            },
+            renderPhone : function(){
+                $(CCRZ.uiProperties.StoredPaymentsPOView.desktop.selector).empty();
+                this.setElement($(CCRZ.uiProperties.StoredPaymentsPOView.phone.selector));
+                this.$el.html(this.templatePhone({}));
+            },
+            postRender : function() {
+                this.initValidation();
+            },
+            cancelNewCCNumber : function(){
+                myWallet();
+            },
+            saveNewCCNumber : function() {
+                if ($('#newCCForm').valid()) {
+                    var formData = form2js("newCCForm", '.', false, function(node) {}, false);
+                    formData.accountType = 'cc';
+                    formData.accountNumber = formData.accountNumber.substr(formData.accountNumber.length - 4);
+                    formData.isEnabled = formData.isEnabled != null ? true : false;
+                    this.model.saveCCNumber(formData, function() {
+                        myWallet();
+                    });
+                }
+            }
+        });
+
+        CCRZ.paymentViews = CCRZ.paymentViews || {};
+        CCRZ.paymentViews.cc = new CCRZ.views.StoredPaymentsCCView({
+            model : new CCRZ.models.StoredPaymentsCCModel
+        });
+    });
+</script>
+{!dummy}
+</apex:page>

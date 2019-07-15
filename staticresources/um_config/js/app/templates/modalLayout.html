@@ -1,0 +1,54 @@
+<div class="modal hide fade" id="modalLayout">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Knowledge Layout</h3>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="span6 alert alert-success"><i class="icon-info-sign"></i>&nbsp;Drag,drop and order between available and selected fields</div>
+    </div>
+    <div class="row">
+      <div class="span2">
+        <ul class="ulsKaT">
+          <li>K.Article Type</li>
+        </ul>
+      </div>
+      <div class="span2">
+        <ul class="ulsKaT">
+          <li>Available fields</li>
+        </ul>
+      </div>
+      <div class="span2">
+        <ul class="ulsKaT">
+          <li>Selected fields</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span2">
+        <ul id="typesAvailable" class="ulsKa">
+          <% if (types.length<1){%>
+            <li class="label label-success">No types available.</li>
+          <%};%>
+          <% _.each(types,function(t){%>
+            <li data-id="<%=t%>" class="liClickableKa"><%=t%></li>
+          <%},this);%>
+        </ul>
+      </div>
+      <div class="span2">
+        <ul id="layoutAvailable" class="ulsKa connectedSortable">
+        </ul>
+      </div>
+      <div class="span2">
+        <ul id="layoutSelected" class="ulsKa connectedSortable">
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span6 alert alert-error" id="modalLayoutError" style="display:none;"></div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary" id="done">Done</a>
+  </div>
+</div>

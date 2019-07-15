@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>34.0</apiVersion>
+    <availableInTouch>true</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>AG_Contract
+This is a single Contract VF page intended for a tab if you don&#39;t want to use the Multi-Tab</description>
+    <label>Conga Grid Contract</label>
+    <packageVersions>
+        <majorNumber>1</majorNumber>
+        <minorNumber>89</minorNumber>
+        <namespace>CRMC_PP</namespace>
+    </packageVersions>
+</ApexPage>

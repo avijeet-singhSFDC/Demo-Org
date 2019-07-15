@@ -1,0 +1,98 @@
+/** GENERAL **/
+.THIS .slds-welcome-mat{position: absolute!important}
+.THIS .slds-modal__container{display:block!important}
+.THIS .slds-fade-in-close{display:none}
+.THIS .padding{padding:20px;}
+.THIS .paddingmedium{padding:40px 20px;}
+.THIS .paddinglarge{padding:80px 20px}
+.THIS .paddingleftright{padding:0px 20px;}
+.THIS .paddingtopbottom{padding:20px 0;}
+.THIS .borderright{border-right:1px solid #ddd;}
+.THIS .borderleft{border-left:1px solid #ddd;}
+.THIS .center{text-align:center;}
+.THIS .partneremail strong{color:#000;}
+.THIS .clear{clear:both;}
+.THIS .textleft{text-align:left;}
+.THIS .marginleft{margin-left:20px;}
+.THIS .margin{margin:10px!important;}
+.THIS .relative{position:relative;}
+.THIS .slds-modal__container{max-width: 70rem !important;width:80% !important;}
+.THIS .slds-fade-in-open .slds-modal__container{display:flex!important}
+.THIS .slds-welcome-mat .slds-modal__container{display:block!important}
+.THIS .absolutetopright{position:absolute;top:20px;right:10px;}
+/** COLORS **/
+.THIS .slds-modal__close .slds-icon-text-default,.THIS .imgleft .slds-icon{fill:#ffffff;}
+.THIS .completedcheck .slds-icon-text-default{fill:green;}
+.THIS .tile_complete{background-color:transparent!important;}
+.THIS .lightgreybg{background:#fafafa;}
+/** IMAGES & ICONS **/
+.THIS .resourcepic{padding:5px;border:1px solid #ddd;background:#fff;}
+.THIS .iconwhite{color:#fff;}
+.THIS .third img,.THIS .fifth img{width:100%;}
+.THIS .personaimg{width:40px;height:40px;border-radius:50%;margin-right:20px;}
+.THIS .solutionicon{width:100%;height:auto;}
+.THIS .subsolutionicon{width:40px!important;height:auto;}
+.THIS .imgleft{float:left;margin-right:10px;margin-bottom:10px;}
+.THIS .partnerlogo{width:100px!important;padding:10px 10px 50px 10px;}
+/** LAYOUT **/
+.THIS .subsolutiondesc{font-size:10px!important;margin-top:2px;display:block;text-align:left;}
+.THIS .subsolutiondesc h2,.THIS .subsolutiondesc h1,.THIS .subsolutiondesc h3{font-size:10px!important;}
+.THIS.fido{background-image:url(https://s3.amazonaws.com/sfdc-ckz-b2b/RCG/GettingToKnowTheIDO/Images/fidobg.jpg);background-repeat: no-repeat;background-size: 100% auto;background-color:#acdee7;background-position:bottom right;height:auto;}
+.THIS .content{min-height:600px;padding:40px 0;}
+.THIS .minicard{width:90%;margin:0 auto;}
+.THIS .largecard{width:90%;margin:0 auto;}
+.THIS .slds-accordion__summary-heading{border-bottom:none;}
+.THIS .industry{background-color:rgba(255, 255, 255,0.7);border-radius:4px;width:50%;}
+.THIS .third{width:30%;float:left;}
+.THIS .twothirds{width:70%;float:right;min-height:320px}
+.THIS .fifth{width:10%;float:left;}
+.THIS .twofifths{width:20%;float:left;margin-left:10px;}
+.THIS .threefifths{width:68%;float:right;}
+.THIS .fourfifths{width:88%;float:right;}
+.THIS .halfcard{width:calc(50% - 20px);margin:10px;float:left;}
+.THIS .sidebar{position:absolute;left:0;top:0;bottom:0;height:100%;float:none;clear:both;overflow-y:scroll}
+.THIS .sidebar .solutionicon{width:50px;height:auto;margin:0 auto 10px auto;display:block;}
+.THIS .componentfooter{background:#eeeeee;border-top:1px solid #ddd;padding:10px;text-align:center;}
+.THIS .owner{margin:10px 0;border:1px solid #ddd;border-radius:4px;position:relative;}
+.THIS .half{width:50%!important;float:left;}
+.THIS .half:nth-child(2n+1){clear:left}
+.THIS .question ul{margin-left:20px;}
+.THIS .question ul li{list-style-type:disc; }
+.THIS .badgewrap{display: inline-block;white-space: wrap;margin-top:5px;}
+.THIS .footer{border-top:1px solid #ddd;}
+.THIS .radioMenuLabel{padding:10px;background:#fff;border:1px solid #ddd;border-radius:4px;}
+/** TEXT **/
+.THIS h1{font-size:30px;background:rgb(255, 255, 255,0.5);margin-bottom:10px;text-transform:uppercase;}
+.THIS h2{font-size:20px;margin-bottom:10px;}
+.THIS .h2borderbottom,.THIS .borderbottom{border-bottom:1px solid #ddd;}
+.THIS h3{display:block;font-weight:bold;font-size:16px;text-transform:uppercase;}
+.THIS .textleft{text-align:left;}
+.THIS .uiMenuList--default.uiMenuList{left:0!important;right:0;}
+.THIS .solutiontitle{padding-top:0px;}
+/** BUTTONS **/
+.THIS .bigbutton{padding:20px 40px;width:300px;}
+.THIS button{font-size:16px;}
+/** MENU NAV **/
+.THIS .nav{position:relative;}
+.THIS .menu{position:absolute;top:12px;right:20px; font-size:12px;}
+.THIS .menuicon{padding:10px;}
+.THIS .next{padding:20px 0;}
+/** MEDIUM SCREENS **/
+@media (max-width: 1600px) {
+    .THIS .fifth .third,.THIS .fifth .twothirds{display:block!important;float:none!important;width:100%!important;text-align:center!important;margin-bottom:10px!important;}
+    .THIS .solutionicon{max-width:40px;margin:0 auto;}
+    .THIS .bigbutton{padding:20px 0;width:40%;font-size:14px;}
+    .THIS .industry{width:80%;}
+    .THIS .slds-welcome-mat{position: absolute!important}
+}
+/** SMALL SCREENS **/
+@media (max-width: 960px) {
+	.THIS .slds-welcome-mat{position: absolute!important}
+ 	.THIS h1 {font-size:18px;}
+  	.THIS .menuicon{padding:4px;}
+  	.THIS .menuicon .slds-icon_small{width:12px!important;height:12px!important;}
+    .THIS .absolutetopright{position:relative;top:auto;right:auto;display:block;text-align:center;margin:10px 0;}
+    .THIS h2,.THIS h3{font-size:13px;}
+    .THIS .sidebar{position:relative;float:left;}
+    .THIS .sidebar .slds-button{display:block;width:80%;margin:0 auto 10px auto;}
+}

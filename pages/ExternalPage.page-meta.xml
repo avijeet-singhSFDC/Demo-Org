@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>43.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>[DEMO TOOL] - Show an External URL in a visualforce page with a snap-in. You can replace the snap-in snippet with a different snippet if needed.</description>
+    <label>*ExternalPage</label>
+</ApexPage>

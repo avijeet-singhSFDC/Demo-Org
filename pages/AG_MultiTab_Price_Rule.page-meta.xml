@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>34.0</apiVersion>
+    <availableInTouch>true</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>AG_SBQQ__PriceCondition__c;AG_SBQQ__LookupQuery__c;AG_SBQQ__PriceAction__c</description>
+    <label>Conga Grid MultiTab Price Rule</label>
+    <packageVersions>
+        <majorNumber>1</majorNumber>
+        <minorNumber>89</minorNumber>
+        <namespace>CRMC_PP</namespace>
+    </packageVersions>
+</ApexPage>

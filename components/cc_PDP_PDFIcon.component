@@ -1,0 +1,50 @@
+<apex:component id="cc_PDP_PDFIcon">
+    <script id="CC-ProductDetail-MediaSection-Desktop" type="text/template">
+        {{#eachMapEntry this.pageData}}
+        <div class="nvRow nvGroupRow cc_nv_group_row">
+            <h5 class="groupName cc_group_name">{{this.groupName}}</h5>
+            <table class="nvRow nvGroupRow cc_nv_group_row table table-striped table-condensed">
+                <tbody>
+                    {{#each this}}
+                    <!-- <div class="col-xs-6">
+                  <span class="name cc_name">{{this.productDescription}}</span>
+              </div> -->
+                    <tr>
+                        <th>
+                            <i class="fa fa-file-pdf-o" aria-hidden="true"></i> <a href="{{productImage this}}"><span class="value cc_value"><a href="{{productImage this}}">{{pageLabelMap 'View'}}</a></span>
+                        </th>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        {{/eachMapEntry}}
+    </script>
+    <script id="CC-ProductDetail-NameValueGroupedSection-Desktop" type="text/template">
+        {{#eachMapEntry this.pageData}}
+        <div class="nvRow nvGroupRow cc_nv_group_row">
+            <h5 class="groupName cc_group_name">{{this.groupName}}<h5>
+            <table class="nvRow nvGroupRow cc_nv_group_row table table-striped table-condensed">
+                <tbody>
+		            {{#each this}}
+		            <tr class="nvRow cc_nv_row">
+		                <th>
+		                    <span class="name cc_name">{{this.name}}</span>
+		                </th>
+		                <th>
+		                    <span class="value cc_value">{{this.value}}</span>
+		                </th>
+		            </tr>
+		            {{/each}}
+		        </tbody>
+		    </table>
+        </div>
+        {{/eachMapEntry}}
+    </script>
+    <script>
+    jQuery(function($) {
+        CCRZ.uiProperties.mediaSectionView.desktop.tmpl = 'CC-ProductDetail-MediaSection-Desktop';
+        CCRZ.uiProperties.nameValGroupSectionView.desktop.tmpl = 'CC-ProductDetail-NameValueGroupedSection-Desktop';
+    });
+    </script>
+</apex:component>

@@ -1,0 +1,21 @@
+<aura:component controller="FIDO">
+    <aura:attribute name="Industry" type="String" />
+    <aura:attribute name="Apps" type="String[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <h3>Key {!v.Industry} Apps</h3>
+    	<aura:iteration items="{!v.Apps}" var="app">
+            <aura:if isTrue="{!app.industry__c == v.Industry}">
+        	<div class="owner">
+                <h3 class="borderbottom">
+                    <div class="padding">
+                        <img src="{!app.logourl__c }" class="personaimg" />
+                        <span class="marginleft">{!app.name}</span>
+                    </div>
+                </h3>
+            	<div class="padding">
+                	<aura:unescapedHtml value="{!app.description__c}"/>
+           		</div>
+			</div>   
+            </aura:if>
+		</aura:iteration>
+</aura:component>

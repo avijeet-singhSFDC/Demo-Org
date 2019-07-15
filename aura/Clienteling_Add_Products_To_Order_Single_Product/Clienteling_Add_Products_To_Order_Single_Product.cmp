@@ -1,0 +1,37 @@
+<aura:component controller="Clienteling_Add_Products_To_Order">
+    <aura:attribute name="OrderId" type="String"/>
+    <aura:attribute name="ProductId" type="String" />
+    <aura:attribute name="Products" type="Product2[]"/>
+    <aura:attribute name="addIcon" type="String" default="utility:add" />
+    <aura:attribute name="AddProductText" type="String" default="Add Product" />
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <aura:iteration items="{!v.Products}" var="prod">
+        <div class="slds-grid slds-gutters padding">
+            <div class="slds-col slds-size_1-of-6">
+                <span>
+                    <img src="{!prod.purl__c}" class="prodimg"/>
+                </span>
+            </div>
+            <div class="slds-col slds-size_3-of-6">
+                <span>
+                    <h3>{!prod.Name}</h3>
+                    <p>{!prod.Description}</p>
+                </span>
+            </div>
+            <div class="slds-col slds-size_1-of-6">
+                <span><ui:outputCurrency aura:id="curr" value="{!prod.MSRP__c}" format="$##,##,###,###.00"/></span>
+            </div>
+            <div class="slds-col slds-size_1-of-6">
+                <span>In Stock</span>
+            </div>
+            <div class="slds-col slds-size_1-of-6 alignRight">
+                <span class="alignRight">
+                    <button class="slds-button slds-button_success center" id="{!prod.Id}" aura:id="{!prod.Id}" onclick="{!c.addProds}">
+                        <lightning:icon iconName="{!v.addIcon}" size="x-small"/>
+                        <span class="addprod">{!v.AddProductText}</span>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </aura:iteration>
+</aura:component>

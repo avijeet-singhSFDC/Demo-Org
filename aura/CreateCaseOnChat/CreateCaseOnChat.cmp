@@ -1,0 +1,7 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global" controller="CreateCaseOnChatController">
+    <lightning:omniToolkitAPI aura:id="omniToolkit" />
+    <lightning:workspaceAPI aura:id="workspace" />
+	<ltng:require scripts="/support/console/41.0/integration.js" afterScriptsLoaded="{!c.getAgentWorks}" />
+    Creating case
+    <input type="text" name="liveagent.prechat:SCQuickSetup__CurrentEmail__c" />
+</aura:component>

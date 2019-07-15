@@ -1,0 +1,74 @@
+<aura:component access="global">
+    
+    <aura:registerEvent name="updateFilter" type="c:FilterUpdate"/>
+    
+    <div class="slds-grid slds-wrap slds-grid_pull-padded">
+        <div class="slds-size_1-of-4 slds-p-horizontal_large"></div>
+        <div class="slds-size_1-of-4 slds-p-horizontal_large"></div>        
+        <div class="slds-size_1-of-4 slds-p-horizontal_large">
+            <div class="slds-form-element slds-m-vertical--small slds-m-vertical_small">
+                <span class="slds-form-element__label">
+                    Call Day
+                </span>
+                <div class="slds-form-element__control">
+                    <select class="slds-input" style="height: 36px !important;" aura:id="call-day" onchange="{! c.triggerEvent }">
+                        <option></option>
+                        <option>Monday</option>
+                        <option>Tuesday</option>
+                        <option>Wednesday</option>
+                        <option>Thursday</option>
+                        <option>Friday</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="slds-size_1-of-4 slds-p-horizontal_large">
+            <div class="slds-form-element slds-m-vertical--small slds-m-vertical_small">
+                <span class="slds-form-element__label">
+                    Frequency
+                </span>
+                <div class="slds-form-element__control">
+                    <select class="slds-input" style="height: 36px !important;" aura:id="freq" onchange="{! c.triggerEvent }">
+                        <option></option>
+                        <option>Weekly</option>
+                        <option>Bi-Weekly 1</option>
+                        <option>Bi-Weekly 2</option>
+                        <option>Monthly 1</option>
+                        <option>Monthly 2</option>
+                        <option>Monthly 3</option>
+                        <option>Monthly 4</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!--<div class="slds-size_1-of-4 slds-p-horizontal_large">
+            <div class="slds-form-element slds-m-vertical_small">
+                <span class="slds-form-element__label">
+                    Target
+                </span>
+                <div class="slds-form-element__control">
+                    <select class="slds-input" style="height: 36px !important;" aura:id="target" onchange="{! c.triggerEvent }">
+                        <option></option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="slds-size_1-of-4 slds-p-horizontal_large">
+            <div class="slds-form-element slds-m-vertical_small">
+                <span class="slds-form-element__label">
+                    Store
+                </span>
+                <div class="slds-form-element__control">
+                    <select class="slds-input" style="height: 36px !important;" aura:id="store" onchange="{! c.triggerEvent }">
+                        <option></option>
+                        <option>Store 4031</option>
+                        <option>Store 4032</option>
+                        <option>Store 4034</option>
+                    </select>
+                </div>
+            </div>
+        </div>-->
+    </div>
+</aura:component>

@@ -1,0 +1,55 @@
+.THIS {
+}
+.THIS .card-body-container { 
+    position: relative;
+    overflow: hidden;
+    margin: 16px;
+    border: 1px solid #dedbda;
+    border-radius: 5px;
+    background-color: #f3f2f2;
+    height : 100%;
+}
+.THIS .card-body-container-layer.mod-container{   
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+.THIS .is-scrollable {
+    position: relative;
+    overflow: scroll;
+    width: 100%;
+    border-radius: 5px;
+}
+.THIS .card-body-container-layer,
+.THIS .card-body-container-layer-element,
+.THIS .card-body-container-zoom {
+    position: absolute;
+}
+.THIS .card-body-container-layer-element>img {
+    max-width: inherit;
+}
+.THIS .card-body-container-layer-element.is-active {
+    box-shadow: 0 0 0px 4px rgb(21, 137, 238);
+    border-radius: 2px;
+    z-index: 5;
+}
+.THIS .card-body-container-zoom {
+    z-index: 10;
+    top: 8px;
+    right: 8px;
+}
+.THIS .fileupload .slds-form-element>span,
+.THIS .slds-form-element__label{
+    display: none;
+}
+.THIS tr.is-selected {
+    background-color: #f3f2f2;
+}
+.THIS .upload {
+    margin: 16px;
+    text-align: center;
+}
+.THIS .slds-table td {
+    white-space: inherit;
+}
+.THIS .colorPicker{
+    width : 150px;
+}

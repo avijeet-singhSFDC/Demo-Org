@@ -1,0 +1,63 @@
+<aura:component controller="ED_PropertiesCT"  access="global" >
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="recordTypeId" type="Id" />
+    
+    <ltng:require styles="/resource/SLDS0120/assets/styles/salesforce-lightning-design-system-ltng.css" />
+    <ltng:require scripts="/resource/jqueryjs, /resource/ED_PropertiesJS" afterScriptsLoaded="{!c.doInit}"/>
+    
+    <!-- <aura:handler event="force:refreshView" action="{!c.doInit}" /> -->
+
+    <div class="slds">
+        <div id='container'>
+            <div class="slds-grid slds-wrap slds-grid--pull-padded slds-theme--shade" style="margin-bottom: 20px;margin-left: 0px; margin-right: 0px;">
+                <div class="slds-size--1-of-1 slds-grid slds-nowrap slds-grid--vertical-align-end slds-p-vertical--x-small slds-p-horizontal--small" style="height: 34px;">
+                    <img src="{!$Resource.einsteinlogo}" style="height: 32px;margin-top: -8px;margin-right: -17px;"/>
+                    <div class='test-id__section-header-title slds-truncate' style="margin-left: 28px;margin-top: -5px;font-size: 1.1rem !important;">
+                        Einstein Discovery
+                    </div>
+                </div>
+            </div>
+            <div class="slds-grid slds-wrap slds-grid--pull-padded slds-p-top--small">
+                <div class="slds-size--1-of-1 slds-grid slds-nowrap slds-grid--vertical-align-end">
+                    <div id='predprice_container' class="slds-wrap slds-m-horizontal--large" style="margin-bottom:5px">                    
+                        <div id='predprice' class='slds-item--label slds-text-heading--medium slds-text-color--weak slds-p-left--xx-large font-weight-bold' style="margin-left: -36px; !important; font-size: 1.3rem !important"/>
+                        <div id='predprice_label' class='slds-item--detail slds-text-title--caps slds-text-color--weak slds-p-left--small slds-p-top--medium' >
+                            Predicted Monthly Volume
+                        </div> 
+                    </div>
+                </div>  
+            </div>
+            <div class="slds-border--bottom"/>
+            <div class="slds-grid slds-wrap slds-grid--pull-padded  slds-p-vertical--small">
+                <div class="slds-size--1-of-1 slds-grid slds-nowrap slds-grid--vertical-align-end slds-p-vertical--x-small slds-p-horizontal--small">
+                    <div class='slds-text-heading--medium slds-text-title--caps slds-text-color--weak slds-p-horizontal--medium'>
+                        Leading Causes
+                    </div>
+                </div>
+                <div class="slds-size--1-of-1 slds-grid slds-nowrap slds-grid--vertical-align-end slds-p-vertical--x-small slds-p-horizontal--small">
+                    <div id='leadingCauses' class="slds-list--horizontal slds-wrap slds-m-horizontal--large">
+                        <div class='slds-text-body--regular slds-text-color--weak'>
+                            No causes detected
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-border--bottom slds-m-horizontal--medium" />
+            <div class="slds-grid slds-wrap slds-grid--pull-padded  slds-p-vertical--small">
+                <div class="slds-size--1-of-1 slds-grid slds-nowrap slds-grid--vertical-align-end slds-p-vertical--x-small slds-p-horizontal--small">
+                    <div class='slds-text-heading--medium slds-text-title--caps slds-text-color--weak slds-p-horizontal--medium'>
+                        How to Improve This
+                    </div>
+                </div>
+                <div class="slds-size--1-of-1 slds-grid slds-nowrap slds-grid--vertical-align-end slds-p-vertical--x-small slds-p-horizontal--small">
+                    <div id='recommendedImprovements' class="slds-list--horizontal slds-wrap slds-m-horizontal--large" style="width:100%">
+                        <div class='slds-text-body--regular slds-text-color--weak'>
+                            No recommendations detected
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        
+    </div>
+</aura:component>

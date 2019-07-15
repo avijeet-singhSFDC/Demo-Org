@@ -1,0 +1,61 @@
+<aura:component controller="OpportunityProductsCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global" >
+    <aura:attribute name="recordId" type="String" default=""/>
+    <aura:attribute name="searchProd" type="String" default="" />
+    <aura:attribute name="lstOppProducts" type="List[]" default=""/>
+    <aura:attribute name="selectedProducts" type="List[]" default=""/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.searchProd}" action="{!c.productSearch}"/>
+    <div class="header_div slds-p-bottom_small">
+        <div class="header_row">
+            <div class="Column slds-p-top_small">
+                <button class="slds-button slds-button_neutral slds-float_left" onclick="{!c.cancel}">Cancel</button>
+            </div>
+            <div class="Column column_text">
+                <h3 class="slds-text-heading_large product_text">Add Products</h3><!-- class="slds-text-heading_large slds-text-align_center"-->
+            </div>
+            <div class="Column slds-p-top_small">
+                <button class="slds-button slds-button_brand slds-float_right" onclick="{!c.selectedProducts}">Next</button>
+            </div>
+        </div>
+    </div>
+    <div class="slds-form-element slds-p-bottom_medium">
+        <!--label class="slds-form-element__label" for="input-unique-id">Search Products: </label-->
+        <div class="slds-form-element__control">
+            <ui:inputText value="{!v.searchProd}" placeholder="Search Products"/>
+        </div>
+    </div>
+    <aura:iteration items="{!v.lstOppProducts}" var="record">
+        <article class="slds-card">
+            <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__figure">
+                        <span class="slds-icon_container slds-icon-standard-contact" title="description of icon when needed">
+                             <lightning:icon iconName="standard:product" size="medium" />
+                            <!--c:svgIcon svgPath="/resource/SLDS0120/assets/icons/standard-sprite/svg/symbols.svg#product" category="standard" size="medium" name="product" /-->
+                        </span>
+                    </div>
+                    <div class="slds-media__body slds-truncate_container_75">
+                        <h2>
+                            <p class="slds-text-heading_small slds-truncate">{!record.sProductName}</p> 
+                        </h2>
+                    </div>
+                </header>
+                <div class="slds-no-flex">
+                    <ui:inputCheckbox value="{!record.bSelect}" class="slds-float_right"/>
+                </div>
+            </div>
+            <div class="slds-card__body slds-card__body_inner">
+                <span class="slds-text-title--caps slds-line-height--reset">ProductCode :</span><ui:outputText value="{!record.sProductCode}" class="noSpace" /><br/>
+                <span class="slds-text-title--caps slds-line-height--reset">List Price :</span><ui:outputText value="{!record.sUnitPrice}" /><br/>
+            </div>
+            
+        </article>
+    </aura:iteration>
+    <!--div class="slds-p-bottom_medium slds-align_absolute-center">
+        <button class="slds-button slds-button_brand" onclick="{!c.selectedProducts}">Next</button>
+    </div-->
+    <br/>
+    <br/>
+    <br/>
+</aura:component>

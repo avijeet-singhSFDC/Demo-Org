@@ -1,0 +1,324 @@
+<apex:page title="Assignment Kanban" showHeader="false" sidebar="false" docType="html-5.0" standardStylesheets="false" controller="DE_KanbanFullCtrl">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js">
+        </script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js">
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.14.3/sortable.min.js">
+        </script>
+        
+        <link rel="stylesheet" href="/resource/CPG_SLDS203/assets/styles/salesforce-lightning-design-system.css"/>
+        
+            <style>
+                
+                body {
+                     padding: 0px !important;
+                }
+                
+                .padded-wrapper {
+                    padding: 1rem 1.5rem;
+                    width: 100%;
+                }
+                .padded-vert {
+                    padding: 1rem 0;
+                }
+                .pad-top {
+                    padding-top: 1rem;
+                }
+                .page-body {
+                    position: relative;
+                    z-index: 0;
+                    margin-bottom: 64px;
+                }
+                .page-footer {
+                    position: fixed;
+                    bottom: 0;
+                    left: 0;
+                    z-index: 10;
+                    width: 100%;
+                    background-color: #F7F9FB;
+                    border-top: 1px solid #d8dde6;
+                }
+                .item-placeholder {
+                    height: 79px;
+                    margin: .5rem 0;
+                    background-color: #efefef;
+                    border-radius: 3px;
+                }
+                .items-container{
+                    min-height: 300px;
+                }
+                .items-container .item {
+                    background: none;
+                    background-color: #fff;
+                    margin: .5rem 0;
+                }
+                .item:hover{
+                    cursor: move;
+                }
+                .task {
+                    border-bottom: 1px solid #efefef;
+                }
+                .task:hover {
+                    background-color: #f7f9fb;
+                    cursor:pointer;
+                }
+                
+                .filter {
+                    margin-left: 30px;
+                }
+                .column {
+                    width: 300px;
+                    border-right: 1px solid #ccc;
+                }
+                .assignment-board {
+                    overflow-x: auto;
+                    height: calc(100% - 125px);
+                }
+                .project-name {
+                    line-height: 40px;
+                    font-weight: 300;
+                    text-align: center;
+                    margin-bottom: 10px;
+                    font-size: 18px;
+                }
+                .circle{
+                    height: 40px;
+                    width: 40px;
+                    margin-right: 10px;
+                    border-radius: 50%;
+                }
+                
+                .image-viewer {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    z-index: 11;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0,0,0,.6);
+                }
+                .image-wrapper {
+                    position: relative;
+                    top: 50%;
+                    left: 50%;
+                    width: 500px;
+                    transform: translate(-50%,-50%);
+                }
+                .image-inner {
+                    width: 100%;
+                    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+                }   
+                
+        </style>
+        <script>
+        var app = angular.module('TaskAssignmentApp',['ui.sortable']);
+        
+            app.controller('mainController',function($scope){
+                $scope.pages = {
+                    'currentPage': 0,
+                    'nextPage': function(){this.currentPage++},
+                    'prevPage': function(){
+                        this.currentPage--;
+                        $scope.selectedTask.seletedTask = null;
+                    }
+                }
+                
+                $scope.tasks;
+                $scope.selectedTask = null;
+                $scope.items;
+                $scope.employeeWrappers;
+                
+                $scope.ImageViewer = {
+                    image : '',
+                    isOpen : false,
+                    open : function(){
+                        this.isOpen = true;
+                    },
+                    close : function(){
+                        this.isOpen = false;
+                    },
+                    toggle : function(){
+                        this.isOpen = !this.isOpen;
+                    }
+                }
+                
+                $scope.sortableOptions = {
+                    placeholder: "item-placeholder",
+                    connectWith: ".items-container"
+                };
+                
+                $scope.getLocations = function(){
+                    DE_KanbanFullCtrl.getTasks(function(res,evt){
+                        if(evt.status){
+                            $scope.tasks = res;
+                            $scope.$apply();
+                        }
+                    },{escape:false});
+                }
+                
+                $scope.getLineItems = function(){
+                    DE_KanbanFullCtrl.getLineItems($scope.selectedTask.Id, function(res,evt){
+                        if(evt.status){
+                            $scope.items = res;
+                            $scope.$apply();
+                        }
+                    });
+                }
+                
+                $scope.getEmployees = function(){
+                    DE_KanbanFullCtrl.getEmployees($scope.selectedTask.Location__c, $scope.selectedTask.Id, function(res,evt){
+                        if(evt.status){
+                            $scope.employeeWrappers = res;
+                            $scope.pages.nextPage();
+                            $scope.$apply();
+                        }
+                    },{escape:false});
+                }
+                
+                
+                $scope.selectTask = function(task){
+                    $scope.selectedTask = task;
+                    $scope.getLineItems();
+                    $scope.getEmployees();
+                }
+                
+                $scope.submitAssignments = function(){
+                    var employeeWrappers = $scope.employeeWrappers;
+                    var unassignedItems = $scope.items;
+                    var itemsToUpdate = [];
+                    
+                    /*Assigned tasks*/
+                    angular.forEach(employeeWrappers,function(employeeWrapper){
+                        if(employeeWrapper.hasOwnProperty('items')){
+                            angular.forEach(employeeWrapper.items, function(item, idx){
+                                item.Priority__c = idx + 1;
+                                item.Assigned__c = employeeWrapper.employee.User__r.Id;
+                                delete item.$$hashKey;
+                                itemsToUpdate.push(item);
+                            });
+                        }
+                    });
+                    
+                    /*Unassigned tasks*/
+                    
+                    angular.forEach(unassignedItems, function(unassignedItem, idx){
+                        unassignedItem.Priority__c = 0;
+                        unassignedItem.Assigned__c = null;
+                        delete unassignedItem.$$hashKey;
+                        itemsToUpdate.push(unassignedItem);
+                    });
+                    
+                    DE_KanbanFullCtrl.updateLineItems(itemsToUpdate, function(res,evt){
+                        if(evt.status){
+                            if( (typeof sforce != "undefined") && (sforce != null) ) {
+                                sforce.one.navigateToSObject($scope.selectedTask.Id, 'detail');
+                            }
+                            else {
+                                window.location.href = '/' + $scope.selectedTask.Id;
+                            }
+                        }
+                    },{escape:false});
+                }
+            });
+        </script>
+         
+    </head>
+    <body ng-app="TaskAssignmentApp" ng-controller="mainController" ng-init="getLocations()">
+        <div class="slds">
+            <div id='task-selection' ng-show="pages.currentPage == 0">
+                <div class="slds-page-header page-header" role="banner">
+                    
+                    <div class="slds-grid">
+                        <div class="slds-col--padded">
+                            <h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle" title="Task Assignment">Task Assignment</h1>
+                            <span class="filter"><a href="#">Next 7 Days</a> | <a href="#">Next 30 Days</a></span>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="page-body">
+                    
+                    <div class="slds-grid task" ng-repeat="task in tasks">
+                        <div class="padded-wrapper" ng-click="selectTask(task)">
+                            <div class="slds-col--padded">
+                                {{task.Name}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div id='kanban-board' ng-show="pages.currentPage == 1">
+                <div class="slds-page-header page-header" role="banner">
+                    <div class="slds-grid">
+                        <div class="slds-col--padded">
+                            <h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle" title="Task Assignment">Task Assignment</h1>
+                            <span class="filter">{{selectedTask.Name}}</span>
+                            <span class="filter"> <a href="#">Working Today</a> | <a href="#">Tomorrow</a> </span>
+                            <span class="filter"> <a href="#">Morning</a> | <a href="#">Afternoon</a> | <a href="#">Evening</a></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid padded-wrapper assignment-board">
+                    <div class="slds-col--padded sortable-wrapper scrollable column">
+                        <div class="slds-text-heading--medium project-name" >
+                            Unassigned
+                        </div>
+                        <ul class="slds-has-dividers--around-space items-container" ui-sortable="sortableOptions" ng-model="items">
+                            <li class="slds-item ui-state-default item" ng-repeat="item in items">
+                                <div class="slds-tile slds-tile--board">
+                                    <div class="item slds-tile__detail slds-text-body--small">
+                                        <p class="slds-truncate">{{item.Name}}</p>
+                                        <p class="slds-truncate">Start: {{item.Start_Date__c | date: 'MM/dd/yy'}}</p>
+                                        <p class="slds-truncate">Due: {{item.End_Date__c | date: 'MM/dd/yy'}}</p>
+                                        <a ng-show="item.Item_Image__c" ng-click="ImageViewer.image = item.Item_Image__c; ImageViewer.open()">View Image</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="slds-col--padded sortable-wrapper scrollable column" ng-repeat="employeeWrapper in employeeWrappers">
+                        <div class="slds-text-heading--medium project-name">
+                            <img class="circle" src="{{employeeWrapper.employee.User__r.SmallPhotoUrl}}"/>{{employeeWrapper.employee.User__r.Name}}
+                        </div>
+                        <ul class="slds-has-dividers--around-space items-container" ui-sortable="sortableOptions" ng-model="employeeWrapper.items">
+                            <li class="slds-item ui-state-default item" ng-repeat="item in employeeWrapper.items">
+                                <div class="slds-tile slds-tile--board">
+                                    <div class="slds-tile__detail slds-text-body--small">
+                                        <p class="slds-truncate">{{item.Name}}</p>
+                                        <p class="slds-truncate">Start: {{item.Start_Date__c | date: 'MM/dd/yy'}}</p>
+                                        <p class="slds-truncate">Due: {{item.End_Date__c | date: 'MM/dd/yy'}}</p>
+                                        <a ng-show="item.Item_Image__c" ng-click="ImageViewer.image = item.Item_Image__c; ImageViewer.open()">View Image</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="page-footer padded-wrapper">
+                    <div class="slds-grid">
+                        <div class="slds-col--padded slds-has-flexi-truncate slds-text-align--right">
+                            <button class="slds-button slds-button--neutral" ng-click="pages.prevPage();">
+                                Prev
+                            </button>
+                            <button class="slds-button slds-button--neutral" ng-click="submitAssignments()">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="image-viewer" ng-show="ImageViewer.isOpen" ng-click="ImageViewer.close()">
+                    <div class="image-wrapper">
+                        <img class="image-inner" src="{{ImageViewer.image}}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</apex:page>

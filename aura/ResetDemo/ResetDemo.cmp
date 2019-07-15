@@ -1,0 +1,17 @@
+<aura:component implements="force:lightningQuickAction" controller="ResetDemo">
+    <aura:attribute name="message" type="String"/>
+    
+    <div class="slds-text-longform slds-m-bottom_medium">
+        <p>This tool takes the following actions to reset this demo:</p>
+        <ul>
+            <li>Grab Cameron Technician's "Service Resource"</li>
+            <li>Use the Service Resource to climb the FSL tree and grab his Work Orders</li>
+            <li>Delete Cameron Tehcnician's grabbed Work Orders</li>
+            <li>Do the opposite operation: Create stuff</li>
+            <li>Create Work Orders for 4 specific Accounts</li>
+            <li>Create Service Appointments for those Work Orders</li>
+            <li>Create Assigned Resources for those Service Appointments</li>
+        </ul>
+    </div>
+    <lightning:button label="Reset Demo" variant="brand" onclick="{!c.resetDemoFunction}"/>
+</aura:component>

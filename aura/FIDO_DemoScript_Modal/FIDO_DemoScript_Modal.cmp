@@ -1,0 +1,158 @@
+<aura:component controller="FIDO" > 
+    <aura:attribute name="currentScript" type="String"/>
+    <aura:attribute name="DemoScripts" type="String[]"/> 
+    <aura:handler name="change" value="{!v.currentScript}" action="{!c.init}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    	<aura:iteration items="{!v.DemoScripts}" var="script">
+        	<header class="slds-modal__header">
+            	<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                	<span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!script.name}</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+            	<div class="padding">
+                    <div class="half">
+                        <div class="padding">
+                            <h2>Description</h2>
+                            <ui:outputRichText value="{!script.description__c}"/>
+                            <div class="paddingtopbottom">
+                                <aura:if isTrue="{!script.video_link__c != null}">
+                                    <button class="slds-button slds-button_brand" aura:id="{!script.video_link__c}" id="{!script.video_link__c}" onclick="{!c.toScript}">Demo Video</button>
+                                </aura:if>
+                                <button class="slds-button slds-button_brand" aura:id="{!script.quip_doc__c}" id="{!script.quip_doc__c}" onclick="{!c.toScript}">View Script</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="half">
+                        <div class="padding">
+                            <h2>Overview</h2>
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="Opportunity Name">Information</div>
+                                        </th>
+                                        <th class="slds-text-title_caps" scope="col">
+                                            <div class="slds-truncate" title="Account Name">Value</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate" title="Cloudhub">
+                                                Industry
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate slds-cell-wrap" title="Cloudhub">
+                                                {!script.industry__c}
+                                                <aura:if isTrue="{!script.industry__c == null}">
+                                                    <strong>N/A</strong>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate" title="Cloudhub">
+                                                Solution
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate slds-cell-wrap" title="Cloudhub">
+                                                {!script.solution__c}
+                                                <aura:if isTrue="{!script.solution__c == null}">
+                                                    <strong>N/A</strong>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate" title="Cloudhub">
+                                                Persona
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate slds-cell-wrap" title="Cloudhub">
+                                                {!script.persona__c}
+                                                <aura:if isTrue="{!script.persona__c == null}">
+                                                    <strong>N/A</strong>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate" title="Cloudhub">
+                                                Product / Cloud
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate slds-cell-wrap" title="Cloudhub">
+                                                {!script.cloud_product__c}
+                                                <aura:if isTrue="{!script.cloud_product__c == null}">
+                                                    <strong>N/A</strong>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate" title="Cloudhub">
+                                                Features
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate slds-cell-wrap" title="Cloudhub">
+                                                {!script.features__c}
+                                                <aura:if isTrue="{!script.features__c == null}">
+                                                    <strong>N/A</strong>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate" title="Cloudhub">
+                                                Type
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate slds-cell-wrap" title="Cloudhub">
+                                                {!script.type__c}
+                                                <aura:if isTrue="{!script.type__c == null}">
+                                                    <strong>N/A</strong>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="slds-hint-parent">
+                                        <th data-label="Opportunity Name" scope="row">
+                                            <div class="slds-truncate" title="Cloudhub">
+                                                Device
+                                            </div>
+                                        </th>
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate slds-cell-wrap" title="Cloudhub">
+                                                {!script.device__c}
+                                                <aura:if isTrue="{!script.device__c == null}">
+                                                    <strong>N/A</strong>
+                                                </aura:if>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <hr/>
+                    <h2>Feedback</h2>
+                    <c:FIDO_DemoScript_Feedback recordId="{!script.id}" title="{!script.name + ' script feedback'}" owneremail="{!script.owner_email__c }"/>
+                </div>
+        	</div> 
+    </aura:iteration>
+</aura:component>

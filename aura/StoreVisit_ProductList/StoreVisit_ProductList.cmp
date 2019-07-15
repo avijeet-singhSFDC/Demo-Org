@@ -1,0 +1,151 @@
+<aura:component controller="StoreVisitCtrl" implements="lightning:availableForFlowScreens" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.loadPreviousProducts}" />
+    <aura:attribute name="storeVisitId" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="SelectedProductId" type="String"/>
+    <aura:attribute name="records" type="SObject" />
+    <aura:attribute name="newRecord" type="SObject" />
+    <aura:attribute name="pList" type="SObject" />
+
+    <!--END CAP AUDIT COMPONENT BEGIN -->
+    <aura:attribute name="location" type="String" />
+    <aura:attribute name="two" type="String" />
+    <aura:attribute name="three" type="String" />
+    <aura:attribute name="four" type="String" />
+    <aura:attribute name="five" type="String" />
+    <aura:attribute name="newProductPresent" type="Product_Present__c" default="{sobjectType: 'Product_Present__c'}"/>
+    <div class="gmwidth">
+    	<div class="header_div slds-p-bottom_small">
+            <div class="header_row">
+                <div class="Column column_text">
+                    <h3 class="slds-text-heading_large product_text">Current Products</h3><!-- class="slds-text-heading_large slds-text-align_center"-->
+                </div>
+            </div>
+        </div>
+            <aura:iteration items="{!v.records}" var="pp">
+                <article class="slds-card">
+                    <div class="slds-card__header slds-grid">
+                        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                            <div class="slds-media__figure">
+                                <span class="slds-icon_container slds-icon-standard-contact" title="description of icon when needed">
+                                     <lightning:icon iconName="standard:product" size="medium" />
+                                    <!--c:svgIcon svgPath="/resource/SLDS0120/assets/icons/standard-sprite/svg/symbols.svg#product" category="standard" size="medium" name="product" /-->
+                                </span>
+                            </div>
+                            <div class="slds-media__body slds-truncate_container_75">
+                                <h2>
+                                    <p class="slds-text-heading_small slds-truncate">{!pp.Product__r.Name}</p> 
+                                </h2>
+                            </div>
+                        </header>
+                        <div class="slds-no-flex">
+                            <button onclick="{!c.EditProductDialog}" id="{!pp.Id}" aura:id="{!pp.Id}" class="slds-button slds-button_neutral">Edit</button>
+                        </div>
+                    </div>
+                    <div class="slds-card__body slds-card__body_inner">
+                        <span class="slds-text-title--caps slds-line-height--reset">
+                            List Price: <ui:outputCurrency aura:id="curr" value="{!pp.Price__c}" format="$##,##,###,###.00"/> | Quantity: {!pp.Quantity__c}
+                        </span><br/>
+                    </div>
+                </article>
+            </aura:iteration>
+    </div>
+    <div id="add-modal" aria-hidden="true" tabindex="-1" role="dialog" aria-labelledby="modal-heading-1" class="slds-modal slds-fade-in-open slds-hide slds-align_absolute-center" aura:id="add-modal" >
+        <div class="slds-modal__container" style="width: 75%;">
+            <div class="slds-modal__header">
+                <h2 id="modal-heading-1" class="slds-text-heading--medium">Add Product</h2>
+                <button class="slds-button slds-button--icon-inverse slds-modal__close" data-aljs-dismiss="modal" onclick="{!c.addClose}">
+                    <lightning:icon iconName="utility:close" variant="inverse"/>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+            </div>
+            <div class="slds-modal__content slds-p-around--medium" style="height: 300px;">
+                <div class="demo-only" style="width: 440px;">
+                    <div class="slds-form slds-form_compound">
+                        <fieldset class="slds-form-element">
+                            <div class="slds-form-element__group">
+                                <div class="slds-form-element__row">
+                                    <!--<lightning:input type="text" label="Location/Aisle" aura:id="locationid" value="{!v.newProductPresent.Location_Aisle__c}"  />-->
+                                </div>
+                            </div>     
+                            <div class="slds-form-element__group">
+                                <lightning:select label="Location / Aisle" value="{!v.newProductPresent.Location_Aisle__c}">
+                                    <option text="Shelf Display" value="Shelf Display"/>
+                                    <option text="End-Cap Display" value="End-Cap Display"/>
+                                    <option text="Cooler Display" value="Cooler Display"/>
+                                </lightning:select>
+                                <!--<lightning:select label="Product Name" value="{!v.newProductPresent.Name}">
+                                    <option text="Product 1" value="Product 1"/>
+                                    <option text="Product 2" value="Product 2"/>
+                                    <option text="Product 3" value="Product 3"/>
+                                </lightning:select>-->
+                                <c:CustomLookup objectAPIName="Product2" label="Add New Product " aura:id="lookup2" IconName="standard:product" selectedRecord="" selectedRecordId=""  />
+                                <!--<lightning:input type="text" label="Product Name" name="name" value="{!v.newProductPresent.Name}" />-->
+                                <lightning:input type="text" label="Quantity" value="{!v.newProductPresent.Quantity__c}"  />                                
+                                <lightning:input type="text" label="Price" value="{!v.newProductPresent.Price__c}" />
+                                <lightning:input type="text" label="Notes" value="{!v.newProductPresent.Notes__c}"/>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slds-modal__footer">
+                <button class="slds-button slds-button--neutral" data-aljs-dismiss="modal" onclick="{!c.addClose}">Cancel</button>
+                <button class="slds-button slds-button--neutral slds-button--brand" data-aljs-dismiss="modal" onclick="{!c.addProduct}">Save</button>
+            </div>
+        </div>
+    </div>
+    <!--PRODUCT LIST COMPONENT BEGIN -->
+    <div class="slds">
+        <div id="modal-1" aria-hidden="true" tabindex="-1" role="dialog" aria-labelledby="modal-heading-1" class="slds-modal slds-fade-in-open slds-hide slds-align_absolute-center" aura:id="modal">
+            <div class="slds-modal__container" style="width: 75%;">
+                <div class="slds-modal__header">
+                    <h2 id="modal-heading-1" class="slds-text-heading--medium">Search Products</h2>
+                    <button class="slds-button slds-button--icon-inverse slds-modal__close" data-aljs-dismiss="modal" onclick="{!c.close}">
+                        <lightning:icon iconName="action:close"/>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                </div>
+                <div class="slds-modal__content slds-p-around--medium" style="height: 300px;">
+                    <c:CustomLookup objectAPIName="Product_Present__c" label="Add Product " aura:id="lookup" IconName="standard:product" selectedRecord="" selectedRecordId="" />
+                    <div class="demo-only" style="width: 440px;">
+                    </div>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button--neutral" data-aljs-dismiss="modal" onclick="{!c.close}">Cancel</button>
+                    <button class="slds-button slds-button--neutral slds-button--brand" data-aljs-dismiss="modal" onclick="{!c.searchAdd}">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section role="dialog" aura:id="EditProductModal" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-closed">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Edit Product</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <lightning:recordEditForm aura:id="edit"  recordId="{!v.SelectedProductId}" 
+                                          objectApiName="Product_Present__c" 
+                                          onsuccess="{!c.handleProductSaved}"
+                                          >
+                    <div aura:id="msg">
+                        <lightning:messages  />
+                    </div>
+                    <lightning:inputField fieldName="Quantity__c" />
+					<lightning:inputField fieldName="Price__c"/>
+                    <lightning:inputField fieldName="Location_Aisle__c" />
+                    <lightning:inputField fieldName="Notes__c" />
+                    <lightning:button variant="brand" type="submit" name="save" label="Save" class="slds-m-top_medium"/>
+                 </lightning:recordEditForm>
+            </div>
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral" onclick="{!c.CloseDialog}">Cancel</button>
+            </footer>
+        </div>
+        </section>
+        <div aura:id="overlay" class="slds-backdrop slds-backdrop_closed"></div>
+</aura:component>

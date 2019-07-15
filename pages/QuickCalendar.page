@@ -1,0 +1,42 @@
+<apex:page controller="QuickCalendarDisplay">
+    <link type="text/css" href="{!URLFOR($Resource.jqueryui_css)}" rel="Stylesheet" />
+    <link type="text/css" href="{!URLFOR($Resource.jqueryui_calendar_css)}" rel="Stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-tools/1.2.7/jquery.tools.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/jquery-ui.min.js"></script>
+    <script src="{!URLFOR($Resource.jqueryui_calendar)}"></script>  
+
+    <apex:form >    
+        <apex:actionFunction action="{!UpdateEventAPEX}" name="UpdateEventAF" rerender="jsvalues">
+            <apex:param name="eID" value=""/>
+            <apex:param name="dDelta" value=""/>
+            <apex:param name="mDelta" value=""/>
+        </apex:actionFunction>
+    </apex:form>
+
+
+    <script type = "text/javascript">       
+        $(document).ready(
+            function() {
+                {!jsCodeBehind}
+            });           
+    </script>
+    
+    <apex:outputPanel id="jsvalues">
+    </apex:outputPanel>
+    
+    <div id='calendar'></div>
+
+    <style>
+        #calendar {
+            background-color: {!mySetup.Background__c} !important;
+        }
+    </style>
+    
+    <div id="MissingDateProblem" title="Incorrect Date Value" style="Display:none;">
+        <p>Incorrect Date Detected in Calendar!</p>
+    </div>
+    <div id="IncompleteSetup" title="Incomplete Setup" style="Display:none;">
+        <p>Please complete the Setup before running the Calendar!</p>
+    </div>
+</apex:page>

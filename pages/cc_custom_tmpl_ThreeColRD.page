@@ -1,0 +1,58 @@
+<apex:page id="cc_custom_tmpl_ThreeColRD" applyHtmlTag="false"
+	docType="html-5.0" sidebar="false" showHeader="false" standardStylesheets="false">
+
+
+<!-- BEGIN BOOTSTRAP3 BLOCK -->
+	<div class="container cc_main_container cc_tmpl_ThreeColRD">
+		<!-- Main content three column layout -->
+		<div class="row cc_main_row">
+			<div class="col-md-3 cc_left_col">
+                <apex:insert name="MiniCartBox" />
+                <apex:insert name="MiniQuickOrderBox" />
+				<div class="search-box-LeftNav" />
+				<apex:insert name="WidgetBoxL" />
+				<apex:insert name="ProductSearch" />
+				<apex:insert name="PhoneSplash"/>
+				
+				<div class="filterContainer"></div>
+				<apex:insert name="ContactUs" />
+				<div class="promotion-box-LeftNav"></div>
+				<apex:insert name="LeftNavX" />
+			</div>
+			<div class="col-md-6 cc_main_content_col">
+				<div class="row cc_main_content_row">
+					<apex:insert name="WidgetBoxC" />
+					<apex:insert name="Banner" />
+					<div class="promotion-box-Banner"></div>
+					<div class="effwig"></div>
+					<apex:insert name="ProductSpotlight" />
+					<apex:insert name="body" />
+					<apex:insert name="PromosCenter" />
+					<apex:insert name="FeaturedProducts" />
+					<apex:insert name="GuideProducts" />
+					<apex:insert name="UpsellProducts" />
+					<apex:insert name="ProductReviews" />
+					<apex:insert name="CenterX" />
+				</div>
+			</div>
+			<div class="col-md-3 cc_right_col right_column">
+				<div class="effright"></div>
+				<div class="search-box-RightNav" />
+                <div id="categories-left-nav"></div> <!-- placeholder for category tree in left nav -->
+				<div id="MyAccount_navSection"></div> <!-- placeholder for MyAccount Nav in right nav -->
+				<apex:insert name="WidgetBoxR" />
+				
+               				
+                <apex:insert name="SellerLocatorBox"/>
+				<div id="categories-right-nav"></div> <!-- placeholder for category tree in right nav -->
+				<div class="widgetSection"></div>
+				
+				<apex:insert name="MiniWishListBox" />
+				<div class="promotion-box-RightNav"></div>
+				<apex:insert name="RightNavX" />
+			</div>
+		</div>
+	</div>
+<!-- END BOOTSTRAP3 BLOCK -->
+
+</apex:page>

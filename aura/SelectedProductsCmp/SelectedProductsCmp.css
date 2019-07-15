@@ -1,0 +1,109 @@
+.THIS .slds-input1 {
+    background-color: white;
+    color: #16325c;
+    border: 1px solid #d8dde6;
+    border-radius: 0.25rem;
+    width: 90%;
+    -webkit-transition: border 0.1s linear,background-color 0.1s linear;
+    transition: border 0.1s linear,background-color 0.1s linear;
+    display: inline-block;
+    padding: 0 1rem 0 0.75rem;
+    line-height: 2.125rem;
+    min-height: calc(2.125rem + 2px);
+}
+
+.THIS .header_div {
+    text-align: center;
+}
+.THIS .header_text {
+    display: inline-block;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.THIS h3 .slds-text-heading_large .slds-text-align_center .slds-m-top_small {
+    font-size: 21px;
+}
+.THIS .slds {
+    padding-bottom: 10px;
+    border: 1px solid #ccc;
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-right: 20px;
+    overflow: auto;
+}
+.THIS .header_div {
+    text-align: center;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.THIS .slds-form-element {
+    text-align: left;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.THIS .slds-form_horizontal {
+    height: 100%;
+    border-bottom: 1px solid #ccc;
+    margin-top: 10px;
+    padding-bottom: 10px;
+}
+.THIS .slds-form_inline {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-bottom: 1px solid #ccc;
+}
+.THIS .slds-input1{
+    width:100%
+}
+.THIS .slds-form-element__label {
+    display: -webkit-box;
+}
+.THIS .slds .slds-form-element__label {
+    display: -webkit-box;
+}
+@media (max-width: 30em){
+    .THIS .slds-form--inline .slds-form-element {
+        margin-bottom: 0.75rem;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 11px;
+    }
+}
+.THIS .scrollerSize{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll; /* has to be scroll, not auto */
+    -webkit-overflow-scrolling: touch;
+}
+.THIS .slds-scrollable1 {
+    -webkit-overflow-scrolling: touch !important;
+    overflow: auto;
+    
+}
+.THIS body { 
+    /*overflow-y: hidden !important;
+    overflow: scroll !important;
+    height: 1600px !important;
+    Width: 400px !important;*/
+}
+
+.THIS .slds-form--inline {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.THIS .header_text {
+    display: inline-block;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width:100%;
+    background:#f3f3f3;
+    font-size: 11px;
+        color: rgb(0, 95, 178);
+}

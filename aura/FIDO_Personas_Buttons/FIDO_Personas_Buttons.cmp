@@ -1,0 +1,29 @@
+<aura:component controller="FIDO" implements="c:MixpanelInterface" >
+    <aura:attribute type="String" name="PersonaName" />
+    <aura:attribute type="String" name="personaId" />
+    <aura:attribute name="Industry" type="String"/>
+    <aura:attribute type="String" name="OrgId" />
+    <aura:attribute type="String" name="recType" />
+    <aura:attribute name="Settings" type="String[]" />
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:if isTrue="{!v.recType == 'User'}">
+        <button class="slds-button slds-button_neutral" aura:id="{!v.personaId}" id="{!v.personaId}" onclick="{!c.toUser}">
+            View Persona
+        </button>
+        <aura:iteration items="{!v.Settings}" var="setting"> 
+			<aura:if isTrue="{!setting.industry__c == v.Industry}">
+            	<aura:if isTrue="{!setting.show_persona_login_button__c == true}">
+                    <button class="slds-button slds-button_neutral" aura:id="{!v.personaId}" id="{!v.personaId}" onclick="{!c.LoginAsUser}">
+                        Login As {!v.PersonaName}
+                    </button>
+                </aura:if>
+            </aura:if>
+        </aura:iteration>
+        <aura:set attribute="else">
+        	<button class="slds-button slds-button_neutral" aura:id="{!v.personaId}" id="{!v.personaId}" onclick="{!c.toContact}">
+            	View Persona
+        	</button>
+        </aura:set>
+    </aura:if>
+    
+</aura:component>

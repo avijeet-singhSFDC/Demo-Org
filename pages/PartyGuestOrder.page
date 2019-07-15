@@ -1,0 +1,87 @@
+<apex:page standardController="Party_Guest__c" extensions="PartyGuestOrderExtension" action="{!initialSearch}" standardStylesheets="false" showHeader="false">
+    <!--
+    Custom Order Screen Here.
+    <apex:form >
+        <apex:commandButton value="Add Product" rendered="true"/>
+        <apex:commandButton value="Done with Order" rendered="true"/>
+            
+    </apex:form>
+    <apex:dataTable var="prod" value="{!AllProducts}">
+        <apex:column value="{!prod.Selected}"/>
+        <apex:column value="{!prod.ProductID}"/>
+        <apex:column value="{!prod.ProductName}"/>
+        <apex:column value="{!prod.PartyGuest}"/>
+    </apex:dataTable>
+    -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
+    
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css" />
+    
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <style>
+        input[type="radio"], input[type="checkbox"]{
+            margin: 10px;
+        }
+        .myNumInput{
+            width:50%;
+        }
+        .myPriceInput{
+            margin-right: 10px;        
+        }    
+        .myNumInput{
+            margin: 0 5px;
+        }
+        .pbBottomButtons table{
+            margin: 0 auto;
+        }
+        .pbBottomButtons{
+            margin-top: 10px;
+        }
+        tr:nth-child(even) {
+            background: #DDEFFA;
+        }
+        .btn-primary{
+            margin-right: 5px;
+        }
+    </style>    
+    <img src="{!$Resource.newOrder}" />
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons location="bottom" >
+                <apex:commandButton action="{!save}" value="Save" styleClass="btn btn-primary"/>
+                <apex:commandButton action="{!cancel}" value="Cancel" styleClass="btn btn-danger" />
+            </apex:pageBlockButtons>
+            
+            <apex:outputPanel id="myOutputPanel">
+                <div id="parentProduct">
+                    <!--<apex:outputText value="{!lastQuery}"/>-->
+                    <apex:pageBlock id="resultBlock">
+                        <apex:pageBlockTable value="{!resultList}" var="cur">
+                            <apex:column >
+                                <apex:inputCheckBox value="{!cur.selected}" styleClass="myCheckbox">
+                                </apex:inputCheckBox>
+                            </apex:column>
+                            <apex:column headerValue="Product Name">
+                                {!cur.product.Name}
+                            </apex:column>
+                            <!--
+                            <apex:column headerValue="Product Code">
+                                <a href="/{!cur.product.Id}">{!cur.product.ProductCode}</a>
+                            </apex:column>
+                            -->
+                            <apex:column headerValue="Quantity">
+                                <apex:inputText value="{!cur.quantity}" styleClass="myNumInput"/>
+                            </apex:column>
+                            <apex:column headerValue="Price">
+                                <apex:outputText value="{!cur.unitPrice}" styleClass="myPriceInput"/>
+                            </apex:column>
+                        </apex:pageBlockTable>
+                    </apex:pageBlock>
+                </div>
+            </apex:outputPanel>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

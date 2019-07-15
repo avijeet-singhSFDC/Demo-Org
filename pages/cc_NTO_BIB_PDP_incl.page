@@ -1,0 +1,52 @@
+<apex:page id="cc_NTO_BIB_PDP_incl" sidebar="false" showHeader="false" standardStylesheets="false">
+
+  <!-- ***********************
+  SINGLE PRODUCT
+  ************************ -->
+
+  <!-- DOES NOT CONTACIN ADC -->
+  <!-- <c:cc_AP_PDP_Details /> -->
+
+  <c:cc_NTO_PDP_Details />
+
+  <!-- ***********************
+  ASSEMBLY/SVG PRODUCT
+  ************************ -->
+  <!--<c:cc_PDPSVG />-->
+
+  <!-- ***********************
+  AGGREGATE PRODUCT
+  ************************ -->
+  <!--<c:cc_PDP_Aggregate_incl /> -->
+
+  <!-- ***********************
+  DYNAMIC KIT PRODUCT
+  ************************ -->
+  <!-- <c:cc_PDP_DynKit_incl /> -->
+  <c:cc_assortment_builder /> <!-- NEEDS SOME WORK -->
+
+  <!-- ***********************
+  BUDLE PRODUCT
+  ************************ -->
+ <!-- <c:cc_PDP_Bundle_incl />-->
+
+  <!-- <c:cc_PDPinvMsg /> -->
+  <!-- <c:cc_pocPDPReviewsIncl /> -->
+ <!-- <c:cc_PDP_PDFicon />
+  <c:cc_PDP_ComplimentarySection />-->
+
+<script type="text/javascript">
+  // $(document).ready(function(){
+  //   $('.cc_main_prod_image').zoom();
+  // });
+
+  // $(document).ready(function(){
+  //   $('img')
+  //     .wrap('<span style="display:inline-block"></span>')
+  //     .css('display', 'block')
+  //     .parent()
+  //     .zoom();
+  // });
+</script>
+
+</apex:page>

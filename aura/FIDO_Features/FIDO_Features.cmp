@@ -1,0 +1,328 @@
+<aura:component controller="FIDO">
+    <aura:attribute name="Industry" type="String"/>
+    <aura:attribute name="Settings" type="String[]" />
+    <aura:attribute name="Features" type="String[]"/>
+    <aura:attribute name="ComponentTitle" type="String" />
+    <aura:attribute name="MenuOpenClose" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <div class="slds-card minicard">
+    	<div class="slds-media">
+        	<div class="slds-media__body"> 
+            	<div class="center">
+                	<h2 class="slds-page-header__title slds-truncate slds-align-middle padding h2borderbottom ">
+                    	{!v.Industry} Customizations
+                    </h2>
+                </div>    
+            </div>
+        </div> 
+        <div class="padding">
+            <div class="owner">
+                <div class="slds-media">
+                    <div class="slds-media__body"> 
+                        <div class="center">
+                            <h2 class="slds-page-header__title slds-truncate slds-align-middle padding h2borderbottom textleft" title="">
+                                <div class="subsolutionicon imgleft">  
+                                    <lightning:icon iconName="standard:apex_plugin" size="medium" alternativeText=""/> 
+                                </div>
+                                <div class="solutiontitle">
+                                    General Features
+                                    <span class="subsolutiondesc">Check out the features we have available in our org for you!</span>
+                                </div>
+                            </h2>
+                        </div>    
+                    </div>
+                </div> 
+                <div class="textleft padding">
+                    <lightning:accordion >
+                        <aura:iteration items="{!v.Features}" var="feature">
+                            <aura:if isTrue="{!feature.type__c == 'General Feature'}">
+                                <lightning:accordionSection name="{!feature.name}" label="{!feature.name}">
+                                    <div class="padding">
+                                        <div class="textleft">
+                                            <aura:if isTrue="{!feature.image__c != null}" >
+                                                <div class="half">
+                                                    <div class="padding">
+                                                        <img src="{!feature.image__c}" class="featureimg" />
+                                                    </div>
+                                                </div>
+                                                <div class="half">
+                                                    <div class="padding">
+                                                        <h3>About this feature</h3>
+                                                        <aura:unescapedHtml value="{!feature.description__c}"/>
+                                                        <hr/>
+                                                        <aura:if isTrue="{!feature.setup_instructions__c != null}">
+                                                            <h3>How do I use this?</h3>
+                                                            <div class="question">
+                                                                <aura:unescapedHtml value="{!feature.setup_instructions__c}"/>
+                                                            </div>
+                                                        </aura:if>
+                                                        <aura:if isTrue="{!feature.script_url__c != null}">
+                                                            <hr/>
+                                                            <button class="slds-button slds-button_neutral" aura:id="{!feature.script_url__c}" id="{!feature.script_url__c}" onclick="{!c.toScript}">
+                                                                Setup Document
+                                                            </button>
+                                                        </aura:if>
+                                                    </div>
+                                                </div>
+                                                <div class="clear"></div>
+                                                <aura:set attribute="else">
+                                                    <div class="padding">
+                                                        <h3>About this feature</h3>
+                                                        <aura:unescapedHtml value="{!feature.description__c}"/>
+                                                        <hr/>
+                                                        <aura:if isTrue="{!feature.setup_instructions__c != null}">
+                                                            <h3>How do I use this?</h3>
+                                                            <div class="question">
+                                                                <aura:unescapedHtml value="{!feature.setup_instructions__c}"/>
+                                                            </div>
+                                                        </aura:if>
+                                                        <aura:if isTrue="{!feature.script_url__c != null}">
+                                                            <hr/>
+                                                            <button class="slds-button slds-button_neutral" aura:id="{!feature.script_url__c}" id="{!feature.script_url__c}" onclick="{!c.toScript}">
+                                                                Setup Document
+                                                            </button>
+                                                        </aura:if>
+                                                    </div>    
+                                                </aura:set>
+                                            </aura:if>    
+                                        </div>
+                                    </div>
+                                </lightning:accordionSection>
+                                </aura:if>
+                            </aura:iteration>
+                        </lightning:accordion>
+                </div>
+            </div>
+            <aura:iteration items="{!v.Settings}" var="setting">    
+            	<aura:if isTrue="{!setting.industry__c == v.Industry}">
+                	<aura:if isTrue="{!setting.show_customizations_lightning_components__c == true}">
+                        <div class="owner">
+                            <div class="slds-media">
+                                <div class="slds-media__body"> 
+                                    <div class="center">
+                                        <h2 class="slds-page-header__title slds-truncate slds-align-middle padding h2borderbottom textleft" title="Store Promotions">
+                                            <div class="subsolutionicon imgleft">  
+                                                <lightning:icon iconName="standard:connected_apps" size="medium" alternativeText=""/> 
+                                            </div>
+                                            <div class="solutiontitle">
+                                                Lightning Components
+                                                <span class="subsolutiondesc">Lightning Components show the power of the platform. Have a look at our list.</span>
+                                            </div>
+                                        </h2>
+                                    </div>    
+                                </div>
+                            </div> 
+                            <div class="textleft padding">
+                                <lightning:accordion >
+                                    <aura:iteration items="{!v.Features}" var="feature">
+                                        <aura:if isTrue="{!feature.type__c == 'Lightning Component'}">
+                                            <lightning:accordionSection name="{!feature.name}" label="{!feature.name}">
+                                                <div class="padding">
+                                                    <div class="textleft">
+                                                        <div class="half">
+                                                            <div class="padding">
+                                                                <a href="{!feature.image__c}" target="_blank">
+                                                                    <img src="{!feature.image__c}" class="featureimg" />
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="half">
+                                                            <div class="padding">
+                                                                <h3>About this component</h3>
+                                                                <aura:unescapedHtml value="{!feature.description__c}"/>
+                                                                <hr/>
+                                                                <aura:if isTrue="{!feature.setup_instructions__c != null}">
+                                                                    <h3>How do I use this?</h3>
+                                                                    <div class="question">
+                                                                        <aura:unescapedHtml value="{!feature.setup_instructions__c}"/>
+                                                                    </div>
+                                                                </aura:if>
+                                                            </div>
+                                                        </div>
+                                                        <div class="clear"></div>
+                                                    </div>
+                                                </div>
+                                            </lightning:accordionSection>
+                                        </aura:if>
+                                    </aura:iteration>
+                                </lightning:accordion>
+                            </div>
+                        </div>
+                    </aura:if>
+                </aura:if>
+            	<aura:if isTrue="{!setting.industry__c == v.Industry}">
+                	<aura:if isTrue="{!setting.show_customizations_lightning_flows__c == true}">
+                        <div class="owner">
+                            <div class="slds-media">
+                                <div class="slds-media__body"> 
+                                    <div class="center">
+                                        <h2 class="slds-page-header__title slds-truncate slds-align-middle padding h2borderbottom textleft" title="Store Promotions">
+                                            <div class="subsolutionicon imgleft">  
+                                                <lightning:icon iconName="standard:flow" size="medium" alternativeText=""/> 
+                                            </div>
+                                            <div class="solutiontitle">
+                                                Lightning Flows
+                                                <span class="subsolutiondesc">Lightning Flows can do incredible things. Check out what we have in our IDO for you!</span>
+                                            </div>
+                                        </h2>
+                                    </div>    
+                                </div>
+                            </div> 
+                            <div class="textleft padding">
+                                <lightning:accordion >
+                                    <aura:iteration items="{!v.Features}" var="feature">
+                                        <aura:if isTrue="{!feature.type__c == 'Lightning Flow'}">
+                                            <lightning:accordionSection name="{!feature.name}" label="{!feature.name}">
+                                                <div class="padding">
+                                                    <div class="textleft">
+                                                        <div class="half">
+                                                            <div class="padding">
+                                                                <img src="{!feature.image__c}" class="featureimg" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="half">
+                                                            <div class="padding">
+                                                                <h3>About this Flow</h3>
+                                                                <aura:unescapedHtml value="{!feature.description__c}"/>
+                                                                <hr/>
+                                                                <aura:if isTrue="{!feature.setup_instructions__c != null}">
+                                                                    <h3>How do I use this?</h3>
+                                                                    <div class="question">
+                                                                        <aura:unescapedHtml value="{!feature.setup_instructions__c}"/>
+                                                                    </div>
+                                                                </aura:if>
+                                                                <aura:if isTrue="{!feature.script_url__c != null}">
+                                                                    <hr/>
+                                                                    <button class="slds-button slds-button_neutral" aura:id="{!feature.script_url__c}" id="{!feature.script_url__c}" onclick="{!c.toScript}">
+                                                                        View Script
+                                                                    </button>
+                                                                </aura:if>
+                                                            </div>
+                                                        </div>
+                                                        <div class="clear"></div>
+                                                    </div>
+                                                </div>
+                                            </lightning:accordionSection>
+                                        </aura:if>
+                                    </aura:iteration>
+                                </lightning:accordion>
+                            </div>
+                        </div>
+                    </aura:if>
+                </aura:if>
+                <aura:if isTrue="{!setting.industry__c == v.Industry}">
+                	<aura:if isTrue="{!setting.show_customizations_visualforce__c  == true}">
+                        <div class="owner">
+                            <div class="slds-media">
+                                <div class="slds-media__body"> 
+                                    <div class="center">
+                                        <h2 class="slds-page-header__title slds-truncate slds-align-middle padding h2borderbottom textleft" title="Store Promotions">
+                                            <div class="subsolutionicon imgleft">  
+                                                <lightning:icon iconName="standard:variable" size="medium" alternativeText=""/> 
+                                            </div>
+                                            <div class="solutiontitle">
+                                                Visualforce Pages/Components
+                                                <span class="subsolutiondesc">Visualforce Pages that show custom functionality.</span>
+                                            </div>
+                                        </h2>
+                                    </div>    
+                                </div>
+                            </div> 
+                            <div class="textleft padding">
+                                <lightning:accordion >
+                                    <aura:iteration items="{!v.Features}" var="feature">
+                                        <aura:if isTrue="{!feature.type__c == 'Visualforce Page'}">
+                                            <lightning:accordionSection name="{!feature.name}" label="{!feature.name}">
+                                                <div class="padding">
+                                                    <div class="textleft">
+                                                        <div class="half">
+                                                            <div class="padding">
+                                                                <a href="{!feature.image__c}" target="_blank">
+                                                                    <img src="{!feature.image__c}" class="featureimg" />
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="half">
+                                                            <div class="padding">
+                                                                <h3>About this component</h3>
+                                                                <aura:unescapedHtml value="{!feature.description__c}"/>
+                                                                <hr/>
+                                                                <aura:if isTrue="{!feature.setup_instructions__c != null}">
+                                                                    <h3>How do I use this?</h3>
+                                                                    <div class="question">
+                                                                        <aura:unescapedHtml value="{!feature.setup_instructions__c}"/>
+                                                                    </div>
+                                                                </aura:if>
+                                                            </div>
+                                                        </div>
+                                                        <div class="clear"></div>
+                                                    </div>
+                                                </div>
+                                            </lightning:accordionSection>
+                                        </aura:if>
+                                    </aura:iteration>
+                                </lightning:accordion>
+                            </div>
+                        </div>
+                    </aura:if>
+                </aura:if>
+                <aura:if isTrue="{!setting.industry__c == v.Industry}">
+                	<aura:if isTrue="{!setting.show_customizations_invision__c   == true}">
+                        <div class="owner">
+                            <div class="slds-media">
+                                <div class="slds-media__body"> 
+                                    <div class="center">
+                                        <h2 class="slds-page-header__title slds-truncate slds-align-middle padding h2borderbottom textleft" title="Store Promotions">
+                                            <div class="subsolutionicon imgleft">  
+                                                <lightning:icon iconName="standard:screen" size="medium" alternativeText=""/> 
+                                            </div>
+                                            <div class="solutiontitle">
+                                                InVision Apps
+                                                <span class="subsolutiondesc">Showcase the art of the possible with InVision Apps.</span>
+                                            </div>
+                                        </h2>
+                                    </div>    
+                                </div>
+                            </div> 
+                            <div class="textleft padding">
+                                <lightning:accordion >
+                                    <aura:iteration items="{!v.Features}" var="feature">
+                                        <aura:if isTrue="{!feature.type__c == 'InVision'}">
+                                            <lightning:accordionSection name="{!feature.name}" label="{!feature.name}">
+                                                <div class="padding">
+                                                    <div class="textleft">
+                                                        <div class="half">
+                                                            <div class="padding">
+                                                                <a href="{!feature.image__c}" target="_blank">
+                                                                    <img src="{!feature.image__c}" class="featureimg" />
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="half">
+                                                            <div class="padding">
+                                                                <h3>About this component</h3>
+                                                                <aura:unescapedHtml value="{!feature.description__c}"/>
+                                                                <hr/>
+                                                                <aura:if isTrue="{!feature.setup_instructions__c != null}">
+                                                                    <h3>How do I use this?</h3>
+                                                                    <div class="question">
+                                                                        <aura:unescapedHtml value="{!feature.setup_instructions__c}"/>
+                                                                    </div>
+                                                                </aura:if>
+                                                            </div>
+                                                        </div>
+                                                        <div class="clear"></div>
+                                                    </div>
+                                                </div>
+                                            </lightning:accordionSection>
+                                        </aura:if>
+                                    </aura:iteration>
+                                </lightning:accordion>
+                            </div>
+                        </div>
+                    </aura:if>
+                </aura:if>
+        </aura:iteration>
+        </div>
+    </div>
+</aura:component>

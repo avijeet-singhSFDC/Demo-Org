@@ -1,0 +1,121 @@
+<apex:page sidebar="false" standardStylesheets="false" controller="ChatCreateCase">
+    <apex:includeScript value="/soap/ajax/34.0/connection.js"/>
+    <apex:includeScript value="/support/console/34.0/integration.js"/>
+
+    <script type='text/javascript'>
+        sforce.connection.sessionId = '{!$Api.Session_ID}';
+        
+        function escapeSoql (str) {
+            return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        }
+    
+        document.addEventListener('DOMContentLoaded', function () {
+         
+            // this is a new chat
+            sforce.console.chat.onChatStarted(function(result){
+                console.log('onChatStarted',result);
+                
+                sforce.console.chat.getDetailsByChatKey(result.chatKey, function(record){
+                    console.log('getDetailsByChatKey' , record);
+                    if (!record || !record.success) {
+                        console.log('Can not determine session Id');
+                        return;
+                    } else {
+                        if (record.details.customDetails && record.details.customDetails.length > 0) {
+                            if (record.details.customDetails[0].label == "SCQuickSetup__CurrentEmail__c") {
+                                console.log(record.details.customDetails[0].value,record.details.chatKey );
+                                loadCaseByKey(record.details.customDetails[0].value,record.details.chatKey);
+                            }
+                        }
+                    }
+                })
+            });
+            
+            // when end chat 
+            sforce.console.chat.onChatEnded(function(result){
+                sforce.console.refreshNavigationTab(function(r) {
+                    console.log(r);
+                })
+            });
+            
+            // this is a object
+            sforce.console.getEnclosingPrimaryTabObjectId(function(result){
+                console.log('sforce.console.getEnclosingPrimaryTabObjectId',result);
+                if (!result || !result.success) {
+                    return;
+                }
+
+                var liveChatTranscriptId = result.id;
+                var query = "SELECT ChatKey,Id FROM LiveChatTranscript WHERE Id = '" + escapeSoql(liveChatTranscriptId) + "'"
+                var queryResult = sforce.connection.query(query);
+                var record = queryResult.getArray('records');
+
+                if (!record || !record[0]) {
+                    console.log('Can not determine session Id');
+                    return;
+                }
+            
+                query = "SELECT CaseNumber,Id,OwnerId,SCQuickSetup__chatKey__c FROM Case WHERE SCQuickSetup__chatKey__c = '" + escapeSoql(record[0].ChatKey) + "'"
+                queryResult = sforce.connection.query(query);
+                record = queryResult.getArray('records');
+                
+                if (!record || !record[0]) {
+                    console.log('Can not determine session Id');
+                    return;
+                }
+                
+                var caseId = record[0].Id;
+                var ownerId = record[0].OwnerId;
+                var caseNumber = record[0].CaseNumber;
+
+                if (!ownerId) {
+                    console.log('No owner Id');
+                    return;
+                }
+
+                sforce.console.getEnclosingPrimaryTabId(function(result){
+                    if (!result || !result.success) {
+                        return;
+                    }
+                    sforce.console.openSubtab(result.id, '/'+caseId, true, caseNumber);
+                });
+            });
+        });
+        
+        
+        function findCaseCallback(result){
+            console.log('findCaseCallback() entered');
+            console.log('Case Id: ' + caseId + ', Case Number: ' + caseNumber);
+
+            // get the primary tab id so we can open the case as a sub-tab
+            sforce.console.getFocusedPrimaryTabId(openSubTab);
+        }
+
+        var openSubTab = function(result) {
+            console.log('openSubTab() entered ' + result.success);
+            if (result.success == true) {
+                console.log('Case Id: ' + caseId + ', Case Number: ' + caseNumber);
+                sforce.console.openSubtab(result.id, '/' + caseId, true, caseNumber, null, function(resutl) {
+                    console.log('openSubtab', resutl);
+                });
+            } else {
+                console.log('Could not get the primary tab id!');
+            }
+        }
+    </script>
+    
+    <apex:form >
+        <apex:actionFunction name="loadCaseByKey" action="{!loadCaseByKey}" rerender="ChatCase" oncomplete="findCaseCallback()">
+            <apex:param name="email" assignTo="{!email}" value="" />
+            <apex:param name="chatkey" assignTo="{!chatkey}" value="" />
+        </apex:actionFunction>
+    </apex:form>
+    <apex:outputPanel id="ChatCase">
+        <apex:pageMessages />
+        <script type="text/javascript">
+            var caseId = '{!caseId}';
+            var caseNumber = '{!caseNumber}';
+        </script>
+    </apex:outputPanel>
+    
+</apex:page>

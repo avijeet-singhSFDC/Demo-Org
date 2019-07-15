@@ -1,0 +1,56 @@
+<div class="bs-docs-sitecontactCreateContactAccount">
+<label class="checkbox">
+  <input type="checkbox" value="" id="umContactus_createContactAndAccount__c" <%if(s.umContactus_createContactAndAccount__c != undefined && s.umContactus_createContactAndAccount__c == true)print('checked');%>>
+  Create Contact and Account
+</label>
+</div>
+
+<div class="bs-docs-sitecontactPhone">
+<label class="checkbox">
+  <input type="checkbox" value="" id="umContactus_enableCall__c" <%if(s.umContactus_enableCall__c != undefined && s.umContactus_enableCall__c == true)print('checked');%>>
+  Enable call
+</label>
+<div class="input-prepend">
+	<span class="add-on" style="width:130px;text-align:left;">Phone number</span>
+	<input class="span7" id="umContactus_phoneNumber__c" type="text" placeholder="phone number..." <%if(s.umContactus_phoneNumber__c != undefined && s.umContactus_phoneNumber__c.length > 0)print('value="'+s.umContactus_phoneNumber__c+'"');%>>
+</div>
+<div class="input-prepend">
+	<span class="add-on" style="width:130px;text-align:left;">Business hour name</span>
+	<input class="span7" id="umContactus_businessHourName__c" type="text" placeholder="business hour name..." <%if(s.umContactus_businessHourName__c != undefined && s.umContactus_businessHourName__c.length > 0)print('value="'+s.umContactus_businessHourName__c+'"');%>>
+</div>
+<label class="checkbox">
+  <input type="checkbox" value="" id="umContactus_addCaseNumberEnabled__c" <%if(s.umContactus_addCaseNumberEnabled__c != undefined && s.umContactus_addCaseNumberEnabled__c == true)print('checked');%>>
+  Add case number
+</label>
+<div class="btn-group" style="margin-bottom:4px;" id="ctiContainer">
+  <button class="btn btn-mini" id="cti_pause">Pause</button>
+  <button class="btn btn-mini" id="cti_wait">Wait</button>
+  <button class="btn btn-mini" id="cti_caseNumber">Case number</button>
+</div><br/>
+<div class="input-prepend">
+	<span class="add-on" style="width:130px;text-align:left;">CTI Configuration</span>
+	<input class="span7" id="umContactus_ctiConfiguration__c" type="text" placeholder="CTI..." <%if(s.umContactus_ctiConfiguration__c != undefined && s.umContactus_ctiConfiguration__c.length > 0)print('value="'+s.umContactus_ctiConfiguration__c+'"');%>>
+</div>
+</div>
+<div class="bs-docs-sitecontactLiveAgent">
+<label class="checkbox">
+  <input type="checkbox" value="" id="umContactus_enableLiveAgent__c" <%if(s.umContactus_enableLiveAgent__c != undefined && s.umContactus_enableLiveAgent__c == true)print('checked');%>>
+  Live Agent chat enabled
+</label>
+<div class="input-prepend">
+	<span class="add-on" style="width:130px;text-align:left;">ChatButtonId</span>
+	<input class="span7" id="umContactus_liveAgentChatButtonId__c" type="text" placeholder="chat button id..." <%if(s.umContactus_liveAgentChatButtonId__c != undefined && s.umContactus_liveAgentChatButtonId__c.length > 0)print('value="'+s.umContactus_liveAgentChatButtonId__c+'"');%>>
+</div>
+<div class="input-prepend">
+	<span class="add-on" style="width:130px;text-align:left;">DeploymentId</span>
+	<input class="span7" id="umContactus_liveAgentDeploymentId__c" type="text" placeholder="deployment id..." <%if(s.umContactus_liveAgentDeploymentId__c != undefined && s.umContactus_liveAgentDeploymentId__c.length > 0)print('value="'+s.umContactus_liveAgentDeploymentId__c+'"');%>>
+</div>
+<div class="input-prepend">
+	<span class="add-on" style="width:130px;text-align:left;">DeploymentURL</span>
+	<input class="span7" id="umContactus_liveAgentDeploymentURL__c" type="text" placeholder="deployment url..." <%if(s.umContactus_liveAgentDeploymentURL__c != undefined && s.umContactus_liveAgentDeploymentURL__c.length > 0)print('value="'+s.umContactus_liveAgentDeploymentURL__c+'"');%>>
+</div>
+<div class="input-prepend">
+	<span class="add-on" style="width:130px;text-align:left;">ChatServerUrl</span>
+	<input class="span7" id="umContactus_liveAgentChatServerURL__c" type="text" placeholder="chat server url..." <%if(s.umContactus_liveAgentChatServerURL__c != undefined && s.umContactus_liveAgentChatServerURL__c.length > 0)print('value="'+s.umContactus_liveAgentChatServerURL__c+'"');%>>
+</div>
+</div>

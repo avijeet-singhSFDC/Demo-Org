@@ -1,0 +1,48 @@
+<aura:component controller="FIDO">
+    <aura:attribute name="ScreenChoice" type="String"/>
+    <aura:attribute name="Settings" type="String[]" />
+    <aura:attribute name="Industry" type="String"/>
+    <aura:attribute name="ComponentTitle" type="String" />
+    <aura:attribute name="Personas" type="String[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:attribute name="MenuOpenClose" type="String" />
+    <aura:attribute name="OrgId" type="String" />
+    <div class="slds-card minicard">
+    	<div class="slds-media">
+        	<div class="slds-media__body"> 
+            	<div class="center">
+                	<h2 class="slds-page-header__title slds-truncate slds-align-middle padding h2borderbottom " title="Store Promotions">
+                    	{!v.Industry} Personas
+                    </h2>
+                </div>    
+            </div>
+        </div> 
+        <div class="textleft padding">
+                <aura:iteration items="{!v.Personas}" var="persona"> 
+                    <aura:if isTrue="{!persona.industry__c == v.Industry}">
+                        <div class="half">
+                            <div class="owner margin">
+                                    <h2 class="borderbottom relative">
+                                        <div class="padding">
+                                            <img src="{!persona.user_image_url__c}" class="personaimg" /> {!persona.name} 
+                                            <span class="slds-badge slds-badge absolutetopright">{!persona.title__c}</span>
+                                        </div>
+                                    </h2>
+                                    <div class="padding">
+                                        <div class="textleft">
+                                            <aura:unescapedHtml value="{!persona.description__c}"/>
+                                        </div>
+                                    </div>
+                                <div class="footer">
+                                    <div class="padding">
+                                        <c:FIDO_Personas_Buttons Industry="{!v.Industry}" Settings="{!v.Settings}" recType="{!persona.type__c}" PersonaName="{!persona.name}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aura:if>
+                </aura:iteration>
+            <div class="clear"></div>
+    	</div>
+    </div>
+</aura:component>

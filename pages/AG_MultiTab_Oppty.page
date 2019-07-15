@@ -1,0 +1,69 @@
+<apex:page sidebar="false" showHeader="true" docType="html-4.01-strict">
+<div id="tabstrip" style="display:none;"> <ul> 
+<li class="k-state-active">ALL OPEN</li>
+<li>MY</li>
+<li>CLOSING THIS MONTH</li>
+<li>THIS YEAR BY STAGE</li>
+<li>OPPS W/O PRODUCTS</li>
+<li>OPPS W/O QUOTES</li>
+</ul>
+<!-- ALL OPEN -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="Opportunity" DelayLoad="false"  ViewID="aBs2E000000JHjyCAW" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+<!-- MY -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="Opportunity" DelayLoad="true"  ViewID="aBs2E000000JHjzCAW" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+<!-- CLOSING THIS MONTH -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="Opportunity" DelayLoad="true"  ViewID="aBs2E000000JHk9CAW" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+<!-- THIS YEAR BY STAGE -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="Opportunity" DelayLoad="true"  ViewID="a1K2E000006e8OMEAU" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+<!-- OPPS W/O PRODUCTS -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="Opportunity" DelayLoad="true"  ViewID="aBs2E000000JHkICAG" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+<!-- OPPS W/O QUOTES -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="Opportunity" DelayLoad="true"  ViewID="aBs2E000000JHkJCAG" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+</div>
+<script>
+$(document).ready(function() {
+    $("#tabstrip").kendoTabStrip({
+      activate: function(e){
+        setTimeout(function(){          $(window).resize();        });
+      }
+    });
+    $("#tabstrip").css("display", "block");
+});
+ </script>
+</apex:page>

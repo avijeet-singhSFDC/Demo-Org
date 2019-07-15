@@ -1,0 +1,805 @@
+<apex:page standardController="DE_Location__c" extensions="PrototypeTaskWizardCtrl" showHeader="false" sidebar="false" standardStylesheets="false" title="Task Wizard" docType="html-5.0">
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <link rel="stylesheet" href="/resource/CPG_SLDS203/assets/styles/salesforce-lightning-design-system.min.css"/>
+            <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js'></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-sanitize.min.js"></script>
+            
+            <style>
+                
+                body {
+                     padding: 0px !important;
+                }
+                .level-card {
+                    position: relative;
+                    z-index: 500;
+                    background-color: #fff;
+                    padding: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 3px;
+                    margin-bottom: 10px;
+                    width: 600px;
+                }
+                .tree-arm {
+                    position: absolute;
+                    content: "";
+                    border-left: 1px solid #eee;
+                    height: calc(100% - 20px);
+                    width: 
+                    top: 15px;
+                    left: 15px;
+                }
+                
+                .indent {
+                    margin-left: 40px;
+                }
+                
+                .zone-indent{
+                    padding-left: 5px;
+                }
+                .zone-indent:before {
+                    content: '&#8627;';
+                }
+                
+                .padded-wrapper {
+                    padding: 1rem 1.5rem;
+                }
+                .padded-vert {
+                    padding: 1rem 0;
+                }
+                .pad-top {
+                    padding-top: 1rem;
+                }
+                .page-body {
+                    position: relative;
+                    z-index: 0;
+                    margin-bottom: 64px;
+                }
+                .page-footer {
+                    position: fixed;
+                    bottom: 0;
+                    left: 0;
+                    z-index: 10;
+                    width: 100%;
+                    background-color: #F7F9FB;
+                    border-top: 1px solid #d8dde6;
+                }
+                
+                .location-header {
+                    position: fixed;
+                    top: 0;
+                    width: 100%;
+                    z-index: 10;
+                }
+                .location-body {
+                    position: absolute;
+                    top: 261px;
+                    height: calc(100% - 261px);
+                    width: 100%;
+                    overflow: auto;
+                }
+                
+                .level {
+                    position: relative;
+                }
+                
+                .level-brand {
+                    border-color: #ffeab2;
+                }
+                .level-zone {
+                    border-color: #b4edbd;
+                }
+                .level-region {
+                    border-color: #8ce2f2;
+                }
+                .level-district {
+                    border-color: #a0aaff;
+                }
+                .level-store {
+                    border-color: #d59bff;
+                }
+                
+                .checklist {
+                    padding: 10px;
+                    background-color: #F7F9FB;
+                    border: 1px solid #d8dde6;
+                    border-radius: 3px;
+                    margin: 10px 0px;
+                }
+                
+                .checklist-items {
+                    background-color: rgba(0,0,0,0);
+                    margin-top: 10px;
+                }
+                
+                #taskPage .slds-page-header{
+                    position: fixed;
+                    top: 0;
+                    width: 100%;
+                    z-index: 10;
+                }
+                
+                #taskPage .page-body {
+                    margin-top: 113px;
+                }
+                
+                .slds-card__body--inner, .slds-card__footer, .slds-card__header {padding: 0; margin-bottom: 0;}
+            </style>
+            
+            <script>
+            
+            function buildMap(locations){
+                var brand = {};
+                var zones = [];
+                var regions = [];
+                var districts = [];
+                var stores = [];
+                
+                angular.forEach(locations, function(location){
+                    switch(location.RecordType.Name){
+                        case 'Brand':
+                            brand = location;
+                            break;
+                            
+                        case 'Zone':
+                            zones.push(location);
+                            break;
+                            
+                        case 'Region':
+                            regions.push(location);
+                            break;
+                            
+                        case 'District':
+                            districts.push(location);
+                            break;
+                            
+                        case 'Store':
+                            stores.push(location);
+                            break;
+                            
+                        default:
+                            console.log('Switch statement default - ' + location.Name);
+                    }
+                });
+                var zonesTemp = [];
+                angular.forEach(zones, function(zone, zoneKey){
+                    var regionsTemp = [];
+                    
+                    angular.forEach(regions, function(region, regionKey){
+                        var districtsTemp = [];
+                        
+                        angular.forEach(districts, function(district, districtKey){
+                            var storesTemp = [];
+                            
+                            angular.forEach(stores, function(store, storeKey){
+                                if(district.Id == store.Parent_Location__c){
+                                    storesTemp.push(store);
+                                }
+                            });
+                            district['children'] = storesTemp;
+                            
+                            if(region.Id == district.Parent_Location__c){
+                                districtsTemp.push(district);
+                            }
+                        });
+                        region['children'] = districtsTemp;
+                        
+                        if(zone.Id == region.Parent_Location__c){
+                            regionsTemp.push(region);
+                        }
+                    });
+                    zone['children'] = regionsTemp;
+                    
+                    if(brand.Id == zone.Parent_Location__c){
+                        zonesTemp.push(zone);
+                    }
+                });
+                brand['children'] = zonesTemp;
+                
+                return brand;
+            }
+            
+            function toggleBool(location, isActive){
+                var root = location;
+                var hasChildren = root.children != undefined;
+                
+                root['isActive'] = isActive;
+                
+                angular.forEach(root.children, function(child){
+                    toggleBool(child, root.isActive);
+                });
+            }
+            
+            function redirect(projectId){
+                if( (typeof sforce != "undefined") && (sforce != null) ) {
+                    sforce.one.navigateToSObject(projectId,'detail');
+                }
+                else {
+                    window.location.href = '/' + projectId;
+                }
+            }
+            
+            var app = angular.module("CPGTaskArray", []);
+            
+            app.controller('mainCtrl',function($scope){
+                $scope.brand = {};
+                $scope.selectedLocations = [];
+                $scope.searchString;
+                $scope.tempId = 0;
+                $scope.project = {
+                    'Id': null,
+                    'Name': ''
+                };
+                
+                $scope.page = {
+                    'currentPage': 1,
+                    'nextPage': function(){this.currentPage++},
+                    'prevPage': function(){this.currentPage--}
+                }
+                
+                $scope.brands = {
+                    'selected': "",
+                    'options': null
+                };
+                
+                $scope.templates = {
+                    'selected' : "",
+                    'options' : null,
+                    'selectedTemplate' : null 
+                };
+                
+                $scope.distribution = {
+                    'selected': 'Zone',
+                    'options': ['Zone', 'Region', 'District', 'Store']
+                }
+                
+                $scope.init = function(){
+                    PrototypeTaskWizardCtrl.getBrands(function(res,evt){
+                        var returnVal = res;
+                        $scope.brands.options = returnVal;
+                        $scope.brands.selected = returnVal[0].Id;
+                        $scope.setBrand();
+                        $scope.$apply();
+                    },{escape:false});
+                    
+                    PrototypeTaskWizardCtrl.getTaskTemplates(function(res){
+                        var returnVal = JSON.parse(res);
+                        $scope.templates.options = returnVal;
+                        $scope.templates.selected = returnVal[0].Id;
+                        $scope.setTemplate();
+                        $scope.$apply();
+                    },{escape:false});
+                    
+                }
+                
+                $scope.setBrand = function(){
+                    var brandId = $scope.brands.selected;
+                    PrototypeTaskWizardCtrl.getLocations(brandId, function(res,evt){
+                        console.log(res, evt);
+                        
+                        var brand = buildMap(res);
+                        console.log('Brands' ,brand);
+                        
+                        $scope.brand = brand;
+                        $scope.$apply();
+                    },{escape:false});
+                }
+                
+                $scope.setTemplate = function(){
+                    var templateId = $scope.templates.selected;
+                    PrototypeTaskWizardCtrl.setTaskTemplate(templateId, function(res, evt){
+                        var returnVal = JSON.parse(res);
+                        $scope.templates.selectedTemplate = returnVal;
+                        console.log('Selected Template: ', returnVal);
+                        $scope.$apply();
+                    },{escape:false});
+                }
+                
+                $scope.addChecklist = function(){
+                    var idString = 'a342E000007LA4SAAW';
+                    var tempId = $scope.tempId.toString();
+                    var tempIdLength = tempId.length;
+                    
+                    idString = idString.substring(0,idString.length - tempIdLength) + tempId;
+                    
+                    var checklist = {
+                        checklist : {
+                            Name : '',
+                            Id : idString
+                        }
+                    }
+                    
+                    console.log($scope.templates);
+                    
+                    $scope.templates.selectedTemplate.checklists.push(checklist);
+                    $scope.tempId++;
+                }
+                
+                $scope.addLineItem = function(checklist){
+                    console.log(checklist);
+                
+                    var newLineItem = {
+                        Checklist_Template__c : checklist.checklist.Id,
+                        Days_Out_Assigned__c : 0,
+                        Days_Out_Due__c : 0,
+                        Name : null
+                    }
+                    
+                    if(checklist.hasOwnProperty('checklistLineItems'))
+                        checklist.checklistLineItems.push(newLineItem);
+                    else {
+                        checklist['checklistLineItems'] = [];
+                        checklist.checklistLineItems.push(newLineItem);
+                    }
+                    
+                    $scope.tempId++;
+                }
+                
+                $scope.delete = function(parentObj, parentProp, index){
+                    console.log(parentObj, parentProp, index);
+                    console.log(parentObj[parentProp]);
+                    parentObj[parentProp].splice(index, 1);
+                }
+                
+                $scope.toggleAll = function(location){
+                    toggleBool(location, location.isActive);
+                }
+                
+                $scope.submitTasks = function(){
+                    var level = $scope.distribution.selected;
+                    level = level.toLowerCase();
+                    var selectedLocations = document.querySelectorAll('div[data-level="' + level + '"]');
+                    
+                    var distributionList = [];
+                    
+                    angular.forEach(selectedLocations, function(selectedLocation){
+                        var selectedLocationTemp = JSON.parse(angular.element(selectedLocation)[0].attributes['data-obj'].value);
+                        
+                        if(selectedLocationTemp.isActive){
+                            delete selectedLocationTemp.children;
+                            delete selectedLocationTemp.isActive;
+                            distributionList.push(selectedLocationTemp);
+                        }
+                    });
+                                 
+                    
+                    var selectedTask = $scope.templates.selectedTemplate;
+                    var task = selectedTask.task;                    
+                    var checklists = [];
+                    var lineItems = [];
+                    
+                    
+                    
+                    angular.forEach(selectedTask.checklists, function(checklist){
+                        if(checklist.checklist.Name != '' && checklist.checklist.Name != null){
+                            console.log(checklist);
+                            angular.forEach(checklist.checklistLineItems, function(lineItem){
+                                if(lineItem.Name != '' && lineItem.Name != null){
+                                    delete lineItem.$$hashKey;
+                                    delete lineItem.attributes;
+                                    lineItems.push(lineItem);
+                                }
+                            });
+                            
+                            delete checklist.checklist.attributes;
+                            delete checklist.checklist.$$hashKey;
+                            checklists.push(checklist.checklist);
+                        }
+                    });
+                    
+                    delete task.attributes;
+                    
+                    console.log('distribution', distributionList);
+                    console.log('task', task);
+                    console.log('checklists', checklists);
+                    console.log('lineItems', lineItems);
+                    
+                    PrototypeTaskWizardCtrl.insertProject($scope.project.Name, $scope.brand.Id, $scope.project.Start_Date__c.toISOString(), $scope.project.End_Date__c.toISOString(), function(projectRes, projectEvt){
+                        console.log(projectEvt);
+                        $scope.project.Id = projectRes.Id;
+                        console.log('inserted project', projectRes, projectEvt);
+                        
+                        PrototypeTaskWizardCtrl.insertTasks($scope.project.Id, distributionList, task, function(res, taskEvt){
+                            if(taskEvt.status){
+                                var insertedTasks = res;
+                                console.log('inserted tasks', insertedTasks, taskEvt);
+                                
+                                PrototypeTaskWizardCtrl.insertChecklists($scope.project.Id, insertedTasks, checklists, function(res1,checklistEvt){
+                                    if(checklistEvt.status){
+                                        var insertChecklists = res1;
+                                        console.log('inserted checklists',insertChecklists, checklistEvt);
+                                        
+                                        PrototypeTaskWizardCtrl.insertLineItems($scope.project.Id, insertChecklists, lineItems, function(res2, itemsEvt){
+                                            console.log('inserted checklists',res2, itemsEvt);
+                                            if(itemsEvt.status){
+                                                redirect($scope.project.Id);
+                                            }
+                                        },{escape:false});
+                                    }
+                                },{escape:false});
+                            }
+                        },{escape:false});
+                    },{escape:false});
+                    
+                    console.log(level, distributionList);
+                }
+            });
+            
+            app.filter('searchFilter', function(){
+                return function(locations, searchString, currentPage){
+                    
+                    var newLocations = [];
+                    
+                    if(searchString != '' && searchString != null && currentPage == 1){
+                        angular.forEach(locations, function(location){
+                            var locationName = location.Name.toLowerCase();
+                            if(locationName.indexOf(searchString.toLowerCase()) != -1 && locationName.indexOf(searchString.toLowerCase()) >= 0){
+                                console.log(locationName, searchString.toLowerCase());
+                                
+                                newLocations.push(location);
+                            }
+                        });
+                        
+                        return newLocations;
+                    }
+                    else {
+                        return locations;
+                    }
+                }
+            });
+            
+            app.controller('locationsCtrl', function($scope){
+                
+            });
+            
+            app.controller('taskCtrl', function($scope){
+                
+            });
+            
+            
+            
+            </script>
+        </head>
+        
+        <div class="slds" ng-app="CPGTaskArray" ng-controller="mainCtrl" ng-init="init()">        
+            <div id="locationPage" ng-show="page.currentPage == 1" ng-controller="locationsCtrl">
+                <div class="slds-page-header location-header" role="banner">
+                    
+                    <div class="slds-grid">
+                        <div class="slds-col--padded">
+                            <h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle" title="Task Assignment">Project Wizard</h1>
+                        </div>
+                    </div>
+                    
+                    <div class="slds-grid">
+                        <div class="slds-col--padded">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Project Name</label>
+                                <div class="slds-form-element__control">
+                                    <input ng-model="project.Name" class="slds-input" type="text" placeholder="Project Name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col--padded">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Project Start Date</label>
+                                <div class="slds-form-element__control">
+                                    <input ng-model="project.Start_Date__c" class="slds-input" type="date" placeholder="mm/dd/yy" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col--padded">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Project End Date</label>
+                                <div class="slds-form-element__control">
+                                    <input ng-model="project.End_Date__c" class="slds-input" type="date" placeholder="mm/dd/yy" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slds-grid">
+                        <div class="slds-col--padded">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Brand</label>
+                                <div class="slds-form-element__control">
+                                    <select class="slds-select" ng-model="brands.selected" ng-change="setBrand()" ng-options="brand.Id as brand.Name for brand in brands.options"></select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="slds-col--padded">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Distribution Level</label>
+                                <div class="slds-form-element__control">
+                                    <div class="slds-select_container">
+                                        <select class="slds-select" ng-model="distribution.selected" ng-change="" ng-options="level for level in distribution.options">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="slds-grid">
+                        <div class="slds-col--padded pad-top">
+                            <div class="slds-text-heading--small">Filters</div>
+                        </div>
+                    </div>
+                    
+                    <div class="slds-grid">
+                        <div class="slds-col--padded">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Zones</label>
+                                <div class="slds-form-element__control">
+                                    <input ng-model="zoneFilter" class="slds-input level-zone" type="text" placeholder="Filter Zones" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col--padded">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Region</label>
+                                <div class="slds-form-element__control">
+                                    <input ng-model="regionFilter" class="slds-input level-region" type="text" placeholder="Filter Regions" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col--padded">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">District</label>
+                                <div class="slds-form-element__control">
+                                    <input ng-model="districtFilter" class="slds-input level-district" type="text" placeholder="Filter Districts" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col--padded">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Store</label>
+                                <div class="slds-form-element__control">
+                                    <input ng-model="storeFilter" class="slds-input level-store" type="text" placeholder="Filter Stores" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="page-body padded-wrapper location-body">
+                    
+                    <div class="slds-grid">
+                        <div class="slds-col--padded">
+                            <div class="level">
+                                <div class="tree-arm"></div>
+                                <div class="level-card level-brand">
+                                    <input type="checkBox" ng-model="brand.isActive" ng-change="toggleAll(brand)"/>
+                                    {{brand.Name}}
+                                </div>
+                                <div class="level indent" ng-repeat="zone in brand.children | orderBy: Name | searchFilter: zoneFilter : page.currentPage"
+                                     data-obj="{{zone}}"
+                                     data-parent-id="{{zone.parent_id}}" 
+                                     data-id="{{zone.parent_id}}" 
+                                     data-level="zone" 
+                                     data-active="{{zone.isActive}}">
+                                    <div class="tree-arm"></div>
+                                    
+                                    <div class="level-card level-zone">
+                                        <input type="checkBox" ng-model="zone.isActive" ng-change="toggleAll(zone)"/>
+                                        {{zone.Name}}
+                                    </div>
+                                    <div class="level indent" ng-repeat="region in zone.children | orderBy: Name |  searchFilter: regionFilter : page.currentPage"
+                                         data-obj="{{region}}"
+                                         data-parent-id="{{region.parent_id}}" 
+                                         data-id="{{region.parent_id}}" 
+                                         data-level="region" 
+                                         data-active="{{region.isActive}}">
+                                        <div class="tree-arm"></div>
+                                        
+                                        <div class="level-card level-region">
+                                            <input type="checkBox" ng-model="region.isActive" ng-change="toggleAll(region)"/>
+                                            {{region.Name}}
+                                        </div>
+                                        <div class="level indent" ng-repeat="district in region.children | searchFilter: districtFilter : page.currentPage"
+                                             data-obj="{{district}}"
+                                             data-parent-id="{{district.parent_id}}" 
+                                             data-id="{{district.parent_id}}" 
+                                             data-level="district" 
+                                             data-active="{{district.isActive}}">
+                                            <div class="tree-arm"></div>
+                                            
+                                            <div class="level-card level-district">
+                                                <input type="checkBox" ng-model="district.isActive" ng-change="toggleAll(district)"/>
+                                                {{district.Name}}
+                                            </div>
+                                            <div class="level indent" ng-repeat="store in district.children | searchFilter: storeFilter : page.currentPage"
+                                                 data-obj="{{store}}"
+                                                 data-parent-id="{{store.parent_id}}"
+                                                 data-id="{{store.parent_id}}"
+                                                 data-level="store"
+                                                 data-active="{{store.isActive}}">
+                                                <div class="tree-arm"></div>
+                                                
+                                                <div class="level-card level-store">
+                                                    <input type="checkBox" ng-model="store.isActive"/>
+                                                    {{store.Name}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-footer padded-wrapper">    
+                    <div class="slds-grid">
+                        <div class="slds-col--padded slds-has-flexi-truncate slds-text-align--right">
+                            <button class="slds-button slds-button--neutral" ng-click="page.nextPage();">
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="taskPage" ng-show="page.currentPage == 2" ng-controller="taskCtrl">
+                
+                <div class="slds-page-header" role="banner">
+                    <div class="slds-grid">
+                        <div class="slds-col--padded slds-has-flexi-truncate">
+                            <div class="slds-media slds-media--center slds-no-space slds-grow">
+                                <div class="slds-media__body">
+                                    <h1 class="slds-page-header__title slds-m-right--small slds-truncate slds-align-middle" title="Task Assignment">Tasks</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-grid">
+                        <div class="slds-col--padded slds-align-bottom">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Template</label>
+                                <div class="slds-form-element__control">
+                                    <div class="slds-select_container">
+                                        <select class="slds-select" ng-model="templates.selected" ng-change="setTemplate()" ng-options="template.Id as template.Name for template in templates.options"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="page-body padded-wrapper">
+                    <div class="slds-grid">
+                        <div class="slds-col--padded slds-has-flexi-truncate">
+                            <div class="task">
+                                <div class="slds-grid">
+                                    <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                                        <div class="slds-media__body slds-truncate">
+                                            <h2>
+                                                <span class="slds-text-heading--small">{{templates.selectedTemplate.task.Name}}</span>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                    <div class="slds-button-group" role="group">
+                                        <button class="slds-button slds-button--neutral slds-col--bump-left" ng-click="addChecklist()">New Checklist</button>
+                                    </div>
+                                </div>
+                                <div class="slds-form-element">
+                                    <label class="slds-form-element__label">Task Name</label>
+                                    <input class="slds-input" ng-model="templates.selectedTemplate.task.Name"/>
+                                </div>
+                                
+                                <article class="slds-card checklist" ng-repeat="checklistWrapper in templates.selectedTemplate.checklists">
+                                    <header class="slds-card__header slds-grid">
+                                        <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                                            <div class="slds-media__body slds-truncate">
+                                                <h2>
+                                                    <span class="slds-text-heading--small">{{checklistWrapper.checklist.Name}}</span>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                        <div class="slds-button-group" role="group">
+                                            <button class="slds-button slds-button--neutral slds-col--bump-left" ng-click="addLineItem(checklistWrapper)">New Item</button>
+                                            <button class="slds-button slds-button--neutral slds-col--bump-left" style="color: #f00;" ng-click="delete(templates.selectedTemplate, 'checklists', $index)">Delete</button>
+                                        </div>
+                                    </header>
+                                    <div class="slds-card__body">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label" placeholder="Checklist Name">Checklist Name</label>
+                                            <input class="slds-input" ng-model="checklistWrapper.checklist.Name"/>
+                                        </div>
+                                    
+                                        <table class="slds-table checklist-items" role="grid">
+                                            <thead>
+                                                <tr class="slds-text-heading--label">
+                                                    <th class="" scope="col" aria-label="Item Name">
+                                                        <span class="slds-truncate" title="Item Name">Item Name</span>
+                                                    </th>
+                                                    <th class="" scope="col" aria-label="Item Name">
+                                                        <span class="slds-truncate" title="Item Name">Start In (days)</span>
+                                                    </th>
+                                                    <th class="" scope="col" aria-label="Item Name">
+                                                        <span class="slds-truncate" title="Item Name">End In (days)</span>
+                                                    </th>
+                                                    <th class="slds-cell-shrink" scope="col">
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="slds-hint-parent" ng-repeat="lineItem in checklistWrapper.checklistLineItems">
+                                                    <th scope="row" data-label="Item Name">
+                                                        <input class="slds-input" ng-model="lineItem.Name" placeholder="Item Name"/>
+                                                    </th>
+                                                    <th scope="row" data-label="Start">
+                                                        <input class="slds-input" ng-model="lineItem.Days_Out_Assigned__c" type="Number" placeholder="Days out start"/>
+                                                    </th>
+                                                    <th scope="row" data-label="End">
+                                                        <input class="slds-input" ng-model="lineItem.Days_Out_Due__c" type="Number"  placeholder="Days out due"/>
+                                                    </th>
+                                                    <td role="gridcell" class="slds-cell-shrink" data-label="Actions">
+                                                        <button class="slds-button slds-button--icon-border-filled slds-button--icon" ng-click="delete(checklistWrapper, 'checklistLineItems', $index)">
+                                                            <svg aria-hidden="true" class="slds-button__icon">
+                                                                <use xlink:href="/resource/CPG_SLDS203/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+                                                            </svg>
+                                                            <span class="slds-assistive-text">Settings</span>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        
+                                        <!--<div class="line-item" ng-repeat="lineItem in checklistWrapper.checklistLineItems">
+                                            <div class="slds-grid">
+                                                <div class="slds-col--padded slds-has-flexi-truncate">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label">Checklist Item Name</label>
+                                                        <input class="slds-input" ng-model="lineItem.Name" placeholder="Item Name"/>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-col--padded slds-has-flexi-truncate">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label">Start Date - Days Out From Today</label>
+                                                        <input class="slds-input" ng-model="lineItem.Days_Out_Assigned__c" placeholder="Days out start"/>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-col--padded slds-has-flexi-truncate">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label">Due Date - Days Out From Assigned Date</label>
+                                                        <input class="slds-input" ng-model="lineItem.Days_Out_Due__c" placeholder="Days out due"/>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-col--padded slds-has-flexi-truncate">
+                                                    <button class="slds-button slds-button--neutral slds-button--icon" ng-click="delete(checklistWrapper, 'checklistLineItems', $index)">
+                                                        <svg aria-hidden="true" class="slds-button__icon">
+                                                            <use xlink:href="/resource/CPG_SLDS203/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+                                                        </svg>
+                                                        <span class="slds-assistive-text">Settings</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>-->
+                                        
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="page-footer padded-wrapper">
+                    <div class="slds-grid">
+                        <div class="slds-col--padded slds-has-flexi-truncate slds-text-align--right">
+                            <button class="slds-button slds-button--neutral" ng-click="page.prevPage();">
+                                Prev
+                            </button>
+                            <button class="slds-button slds-button--neutral" ng-click="submitTasks()">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </html>
+</apex:page>

@@ -1,0 +1,6 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes">
+  <div style="height:100%;width:100%;">
+      <img style="display:block;margin:auto;" 
+           src="https://rfvision.my.salesforce.com/resource/1513098235000/rfDownline?isdtp=p1" />
+  </div>
+</aura:component>

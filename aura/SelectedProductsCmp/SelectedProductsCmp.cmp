@@ -1,0 +1,72 @@
+<aura:component controller="OpportunityProductsCtrl" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="selectedProducts" type="List[]" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <!--ui:scrollerWrapper class="scrollerSize"-->
+    <div class="mainWrap">
+        <ui:scrollerWrapper class="scrollerSize">
+            <div class="header_div">
+                <div class="header_text">
+                    <!--lightning:icon iconName="standard:product" size="small" /-->
+                    <h3 class="slds-text-heading_large slds-text-align_center slds-m-top_small">Edit Selected Products 
+                    </h3>
+                </div>
+            </div>
+            <!--/ui:scrollerWrapper-->
+            <div class="slds">
+                
+                <aura:iteration items="{!v.selectedProducts}" var="record">
+                    <!--ui:scrollerWrapper class="scrollerSize"-->
+                    <div class="header_text">
+                        Product Details
+                    </div>
+                    <div class="slds-form--inline">
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="inputSample2">Product</label>
+                            <div class="slds-form-element__control">
+                                <ui:outputText value="{!record.sProductName}" class="noSpace" />
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="inputSample2">Product Code</label>
+                            <div class="slds-form-element__control">
+                                <ui:outputText value="{!record.sProductCode}" class="noSpace" />
+                            </div>
+                        </div>
+                        
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="inputSample2">Sales Price</label>
+                            <div class="slds-form-element__control">
+                                <ui:inputCurrency value="{!record.sUnitPrice}" class="slds-input1"  />
+                            </div>
+                        </div>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="inputSample2">Quantity</label>
+                            <div class="slds-form-element__control">
+                                <ui:inputNumber value="{!record.sQuantity}" class="slds-input1"  />
+                            </div>
+                        </div>
+                        <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="inputSample2">Date</label>
+                            <div class="slds-form-element__control">
+                                <ui:inputDate value="{!record.sDate}" displayDatePicker="true" class="slds-input1" />
+                            </div>
+                        </div>
+                        <!--div class="slds-form-element">
+                            <label class="slds-form-element__label" for="inputSample2">Action</label>
+                            <div class="slds-form-element__control">
+                                <button class="slds-button slds-button_brand slds-m-top_small slds-m-left_small" id="{!record.sId}" onclick="{!c.deleteProducts}" >Del</button>
+                            </div>
+                        </div-->
+                    </div>
+                    <!--/ui:scrollerWrapper-->
+                </aura:iteration>
+                <button value="Submit" class="slds-button slds-button_neutral slds-m-top_small slds-m-left_small" onclick="{!c.redirectBack}">Back</button>
+                <button value="Submit" class="slds-button slds-button_brand slds-m-top_small slds-m-left_small" onclick="{!c.saveProducts}">Save</button>
+                
+            </div>
+        </ui:scrollerWrapper>
+    </div>
+</aura:component>

@@ -1,0 +1,3 @@
+<design:component >
+	<design:attribute name="ProductId" label="Product Id"/>
+</design:component>

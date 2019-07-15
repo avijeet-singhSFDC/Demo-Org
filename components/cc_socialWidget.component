@@ -1,0 +1,36 @@
+<apex:component id="cc_socialWidget">
+  <script id="Social-Media-Widget-Desktop" type="text/template">
+
+    <!-- SOCIAL MEDIA WIDGET -->
+    <div class="panel panel-default cc_panel">
+        <div class="panel-heading cc_heading">
+            <h3 class="panel-title cc_title">{{pageLabelMap 'FollowUs'}}
+          <span class="pull-right">
+           <span class="icon-toggle cc_filter_icon" role="button" data-toggle="collapse" data-target="#collapseMiniSocial" aria-expanded="true" aria-controls="collapseMiniSocial">
+            <i class="fa fa-caret-down" aria-hidden="true"></i>
+           </span>
+          </span>
+         </h3>
+        </div>
+        <div id="collapseMiniSocial" class="panel-collapse collapse in">
+            <div class="panel-body cc_body">
+                <a href="#" class="btn-social-icon"><i class="fa fa-facebook-square fa-3x" aria-hidden="true"></i></a>
+                <a href="#" class="btn-social-icon"><i class="fa fa-twitter-square fa-3x" aria-hidden="true"></i></a>
+                <a href="#" class="btn-social-icon"><i class="fa fa-google-plus-square fa-3x" aria-hidden="true"></i></a>
+                <a href="#" class="btn-social-icon"><i class="fa fa-linkedin-square fa-3x" aria-hidden="true"></i></a>
+            </div>
+        </div>
+    </div>
+  </script>
+
+  <script type="text/javascript">
+    $(function(){
+      CCRZ.util.createView({
+        desktop: {target:'widgetSection', template:'Social-Media-Widget-Desktop'},
+      });
+
+      // // ADD PROD SPECS
+      // $('.search-box-RightNav').before('<div class="filterContainer" />');
+    });
+  </script>
+</apex:component>

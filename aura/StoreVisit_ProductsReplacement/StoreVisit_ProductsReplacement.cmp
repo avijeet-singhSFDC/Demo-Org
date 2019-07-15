@@ -1,0 +1,18 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global">
+    <aura:attribute name="prodReplace" type="Boolean"/>
+    <aura:attribute name="replaceDetails" type="String"/>
+    <aura:attribute name="options" type="List" default="[
+                                                        {'label': 'Yes', 'value' : 'true'},
+                                                        {'label': 'No', 'value' : 'false'}]"/>
+	<div class="slds">
+        Do any of our products require replacement?
+        <lightning:radioGroup aura:id="grp"
+                              label=""
+                              options="{!v.options}"
+                              value="{!v.prodReplace}"
+                              onchange="{!c.assignValue}"/>
+        <div class="errorMsg slds-hide" aura:id="errorMsg">
+            <lightning:input label="Product Replacement Details" value="{!v.replaceDetails}"/>
+        </div>
+    </div>
+</aura:component>

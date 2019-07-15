@@ -1,0 +1,26 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName" access="global" controller="Customer360">
+    <aura:attribute name="backgroundImageUrl" type="String" access="global"/>
+    <aura:attribute name="backgroundHexColor" type="String" access="global"/>
+    <aura:attribute name="sobjecttype" type="String" default="{!v.sObjectName}"/>
+    <aura:attribute name="hideCust360Id" type="Boolean" access="global"/>
+    <aura:attribute name="hideChurn" type="Boolean" access="global"/>
+    <aura:attribute name="metric1Icon" type="String" access="global"/>
+    <aura:attribute name="metric1IconSize" type="String" access="global"/>
+    <aura:attribute name="metric1Label" type="String" access="global"/>
+    <aura:attribute name="metric2Icon" type="String" access="global"/>
+    <aura:attribute name="metric2IconSize" type="String" access="global"/>
+    <aura:attribute name="metric2Label" type="String" access="global"/>
+    <aura:attribute name="threshold1" type="Integer" access="global" default="20"/>
+    <aura:attribute name="threshold2" type="Integer" access="global" default="60"/>
+    <aura:attribute name="ChurnRiskLabel" type="String" access="global" default="Predicted Churn Risk" />
+    <aura:attribute name="iconColor" type="String" access="global" default="#0070d2"/>
+    <div class="slds-card card" aura:id="card" >
+    	<div class="header-image" style = "{! 'background-image:url(' + (v.backgroundImageUrl) + '); background-color:' + (v.backgroundHexColor) + ';'}"></div>
+        	<aura:if isTrue="{!v.sobjecttype != 'Account'}">
+            	<c:Customer360HighlightCard_Contact sobjecttype="{!v.sobjecttype}" threshold1="{!v.threshold1}" threshold2="{!v.threshold2}" ContactId="{!v.recordId}" OrderObject="{!v.OrderObject}" iconColor="{!v.iconColor}" ChurnRiskLabel="{!v.ChurnRiskLabel}" hideCust360Id="{!v.hideCust360Id}" hideChurn="{!v.hideChurn}" metric1Icon="{!v.metric1Icon}" metric1IconSize="{!v.metric1IconSize}" metric1Label="{!v.metric1Label}" metric2Icon="{!v.metric2Icon}" metric2IconSize="{!v.metric2IconSize}" metric2Label="{!v.metric2Label}"/>
+                <aura:set attribute="else">
+            	<c:Customer360HighlightCard_PersonAccount sobjecttype="{!v.sobjecttype}" threshold1="{!v.threshold1}" threshold2="{!v.threshold2}" ContactId="{!v.recordId}" OrderObject="{!v.OrderObject}" iconColor="{!v.iconColor}" ChurnRiskLabel="{!v.ChurnRiskLabel}" hideCust360Id="{!v.hideCust360Id}" hideChurn="{!v.hideChurn}" metric1Icon="{!v.metric1Icon}" metric1IconSize="{!v.metric1IconSize}" metric1Label="{!v.metric1Label}" metric2Icon="{!v.metric2Icon}" metric2IconSize="{!v.metric2IconSize}" metric2Label="{!v.metric2Label}"/>
+                </aura:set>
+           </aura:if> 
+    </div>
+</aura:component>

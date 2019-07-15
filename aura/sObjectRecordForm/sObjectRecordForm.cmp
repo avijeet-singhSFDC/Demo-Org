@@ -1,0 +1,35 @@
+<aura:component controller="sObjectRecordFormCtrl"  implements="lightning:availableForFlowScreens,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="objectApiName" type="String"/>
+    <aura:attribute name="title" type="String"/>
+    <aura:attribute name="iconName" type="String" default="standard:account"/>
+    <aura:attribute name="columns" type="String"/>
+    <aura:attribute name="fieldSetName" type="String"/>
+    <aura:attribute name="fieldList" type="List"/>
+    <aura:attribute name="recId" type="String"/>
+    <aura:attribute name="viewMode" type="String" default="readonly"/>
+    <aura:attribute name="flayoutType" type="String"/>
+    <aura:attribute name="frecordTypeId" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="force:refreshView" action="{!c.doInit}"/>
+    
+    <lightning:card iconName="standard:account">
+        <aura:set attribute="title">
+            <b>{!v.title}</b>
+        </aura:set>
+        <div class="slds-p-left_large slds-p-right_medium">	
+                <lightning:messages/>
+            <lightning:recordForm aura:id="{!v.recordId}" 
+                                  objectApiName="{!v.objectApiName}"
+                                  fields="{!v.fieldList}"
+                                  recordId="{!v.recId}"
+                                  columns="{!v.columns}"
+                                  onload="{!c.doInit}"
+                                  mode="{!v.viewMode}"
+                                  onsuccess="{!c.onSuccess}"
+                                  onsubmit="{!c.onSubmit}"
+                                  onerror="{!c.onError}"
+                                  />   
+            
+        </div>
+    </lightning:card>
+</aura:component>

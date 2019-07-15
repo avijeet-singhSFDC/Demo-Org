@@ -1,0 +1,135 @@
+<apex:component id="cc_cart_spotlight">
+    <script id="CC-Spotlight-Desktop" type="text/template">
+        {{#if this.Spotlight}}
+        <div class="panel panel-default cc_panel cc_spotlight_products">
+            <div class="panel-heading cc_heading">
+                <h3 class="panel-title cc_title">
+                 {{#if this.crossSell}}
+                  {{pageLabelMap 'CrossSell_AlsoConsider'}}
+                 {{else}}
+                  {{pageLabelMap 'Spotlight_Title'}}
+                 {{/if}}
+                </h3>
+            </div>
+            <div class="panel-body cc_body">
+                {{#each this.Spotlight}}
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="javascript:void(0);" class="productName cc_product_name_img" data-id="{{this.mockProduct.sku}}">
+                         {{displayImage this.mediaWrapper 'spot img-responsive center-block' alt=this.mockProduct.name dataId=this.mockProduct.sku}}
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>
+                         <a href="javascript:void(0);" class="productName cc_product_name" data-id="{{this.mockProduct.sku}}">{{this.mockProduct.name}}</a>
+                        </h5>
+                        <p class="cc_sku">
+                            <span class="cc_sku_label">{{pageLabelMap 'CartInc_SKU'}}</span>&#160;
+                            <span class="cc_sku_value">{{this.mockProduct.sku}}</span>
+                        </p>
+                        <p class="description cc_description">
+                            {{unescape this.mockProduct.shortDesc}}
+                        </p>
+                        {{#if this.showNewSubscriptionSelection}}
+                        <p class="price priceSubscription cc_price_subscription">
+                            <span class="cc_subscr_price">{{pageLabelMap 'Prod_SpotLightPrice' (price this.price) (price this.minSubPrice) (price this.maxSubPrice)}}</span>
+                        </p>
+                        {{else}}
+                        <!--********************************************************-->
+                        {{#if this.maxPrice}}
+                        <!--*******************************************-->
+                        <p class="price cc_price">
+                            {{#ifbothPricesZero this.minPrice this.maxPrice}}
+                            <span class="cc_price_label">{{pageLabelMap 'CartInc_Price'}}:</span>
+                            <span class="cc_price_value">{{displayRangePrice 'ProductDetails_PriceRangeFormat' this.minPrice this.maxPrice}}</span> {{/ifbothPricesZero}}
+                        </p>
+                        {{else}} {{#if this.displayPrice}}
+                        <p class="price displayPrice cc_display_price">
+                            <span class="cc_display_price">{{pageLabelPrefixMap 'DisplayPrice_' this.displayPrice}}</span>
+                        </p>
+                        {{else}}
+                        <p class="price cc_price">
+                            <span class="cc_price_label">{{pageLabelMap 'CartInc_Price'}}:</span>
+                            <span class="cc_price_value">{{price this.price}}</span>
+                        </p>
+                        {{/if}} {{/if}} {{/if}}
+                    </div>
+                </div>
+                <hr> {{/each}}
+            </div>
+        </div>
+        {{/if}} {{#if this.Featured}}
+        <div class="panel panel-default cc_feeatured_products">
+            <div class="panel-heading cc_heading">
+                <h3 class="panel-title cc_title">
+                 {{#if this.crossSell}}
+                  {{pageLabelMap 'CrossSell_AlsoConsider'}}
+                 {{else}}
+                  {{pageLabelMap 'Featured_Title'}}
+                 {{/if}}
+                </h3>
+            </div>
+            <div class="panel-body cc_body">
+                <div class="row">
+                    {{#each this.Featured}}
+                    <div class="{{#ifEquals ../pageData.length 1}}col-xs-12{{else}}{{#ifEquals ../pageData.length 2}}col-xs-6{{else}}{{#ifEquals ../pageData.length 3}}col-xs-4{{else}}col-xs-4{{/ifEquals}}{{/ifEquals}}{{/ifEquals}}">
+                        <div class="row">
+                            <div class="{{#ifEquals ../pageData.length 1}}col-xs-8{{else}}{{#ifEquals ../pageData.length 2}}col-xs-8{{else}}{{#ifEquals ../pageData.length 3}}col-xs-12 text-center{{else}}col-xs-12 text-center{{/ifEquals}}{{/ifEquals}}{{/ifEquals}}">
+                                <a href="javascript:void(0);" class="productName cc_product_name_img" data-id="{{this.mockProduct.sku}}">
+                                {{displayImage this.mediaWrapper 'img-thumbnail featured img-responsive center-block' alt=this.mockProduct.name dataId=this.mockProduct.sku}}
+                               </a>
+                            </div>
+                            <div class="{{#ifEquals ../pageData.length 1}}col-xs-9{{else}}{{#ifEquals ../pageData.length 2}}col-xs-9{{else}}{{#ifEquals ../pageData.length 3}}col-xs-12 text-center{{else}}col-xs-12 text-center{{/ifEquals}}{{/ifEquals}}{{/ifEquals}}">
+                                <h5>
+                                <a href="javascript:void(0);" class="productName cc_product_name" data-id="{{this.mockProduct.sku}}">{{this.mockProduct.name}}</a>
+                               </h5>
+                                <p class="cc_sku">
+                                    <span class="cc_sku_label">{{pageLabelMap 'CartInc_SKU'}}</span>&#160;
+                                    <span class="cc_sku_value">{{this.mockProduct.sku}}</span>
+                                </p>
+                                <!-- <p class="description cc_description">
+                                    {{unescape this.mockProduct.shortDesc}}
+                                </p> -->
+                                {{#if this.showNewSubscriptionSelection}}
+                                <p class="price priceSubscription cc_price_subscription">
+                                    <span class="cc_subscr_price">{{pageLabelMap 'Prod_SpotLightPrice' (price this.price) (price this.minSubPrice) (price this.maxSubPrice)}}</span>
+                                </p>
+                                {{else}}
+                                <!--********************************************************-->
+                                {{#if this.maxPrice}}
+                                <!--*******************************************-->
+                                <p class="price cc_price"> {{#ifbothPricesZero this.minPrice this.maxPrice}}
+                                    <span class="cc_price_label">{{pageLabelMap 'CartInc_Price'}}:</span>
+                                    <span class="cc_price_value">{{displayRangePrice 'ProductDetails_PriceRangeFormat' this.minPrice this.maxPrice}}</span> {{/ifbothPricesZero}}
+                                </p>
+                                {{else}} {{#if this.displayPrice}}
+                                <p class="price displayPrice cc_display_price">
+                                    <span class="cc_display_price">{{pageLabelPrefixMap 'DisplayPrice_' this.displayPrice}}</span>
+                                </p>
+                                {{else}}
+                                <p class="price cc_price">
+                                    <span class="cc_price_label">{{pageLabelMap 'CartInc_Price'}}:</span>
+                                    <span class="cc_price_value">{{price this.price}}</span>
+                                </p>
+                                {{/if}} {{/if}} {{/if}}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- {{#if_odd @index}}
+                    <div class="clearfix"></div>
+                    <hr> 
+                    {{/if_odd}}  -->
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        {{/if}}
+    </script>
+    <script>
+    jQuery(function($) {
+        CCRZ.uiProperties.spotlightView.desktop.tmpl = 'CC-Spotlight-Desktop';
+    });
+    </script>
+</apex:component>

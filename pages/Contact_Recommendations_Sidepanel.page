@@ -1,0 +1,187 @@
+<!-- Author: Jeff Hunt j.hunt@salesforce.com -->  
+<!-- Work is in progress to turn this into a demo component -->      
+
+<apex:page standardController="Contact" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">        
+<apex:includeScript value="/support/console/33.0/integration.js"/>
+<apex:includeScript value="/soap/ajax/30.0/connection.js"/>
+<apex:includeScript value="/soap/ajax/30.0/apex.js"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<apex:stylesheet value="{!URLFOR($Resource.slds222, '/assets/styles/salesforce-lightning-design-system.min.css')}" />
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">    
+
+<style>
+        .before{
+            width: 100%;
+            display: block;
+            margin: none;
+        }
+        
+        .image {
+            display: block;
+            margin: none;       
+        
+        }
+        
+        .bold {
+        
+        font-weight: bold;
+        
+        }
+        
+#container {
+  width: 220px;
+  position: relative;
+}
+#image {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#text {
+  z-index: 10;
+  position: absolute;
+  color: #4878d0;
+  left: 5px;
+  top: 5px;
+  background-color: #f4f5f7;
+  border-radius: 4px;
+  border-style: solid;
+  border-color: #e1e5ee;
+  border-width: 2px;
+  padding-top: 5px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  font-size: 12px;
+  text-align: left;
+}
+</style>
+
+<!-- Below is the logic open a subtab. -->
+<div class="before">
+    <script type="text/javascript">  
+        sforce.connection.sessionId = "{!$Api.Session_ID}";         
+                
+        function openSubTab(recId){
+            var redirectUrl = recId;
+        
+                sforce.console.getEnclosingTabId(function(enclosingResult){
+                    sforce.console.getEnclosingPrimaryTabId(function(primaryResult){
+                        sforce.console.openSubtab(primaryResult.id, redirectUrl, true, '', null);
+                    });
+                });
+            
+        }
+             
+        function RefreshPrimaryTabById() {
+            //Get the value for 'scc-pt-0' from the openPrimaryTab method
+            var primaryTabId = 'scc-pt-0';
+            // alert("entering");
+            sforce.console.getFocusedPrimaryTabId(showTabId);
+            //alert("exit");
+        }
+        var showTabId = function showTabId(result) 
+        {
+        var tabId = result.id;
+        // alert('Primary Tab IDs: primaryTabId ' + tabId );
+        sforce.console.refreshPrimaryTabById(tabId , true, refreshSuccess);
+        }; 
+        
+function reject(x) {
+  var myquery = "SELECT Id, Rejected__c, Rejected_By_User__c, Rejected_Date__c FROM NBO__c WHERE Id = '" + x + "'"; 
+  
+  result = sforce.connection.query(myquery); 
+  records = result.getArray("records"); 
+  var myObj = new sforce.SObject("NBO__c");
+  
+  if(records[0]){ 
+    myObj.ID = records[0].Id; 
+  } 
+  
+  myObj.Rejected__c = true; 
+  myObj.Rejected_By_User__c = sforce.connection.getUserInfo().userId;
+  myObj.Rejected_Date__c = new Date().toISOString();
+  
+  var results = sforce.connection.update([myObj]); 
+  alert("Offer rejected!");
+  window.self.location=window.self.location;
+}
+</script>  
+<!-- Above is the logic open a subtab. -->
+
+
+<!-- HEADING AREA -->
+<div style="padding: 10px 10px 10px 10px;">
+<div class="slds-media slds-media--top slds-no-space slds-grow">
+  <div class="slds-media__figure">
+    <span class="slds-icon_container slds-icon-utility-custom" title="Lead">
+    <svg aria-hidden="true" class="slds-icon slds-icon-custom-custom14 slds-icon--medium">
+      <use xlink:href="{!URLFOR($Resource.slds222, 'assets/icons/custom-sprite/svg/symbols.svg#custom14')}"></use>
+    </svg>
+    </span>
+  </div>
+  <div class="slds-media__body">
+    <p class="slds-text-heading--label">Recommendations</p>
+    <h1 class="slds-page-header__title slds-truncate" title="Products">Products and Offers</h1>
+  </div>
+</div>
+<!-- / HEADING AREA -->
+
+<!-- Body AREA -->
+<div style="padding: 10px 0px 0px 0px;">       
+<table class="slds-table slds-table--bordered slds-table--cell-buffer">
+  <thead>
+    <tr class="slds-text-title--caps">
+      <th scope="col" style="padding-left:0px">
+         <div class="slds-truncate" title="Action">Action</div>
+      </th>
+      <th scope="col" style="padding-left:0px">
+        <div class="slds-truncate" title="Offer">Offer</div>
+      </th> 
+            <th scope="col" style="padding-left:0px">
+        <div class="slds-truncate" title=""></div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+   
+ <apex:repeat value="{!contact.Recommended_Products__r}" var="NBO">
+  <apex:outputPanel rendered="{!NBO.Rejected__c != true}">
+    <tr>
+        <td scope="col" style="padding-left:0px">
+                 
+          <span class="slds-icon slds-icon-text-default slds-icon--small" title="Add to Order" onclick="openSubTab('https://rcgacsdemo.my.salesforce.com/REPLACETHIS');">  
+          <svg aria-hidden="true" class="slds-icon slds-icon-text-default slds-icon--x-small">
+          <use xlink:href="{!URLFOR($Resource.slds222, 'assets/icons/standard-sprite/svg/symbols.svg#opportunity')}"></use>
+          </svg>
+          <span class="slds-assistive-text">Add to Order</span>
+          </span>
+      
+ <!-- THIS IS WHERE THE REJECT FUNCTION IS CALLED -->     
+          <span class="slds-icon slds-icon-text-default slds-icon--small" title="Reject" onclick="reject('{!NBO.ID}')">  
+          <svg aria-hidden="true" class="slds-icon slds-icon-text-default slds-icon--xx-small">
+          <use xlink:href="{!URLFOR($Resource.slds222, 'assets/icons/utility-sprite/svg/symbols.svg#close')}"></use>
+          </svg>
+          <span class="slds-assistive-text">Reject</span>
+          </span>
+        </td>
+      <td data-label="Offer Name" style="padding-left:0px" scope="row" class=" dataCell  cellCol1 ">
+        <div class="slds-truncate" title="Recommendation-{!NBO.Product__r.Name}">
+        <apex:outputLink value="#" id="theLink123" onclick="openSubTab('{!$Site.Domain}/{!NBO.ID}');"><apex:outputText value="{!NBO.Product__r.Name}"/></apex:outputLink>
+        </div>
+      </td>
+       <td data-label="Image" style="padding-left:0px;padding-right:0px;">
+       <apex:image url="{!NBO.Product__r.Resource_File_Image__c}" width="75px"/>
+     </td>
+   </tr>
+  </apex:outputPanel>
+ </apex:repeat>  
+    
+  </tbody>
+</table>  
+</div>
+</div>
+</div>
+  
+</html>
+</apex:page>

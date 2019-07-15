@@ -1,0 +1,183 @@
+<apex:component id="cc_homepageOrderTemplate">
+
+<!--     <script id="cc_QuickOrder-Wishlist-Desktop" type="text/template">
+        {{#if this}}
+            <h2 class="title">
+                {{pageLabelMap 'Header_MyWishlists'}}
+                <span class="pull-right">
+                    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#homepage_ot_container">
+                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                    </button>
+                </span>
+            </h2>
+            <div class="quickWishlist_container collapse" id="homepage_ot_container">
+                <div class="headerList dropdown">
+                    {{#each this}}
+                        {{#if isActive}}
+                            <button id="dropQuickWish" type="button" class="btn-primary header dropdown-toggle" data-toggle="dropdown">
+                                <span class="selWish">{{name}}</span>
+                                <b class="caret"></b>
+                            </button>
+                        {{/if}}
+                    {{/each}}
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropQuickWish">
+                        {{#each this}}
+                            <li>
+                                <a href="#" class="pickQuickWish" data-id="{{sfid}}">{{name}}</a>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+
+                {{#ifDisplay 'WL.DsplLegend'}}
+                    <div class="sectionLegend">{{pageLabelMap 'QuickWishLegend'}}</div>
+                {{/ifDisplay}}
+                <div class="quickwishdesk" style="overflow: hidden;"></div>
+            </div>
+        {{/if}}
+    </script> -->
+<script id="CC-QuickOrder-WishlistItems-Desktop" type="text/template">
+    <div class="quick_wishlist cc_quick_wishlist">
+     <!--**************************************************-->
+     <div class="orderPaginationSec cc_orderPaginationSec"></div>
+     <!--**************************************************-->
+     <form id="deskQuickWishForm" class="wishForm cc_wish_form">
+      {{#ifNotEquals this.itemData.length 0}}
+       {{#each_upto this.itemData 250}}
+        <div class="row cc_wish_row">
+         <div class="col-xs-3 col-md-2 cc_wish_img">
+          <a href="#" class="productName prodLink cc_prod_link" data-id="{{this.prodBean.sku}}">{{{displayImage this.mediaWrapper 'prodLink wishEntry img-responsive' dataId=this.prodBean.sku}}}</a>
+         </div>
+         <div class="col-xs-4 col-md-5 cc_wish_prod_details">
+          <div class="cc_name"><a href="javascript:void(0);" class="productName prodLink cc_prod_link" data-id="{{this.prodBean.sku}}">{{this.prodBean.name}}</a></div>
+          <div class="sku cc_sku">
+           <span class="cc_label">{{pageLabelMap 'SKU'}}</span>
+           <span class="value cc_value">{{this.prodBean.sku}}</span>
+          </div>
+          <div class="cc_misc_details">
+           {{#if this.miscDetails}}
+            <p class="cc_misc_details">{{unescape this.miscDetails}}</p>
+           {{/if}}
+          </div>
+          {{#ifDisplay 'WL.DsplAddtInfo'}}
+           <a href="#additional_info{{this.prodBean.id}}" id="additionalInfoLink" data-toggle="modal" class="cc_additional_info">{{pageLabelMap 'AdditionalInfo'}}</a>
+           <div id="additional_info{{this.prodBean.id}}" class="modal fade cc_modal cc_quick_wishlist_modal" id="effAccounts" tabindex="-1" role="dialog" aria-labelledby="WishlistLabel" aria-hidden="true">
+            <div class="modal-dialog cc_modal_dialog" role="document">
+             <div class="modal-content cc_modal_content">
+              <div class="modal-header cc_modal_header">
+               <button type="button" class="close cc_close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&#215;</span></button>
+               <h4 class="modal-title cc_modal_title" id="WishlistLabel">{{this.prodBean.name}} {{pageLabelMap 'AdditionalInfo'}}</h4>
+              </div>
+              <div class="modal-body cc_modal_body">
+               {{#if this.miscDetails}}
+                <p class="cc_misc_details">{{unescape this.miscDetails}}</p>
+               {{/if}}
+               {{#ifDisplay 'WL.DsplAddtlSku'}}
+                <div class="sku cc_sku">
+                 <span class="cc_label">{{pageLabelMap 'SKU'}}:</span>
+                 <span class="value cc_value">{{this.prodBean.sku}}</span>
+                </div>
+               {{/ifDisplay}}
+               {{#ifDisplay 'WL.DsplAddtlShortDesc'}}
+                <p class="cc_short_desc">{{unescape this.prodBean.shortDesc}}</p>
+               {{/ifDisplay}}
+              </div>
+             </div>
+            </div>
+           </div>
+          {{/ifDisplay}}
+         </div>
+         <div class="col-xs-5 col-md-5">
+          <div class="gp_quantity_block">
+           {{#if this.canAddtoCart}}
+            {{#if this.qtySkipIncrement}}
+             <div class="row-fluid cc_qty_control_row">
+              <div class="col-md-12">
+               <div class="form-group">
+                <div class="input-group cc_input_group">
+                 <span class="input-group-btn cc_input_group_btn">
+                  <input type="button" value="{{pageLabelMap 'Prod_QtyDecrFF'}}" class="btn btn-default btn-sm minusFF cc_minusff">
+                  <input type="button" value="{{pageLabelMap 'Prod_QtyDecrSingle'}}" class="btn btn-default btn-sm minus cc_minus">
+                 </span>
+                 <input type="text" readonly="true" name="quickadd[{{index}}].qty" class="qty entry form-control input-sm cc_entry" value="0" maxlength="7" />
+                 <span class="input-group-btn cc_input_group_btn">
+                  <input type="button" value="{{pageLabelMap 'Prod_QtyIncrSingle'}}" class="btn btn-default btn-sm plus cc_plus">
+                  <input type="button" value="{{pageLabelMap 'Prod_QtyIncrFF'}}" class="btn btn-default btn-sm plusFF cc_plusff">
+                 </span>
+                </div>
+               </div>
+              </div>
+             </div>
+            {{else}}
+             <!-- {{#ifEquals qtyIncrement 1}} -->
+              <div class="row-fluid cc_qty_control_row">
+               
+                <div class="form-group">
+                 <div class="input-group cc_input_group">
+                  <span class="input-group-btn cc_input_group_btn">
+                   <input type="button" value="{{pageLabelMap 'Prod_QtyDecrSingle'}}" class="btn btn-default btn-sm minus cc_minus">
+                  </span>
+                  <input id="qty{{index}}" name="quickadd[{{index}}].qty" value="0" class="qty entry form-control input-sm cc_entry" maxlength="7" />
+                  <span class="input-group-btn cc_input_group_btn">
+                   <input type="button" value="{{pageLabelMap 'Prod_QtyIncrSingle'}}" class="btn btn-default btn-sm plus cc_plus">
+                  </span>
+                 </div>
+                </div>
+               
+              </div>
+<!--              {{else}}
+              <div class="row cc_qty_control_row">
+               <div class="col-md-5 col-md-offset-7">
+                <div class="form-group">
+                 <input type="text" id="qty{{index}}" name="quickadd[{{index}}].qty" value="0" class="input-text qty entry plus_minus form-control cc_entry" maxlength="7" />
+                </div>
+               </div>
+              </div>
+             {{/ifEquals}} -->
+            {{/if}}
+            <input type="hidden" name="qtyIncrement" value="{{this.qtySingleIncrement}}" class="item_qtyIncrement" />
+            <input type="hidden" name="qtySkipIncrement" value="{{this.qtySkipIncrement}}" class="item_qtySkipIncrement" />
+            <input type="hidden" name="quickadd[{{index}}].sku" value="{{this.prodBean.sku}}" />
+            <p class="pull-right cc_pull-right">
+             {{#if this.showPricing}}
+              {{#ifDisplay 'WL.DsplPrc' }}
+               {{#if this.price}}
+                <span class="cc_cart_inc_price">{{pageLabelMap 'CartInc_Price'}}: {{{price this.price}}}</span>
+               {{/if}}
+              {{/ifDisplay}}
+             {{/if}}
+            </p>
+           {{else}}
+            <div class="row-fluid cc_qty_control_row">
+             <div class="col-md-5 col-md-offset-7">
+              <div class="form-group">
+               <input type="text" readonly="true" id="qty{{index}}" name="quickadd[{{index}}].qty" value="0" class="qty entry form-control cc_entry" maxlength="7" />
+              </div>
+             </div>
+            </div>
+           {{/if}}
+           {{#if this.isTierPriced}}
+            <div class="row cc_prt_row_tmplentry">
+             <div class="text-right cc_text-right cc_prt_tool_tip_p cc_prt_tool_tip_p_tmplentry" data-toggle="tooltip" title="{{pageLabelMap 'ProductPricingTiers_VolumeHover'}}"> 
+              <span class="cc_prt_tool_tip_text cc_prt_tool_tip_text_tmplentry">{{pageLabelMap 'ProductPricingTiers_VolumePricing'}}</span> 
+             </div>
+            </div>
+           {{/if}}
+          </div>
+         </div>
+        </div>
+        <hr/>
+       {{/each_upto}}
+       <p class="cc_addto_cart"><button type="button" class="btn btn-default btn-sm addItem pull-right cc_add_item" data-id="{{uid}}">{{pageLabelMap 'Component_MiniwishList_AddToCart'}}</button></p>
+      {{/ifNotEquals}}
+     </form>
+    </div>
+   </script>
+
+    <script>
+        jQuery(function ($) {
+            // CCRZ.uiProperties.quickWishlistView.desktop.tmpl = 'cc_QuickOrder-Wishlist-Desktop';
+            CCRZ.uiProperties.quickWishDetailsView.desktop.tmpl = 'CC-QuickOrder-WishlistItems-Desktop';
+        });
+    </script>
+</apex:component>

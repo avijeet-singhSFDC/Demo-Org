@@ -1,0 +1,38 @@
+<aura:component controller="FIDO">
+    <aura:attribute name="Industry" type="String" />
+    <aura:attribute name="PricebookId" type="String" />
+    <aura:attribute name="Product" type="PricebookEntry[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+	<lightning:accordion >
+    	<aura:iteration items="{!v.Product}" var="product">
+        	<lightning:accordionSection name="{!product.Product2.Name}" label="{!product.Product2.Name}">  
+                <div class="padding">
+                	<div class="third">
+                    	<div class="paddingleftright">
+                        	<img src="{!product.Product2.Image_URL__c}" class="brandlogo"/>
+                        </div>
+                    </div>
+                    <div class="twothirds">
+                    	<div class="paddingleftright">
+                        	<article class="slds-card">
+                                <div class="slds-card__body slds-card__body_inner">
+                                    <span class="slds-text-title--caps slds-line-height--reset">Product Code: </span><ui:outputText value="{!product.Product2.ProductCode}" class="noSpace" /><br/>
+                                    <span class="slds-text-title--caps slds-line-height--reset">Price: </span><ui:outputCurrency aura:id="curr" value="{!product.UnitPrice}" format="¤##,##,###,###.00"/><br/>
+                                    <span class="slds-text-title--caps slds-line-height--reset">Description</span><br/>{!product.Product2.Description}<br/>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="footer">
+                    	<div class="padding center">
+                        	<button class="slds-button slds-button_neutral" aura:id="{!product.Product2.Id}" id="{!product.Product2.Id}" onclick="{!c.GoToProduct}">
+                                View Product
+                             </button>
+                        </div>
+                    </div>
+                </div>
+            </lightning:accordionSection>
+        </aura:iteration>
+    </lightning:accordion>  
+</aura:component>

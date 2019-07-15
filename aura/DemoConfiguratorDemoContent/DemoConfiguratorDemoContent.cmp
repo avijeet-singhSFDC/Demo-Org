@@ -1,0 +1,207 @@
+<aura:component controller="DemoConfigurator" implements="force:appHostable">
+    <aura:attribute name="DemoContent" type="String[]"  />
+    <aura:attribute name="ShowFeatures" type="boolean" default="true" />
+    <aura:attribute name="setScriptId" type="String" default='' />
+    <aura:attribute name="IndustryChosen" type="String" />
+    <aura:attribute name="SolutionChosen" type="String" />
+    <aura:attribute name="CloudChosen" type="String" />
+    <aura:attribute name="PersonaChosen" type="String" />
+    <aura:attribute name="FeatureChosen" type="String" />
+    <aura:attribute name="industryOptions" type="List" 
+                    default="[
+                    {'label': '-- None --', 'value': '-- None --'},          
+                    {'label': 'Retail', 'value': 'Retail'},
+                    {'label': 'Consumer Goods', 'value': 'Consumer Goods'},
+	]"/>
+    <aura:attribute name="personaOptions" type="List" 
+                    default="[
+                    {'label': '-- None --', 'value': '-- None --'},         
+                    {'label': 'Adrian Service', 'value': 'Adrian Service'},
+                    {'label': 'Andy Associate', 'value': 'Andy Associate'},
+                    {'label': 'Cameron Technician', 'value': 'Cameron Technician'}, 
+                    {'label': 'Chantell Rep', 'value': 'Chantell Rep'},
+                    {'label': 'Cindy Central', 'value': 'Cindy Central'},
+                    {'label': 'Dawn Distributor', 'value': 'Dawn Distributor'}, 
+                    {'label': 'Gustavo Manager', 'value': 'Gustavo Manager'},
+                    {'label': 'Jane Operations', 'value': 'Jane Operations'},
+                    {'label': 'John Manager', 'value': 'John Manager'},  
+                    {'label': 'Olivia Buyer', 'value': 'Olivia Buyer'}, 
+                    {'label': 'Other', 'value': 'Other'},
+                    {'label': 'Rachel Morris', 'value': 'Rachel Morris'},
+                    {'label': 'Rachel Morris (PA)', 'value': 'Rachel Morris (PA)'},  
+                    {'label': 'Stephanie Curran', 'value': 'Stephanie Curran'},
+                    {'label': 'Tim Service', 'value': 'Tim Service'},        
+	]"/>
+    <aura:attribute name="cloudOptions" type="List" 
+                    default="[
+                    {'label': '-- None --', 'value': '-- None --'},          
+                    {'label': 'Commerce - CloudCraze', 'value': 'Commerce - CloudCraze'},
+                    {'label': 'Community Cloud', 'value': 'Community Cloud'},
+                    {'label': 'Einstein Analytics', 'value': 'Einstein Analytics'}, 
+                    {'label': 'Einstein Discovery', 'value': 'Einstein Discovery'},
+                    {'label': 'Einstein Other', 'value': 'Einstein Other'},
+                    {'label': 'FSL', 'value': 'FSL'}, 
+                    {'label': 'ISV Partner', 'value': 'ISV Partner'},
+                    {'label': 'IoT', 'value': 'IoT'},
+                    {'label': 'Marketing Cloud', 'value': 'Marketing Cloud'},  
+                    {'label': 'Platform', 'value': 'Platform'}, 
+                    {'label': 'Sales Cloud', 'value': 'Sales Cloud'},
+                    {'label': 'Service Cloud', 'value': 'Service Cloud'},      
+	]"/>
+    <aura:attribute name="solutionOptions" type="List" 
+                    default="[
+                    {'label': '-- None --', 'value': '-- None --'},          
+                    {'label': 'Connected Commerce Everywhere', 'value': 'Connected Commerce Everywhere'},
+                    {'label': 'Consumer Goods - All', 'value': 'Consumer Goods - All'},
+                    {'label': 'Delivery Any Channel Service', 'value': 'Delivery Any Channel Service'}, 
+                    {'label': 'Digitize Trade Management', 'value': 'Digitize Trade Management'},
+                    {'label': 'Digitize the Store', 'value': 'Digitize the Store'},
+                    {'label': 'Drive Consumer Engagement', 'value': 'Drive Consumer Engagement'}, 
+                    {'label': 'Elevate Consumer Care', 'value': 'Elevate Consumer Care'},
+                    {'label': 'Go Direct to Consumer', 'value': 'Go Direct to Consumer'},
+                    {'label': 'Manage Key Accounts', 'value': 'Manage Key Accounts'},  
+                    {'label': 'Not Applicable', 'value': 'Not Applicable'}, 
+                    {'label': 'Optimize Retail Execution', 'value': 'Optimize Retail Execution'},
+                    {'label': 'Personalize Shopper Marketing', 'value': 'Personalize Shopper Marketing'},   
+                    {'label': 'Retail - All', 'value': 'Retail - All'}, 
+                    {'label': 'Transform B2B Commerce', 'value': 'Transform B2B Commerce'},  
+                    {'label': 'Transform B2B Relationships', 'value': 'Transform B2B Relationships'}, 
+                    {'label': 'Unified Retail Platform', 'value': 'Unified Retail Platform'},            
+	]"/>
+    <aura:attribute name="featureOptions" type="List" 
+                    default="[
+                    {'label': '-- None --', 'value': '-- None --'},          
+                    {'label': 'CPQ', 'value': 'CPQ'},
+                    {'label': 'Einstein', 'value': 'Einstein'},
+                    {'label': 'Einstein Bots', 'value': 'Einstein Bots'},
+                    {'label': 'Lightning Components (Custom)', 'value': 'Lightning Components (Custom)'},
+                    {'label': 'Lightning Flow', 'value': 'Lightning Flow'},
+                    {'label': 'Live Agent', 'value': 'Live Agent'},
+                    {'label': 'LiveMessage Lightning', 'value': 'LiveMessage Lightning'},
+                    {'label': 'Platform', 'value': 'Platform'},         
+	]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <div class="slds-card">
+        <div class="slds-media heading">
+        	<div class="slds-media__body padding"> 
+            	<h1 class="slds-page-header__title slds-truncate slds-align-middle" >
+                    Demo Content
+                </h1>
+            </div>
+        </div>      
+        <div class="padding">
+            <div class="center">
+                <div class="padding">
+                    <img src="/resource/DemoConfigurator/assets/images/ScriptIcon.png" class="alldone"/>
+                    <h1 class="largeh1"><strong>Alright, Alright, Alright!</strong></h1>
+                    <p>Lets check out what demo content we have that could help you.</p>
+                </div>    
+            </div>
+            <div class="grid_75 margintop10">
+                <div class="paddingleftright">
+                    <aura:iteration items="{!v.DemoContent}" var="content">
+                        <aura:if isTrue="{!or(content.industry__c == 'Retail',content.industry__c == 'Consumer Goods') }">
+                            <div class="configwrapper confignofloat">
+                                <div class="config">
+                                    <div class="configrightheightauto">
+                                        <div class="slds-form-element">
+                                            <h2 class="filterh2">{!content.name}</h2>
+                                            <div class="padding">
+                                                <div class="contentdesc">
+                                                    <aura:unescapedHtml value="{!content.description__c}"/>
+                                                </div>
+                                                <div class="badges">
+                                                    <span class="slds-badge">Industry:
+                                                      <strong>{!content.industry__c}</strong>
+                                                      <aura:if isTrue="{!content.industry__c == null}">
+                                                          <strong>N/A</strong>
+                                                      </aura:if>
+                                                    </span>
+                                                    <span class="slds-badge">Solution:
+                                                      <strong>{!content.solution__c}</strong>
+                                                      <aura:if isTrue="{!content.solution__c == null}">
+                                                          <strong>N/A</strong>
+                                                      </aura:if>
+                                                    </span>
+                                                    <span class="slds-badge slds-badge_lightest">Persona:
+                                                      <strong>{!content.persona__c}</strong>
+                                                      <aura:if isTrue="{!content.persona__c == null}">
+                                                          <strong>N/A</strong>
+                                                      </aura:if>
+                                                    </span>
+                                                    <div class="linebreak"></div>
+                                                    <span class="slds-badge slds-badge_inverse">Product / Cloud:
+                                                      <strong>{!content.cloud_product__c}</strong>
+                                                      <aura:if isTrue="{!content.cloud_product__c == null}">
+                                                          <strong>N/A</strong>
+                                                      </aura:if>
+                                                    </span>
+                                                    <span class="slds-badge slds-badge_inverse">Features:
+                                                      <strong>{!content.features__c}</strong>
+                                                      <aura:if isTrue="{!content.features__c == null}">
+                                                          <strong>N/A</strong>
+                                                      </aura:if>
+                                                    </span>
+                                                    <div class="clear"></div>
+                                                </div>
+                                                <hr/>
+                                                <div class="link center">
+                                                    <button class="slds-button slds-button_neutral" aura:id="{!content.id}" id="{!content.id}" onclick="{!c.OpenDialog}">More Information</button>
+                                                    <aura:if isTrue="{!content.video_link__c != null}">
+                                                        <button class="slds-button slds-button_brand" aura:id="{!content.video_link__c}" id="{!content.video_link__c}" onclick="{!c.toScript}">Demo Video</button>
+                                                    </aura:if>
+                                                    <button class="slds-button slds-button_neutral" aura:id="{!content.quip_doc__c}" id="{!content.quip_doc__c}" onclick="{!c.toScript}">View Script</button>
+                                                </div>
+                                            </div>   
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                        </aura:if>
+                    </aura:iteration> 
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="grid_25">
+                <div class="border marginleftright lightgrey">
+                    <h2 class="filterh2">FILTER DEMO CONTENT</h2>
+                    <div class="padding">
+                        <div class="filter">
+                            <label>Industry</label>
+                            <lightning:combobox name="comboGroup" label="" onchange="{!c.onIndustryChange}" value="{! v.IndustryChosen }" placeholder="-- None --" options="{! v.industryOptions }" />
+                        </div>
+                        <div class="filter">
+                            <label>Solution</label>
+                            <lightning:combobox name="comboGroup" label="" onchange="{!c.onSolutionChange}" value="{! v.SolutionChosen }" placeholder="-- None --" options="{! v.solutionOptions }" />
+                        </div>
+                        <div class="filter">
+                            <label>Persona</label>
+                            <lightning:combobox name="comboGroup" label="" onchange="{!c.onPersonaChange}" value="{! v.PersonaChosen }" placeholder="-- None --" options="{! v.personaOptions }" />
+                         </div>
+                        <div class="filter">
+                            <label>Product / Cloud</label>
+                            <lightning:combobox name="comboGroup" label="" onchange="{!c.onCloudChange}" value="{! v.CloudChosen }" placeholder="-- None --" options="{! v.cloudOptions }" />
+                        </div>
+                        <div class="filter">
+                        	<label>Feature</label>
+                            <lightning:combobox name="comboGroup" label="" onchange="{!c.onFeatureChange}" value="{! v.FeatureChosen }" placeholder="-- None --" options="{! v.featureOptions }" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div aura:id="overlay" class="slds-backdrop slds-backdrop_closed"></div>
+    <section role="dialog" aura:id="scriptModal" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-closed">
+            <div class="slds-modal__container modal">
+                <aura:if isTrue="{!v.setScriptId != '' }">
+            		<c:FIDO_DemoScript_Modal currentScript="{!v.setScriptId}" />
+                </aura:if>
+                <footer class="slds-modal__footer">
+                	<button class="slds-button slds-button_brand" onclick="{!c.CloseDialog}">Close</button>
+                </footer>
+            </div>
+	</section>
+</aura:component>

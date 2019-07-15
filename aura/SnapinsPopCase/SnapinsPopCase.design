@@ -1,0 +1,5 @@
+<design:component label="Chat Pop Case">
+    <design:attribute name="subject" label="Case Subject" default="Chat Session"/>
+    <design:attribute name="description" label="Case Description"/>
+    <design:attribute name="recordTypeName" label="Case Record Type" datasource="apex://spc_RecordTypes"/>
+</design:component>

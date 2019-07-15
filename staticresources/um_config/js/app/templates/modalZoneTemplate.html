@@ -1,0 +1,52 @@
+<div class="modal hide fade" id="modalZone">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Zone</h3>
+  </div>
+  <div class="modal-body">
+    <div class="checkbox">
+      <input type="checkbox" value="announcements__c" id="announcements__c" <%if(z.announcements__c==true){print("checked");}%>>
+      <div class="input-prepend input-append">
+        <span class="add-on">Announcements</span>
+      <input class="span3" id="announcementsKaId__c" type="text" placeholder="article number..." value="<%if(z.announcementsKaId__c!=null){ print(z.announcementsKaId__c);}%>">
+      <span class="add-on">Knowledge article number</span>
+    </div>
+    </div>
+    <div class="input-prepend">
+      <span class="add-on" style="width:150px;text-align:left;">HEX color</span>
+      <input class="span3" id="backgroundColor__c" type="text" placeholder="solid color hex value..." value="<%if(z.backgroundColor__c!=null){ print(z.backgroundColor__c); }%>">
+    </div>
+    <div class="input-prepend">
+      <span class="add-on" style="width:150px;text-align:left;">Background path</span>
+      <input class="span3" id="backgroundImage__c" type="text" placeholder="background image path..." value="<%if(z.backgroundImage__c!=null){print(z.backgroundImage__c);}%>">
+    </div>
+    <div class="input-prepend">
+      <span class="add-on" style="text-align:left;width:150px;">Logo image path</span>
+      <input class="span3" id="iconImage__c" type="text" placeholder="logo image path..." value="<%if(z.iconImage__c!=null){print(z.iconImage__c);}%>">
+    </div>
+    <div class="input-prepend">
+      <span class="add-on" style="width:150px;text-align:left;">Zone data category</span>
+      <input class="span4" id="dataCategory__c" type="text" placeholder="zone data category api name..." value="<%if(z.dataCategory__c!=null){print(z.dataCategory__c);}%>">
+    </div>
+    <div class="input-prepend">
+      <span class="add-on" style="width:150px;text-align:left;">Zone public name</span>
+      <input class="span4" id="publicName__c" type="text" placeholder="zone public name..." value="<%if(z.publicName__c!=null){print(z.publicName__c);}%>">
+    </div>
+    <div class="input-prepend">
+      <span class="add-on" style="width:150px;text-align:left;">Search banner label</span>
+      <input class="span4" id="searchBannerLabel__c" type="text" placeholder="search banner label..." value="<%if(z.searchBannerLabel__c!=null){print(z.searchBannerLabel__c);}%>">
+    </div>
+    <!--<span class="spanTitle" style="margin-left:2px;">Zone Description</span><br/>
+    <textarea id="zoneDescription__c" maxlength="255" style="width:87%;"><!%if(z.zoneDescription__c!=null){print(z.zoneDescription__c);}%></textarea><br/>-->
+    <span class="spanTitle" style="margin-left:2px;">Zone selection</span><br/>
+    <select id="zoneSelect" style="width:100%;">
+      <%_.each(coms,function(c){%>
+      <option value="<%=c.Id%>" <%if(z.zone__c==c.Id){print("selected")}%>><%=c.Name%></option>
+      <%},this);%>
+    </select>
+    <div class="alert" id="err" style="display:none;"></div>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary" id="done">Done</a>
+  </div>
+</div>

@@ -1,0 +1,85 @@
+<apex:component id="cc_CategoryWidget">
+    <script id="CC-category-container-template" type="text/template">
+        <div class="panel panel-default categories_side_container cc_categories_side_container" id="category-accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel-heading cc_heading">
+	     <h3 class="panel-title cc_title">Categories
+	      <span class="pull-right">
+	       <span class="icon-toggle cc_filter_icon" role="button" data-toggle="collapse" data-target="#collapseCategories" aria-expanded="true" aria-controls="collapseCategories">
+	        <i class="fa fa-caret-down" aria-hidden="true"></i>
+	       </span>
+	      </span>
+	     </h3>
+	    </div>
+	    <div class="panel-collapse collapse" id="collapseCategories">
+        <div class="panel-body">
+            {{#each .}}
+            <div class="panel panel-default cc_panel cc_category_tree">
+                <div class="panel-heading cc_heading" role="tab" id="{{sfid}}">
+                    {{#if children}}
+                    <h5 class="panel-title cc_title">
+				       <a role="button" href="#{{sfid}}" class="cc_cat_name">
+				        {{name}}
+				       </a>
+				       <span class="pull-right cc_icon_area">
+				        <span class="icon-toggle cc_icon_toggle" role="button" data-toggle="collapse" data-target="#collapse-{{sfid}}" aria-expanded="true" aria-controls="collapse-{{sfid}}">
+				         <i class="fa fa-caret-down" aria-hidden="true"></i>
+				        </span>
+				       </span>
+				      </h5> {{else}}
+				                    <h5 class="panel-title cc_title">
+				       <a role="button" href="#{{sfid}}" class="cc_cat_name">
+				        {{name}}
+				       </a>
+				      </h5> {{/if}}
+                </div>
+                <!--*******************-->
+                {{#if children}}
+                <div id="collapse-{{sfid}}" class="panel-collapse collapse cc_collapse" role="tabpanel" aria-labelledby="heading-{{sfid}}">
+                    <div class="panel-body cc_body">
+                        {{#each children}}
+                        <div class="panel-heading cc_heading" role="tab" id="{{sfid}}">
+                            {{#if children}}
+                            <h5 class="panel-title cc_title">
+					           <a role="button" href="#{{sfid}}" class="cc_cat_name">{{name}}</a>
+					           <span class="pull-right cc_icon_area">
+					            <span class="icon-toggle cc_icon_toggle" role="button" data-toggle="collapse" data-target="#collapse-{{sfid}}" aria-expanded="true" aria-controls="collapse-{{sfid}}">
+					             <i class="fa fa-caret-down" aria-hidden="true"></i>
+					            </span>
+					           </span>
+					          </h5> {{else}}
+                            <h5 class="panel-title cc_title"><a role="button" href="#{{sfid}}" class="cc_cat_name">{{name}}</a></h5> {{/if}}
+                        </div>
+                        <!--*******************-->
+                        {{#if children}}
+                        <div id="collapse-{{sfid}}" class="panel-collapse collapse cc_collapse" role="tabpanel" aria-labelledby="heading-{{sfid}}">
+                            <div class="panel-body cc_body">
+                                {{#each children}}
+                                <div class="panel-heading cc_heading" role="tab" id="{{sfid}}">
+                                    <h5 class="panel-title cc_title"><a role="button" href="#{{sfid}}" class="cc_cat_name">{{name}}</a></h5>
+                                </div>
+                                <!--*******************-->
+                                {{/each}}
+                            </div>
+                            <!--****************-->
+                        </div>
+                        <!--**************-->
+                        {{/if}} {{/each}}
+                    </div>
+                    <!--****************-->
+                </div>
+                <!--**************-->
+                {{/if}}
+            </div>
+            <!--***********-->
+            {{/each}}
+            </div>
+            </div>
+        </div>
+        <!--*****************-->
+    </script>
+    <script type="text/javascript">
+    $(function() {
+        CCRZ.uiProperties.CategoryTree.tmpl = "CC-category-container-template";
+    });
+    </script>
+</apex:component>

@@ -1,0 +1,8 @@
+<apex:page id="cc_BIB_PDP_incl" sidebar="false" showHeader="false" standardStylesheets="false">
+  <c:cc_CrossSell />
+  <c:cc_PDP_Product_incl />
+  <c:cc_PDPSVG />
+  <c:cc_PDP_DynKit_incl />
+  <c:cc_PDP_Aggregate_incl />
+  <c:cc_PDP_PDFIcon />
+</apex:page>

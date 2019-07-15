@@ -1,0 +1,350 @@
+<!--
+ - Created by brandon.rogers on 7/30/18.
+ -->
+
+<apex:component id="cc_Header_v1">
+    <script id="cc_HeaderDesktop" type="text/template">
+
+        <nav class="navbar navbar-default m-b-0 p-y-2">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <a href="#" id="logoUrl" class="navbar-brand">
+                        <div id="" class="cc_store_logo_img center-block"></div>
+                    </a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="menu_container_header">
+                            <!--<div class=""></div>-->
+                        </li>
+                        <li>
+                            <a href="#" id="cartHeader" class="chead cartHeaderLink"></a>
+                        </li>
+
+                        <li>
+                            <a class="" data-toggle="collapse" data-target="#search-header" aria-expanded="false"
+                                    aria-controls="search-header">
+                                <i class="fa fa-search fa-xs" aria-hidden="true"></i>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="" data-toggle="collapse" data-target="#header-items" aria-expanded="false" aria-controls="header-items">
+                                <i class="fa fa-user-circle fa-xs" aria-hidden="true"></i>
+                                <i class="fa fa-caret-down fa-xs" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+        <div class="middle-header">
+
+            <!--<nav class="navbar navbar-default m-t-1 m-b-0">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#middle-header-navbar-collapse" aria-expanded="false">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+
+                                <a href="#" id="logoUrl">
+                                    <div id="" class="cc_store_logo_img center-block"></div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-10">
+                            <div class="collapse navbar-collapse" id="middle-header-navbar-collapse">
+                                <div class="col-xs-12 col-md-8 text-center">
+                                    <div class="menu_container_header"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>-->
+
+            <div class="header-items text-center collapse" id="header-items">
+                <div class="container p-y-1">
+                    <ul class="nav nav-pills d-inline-block">
+                        <!-- LOCALE SWITCHER -->
+                        <li role="presentation" class="lssec cc_lssec"></li>
+
+                        <!-- EFFECTIVE ACCOUNT -->
+                        <li role="presentation" class="misc-function cc_misc_function"></li>
+
+                        <!-- MY ACCOUNT -->
+                        <li role="presentation" class="cc_my_account">
+                            <a href="#" id="goToAccount">
+                                <i class="fa fa-user fa-xs" aria-hidden="true"></i>
+                                <span class="">&#160;{{pageLabelMap 'Component_SiteHeader_MyAccount'}}</span>
+                            </a>
+                        </li>
+
+                        <!-- LOG IN/OUT -->
+                        <li class="loginoutsec cc_loginoutsec"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="search-header collapse" id="search-header">
+                <div class="container p-y-2">
+                    <div class="search_form cc_search_form"></div>
+                </div>
+            </div>
+        </div> <!-- /.middle-header -->
+
+
+    </script>
+
+
+    <script id="cc_MenuDesktop" type="text/template">
+
+        <ul id="secnav cc_secnav" class="nav navbar-nav">
+            {{#each .}}
+            {{#if children}}
+            <li class="dropdown cc_dropdown">
+                <a href="{{linkURL}}" class="dropdown-toggle cc_dropdown_toggle" data-toggle="dropdown"
+                        data-menuid="{{menuId}}" {{linkTarget openInNewWindow}} role="button" aria-haspopup="true"
+                        aria-expanded="false">
+                    <span>{{displayName}}</span>
+                    <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                </a>
+                <ul class="dropdown-menu cc_dropdown-menu">
+                    {{> subMenuItem}}
+                </ul>
+            </li>
+            {{else}}
+            {{#ifEquals mType 'Category'}}
+            <li class="dropdown cc_dropdown">
+                <a class="category cc_category" href="javascript:void(0);" data-id="{{linkURL}}" data-mType="{{mType}}" data-menuid="{{menuId}}" {{linkTarget openInNewWindow}}>
+                    {{displayName}}
+                </a>
+            </li>
+            {{/ifEquals}}
+
+            {{#ifEquals mType 'Product'}}
+            <li class="dropdown cc_dropdown">
+                <a class="product cc_product" href="javascript:void(0);" data-id="{{linkURL}}" data-mType="{{mType}}" data-menuid="{{menuId}}" {{linkTarget openInNewWindow}}>
+                    {{displayName}}
+                </a>
+            </li>
+            {{/ifEquals}}
+
+            {{#ifEquals mType 'URL'}}
+            <li class="dropdown cc_dropdown">
+                <a class="menuTypeURL cc_menu_type_url" href="javascript:void(0);" data-href="{{linkURL}}" data-mType="{{mType}}" data-menuid="{{menuId}}" {{linkTarget openInNewWindow}}>
+                    {{displayName}}
+                </a>
+            </li>
+            {{/ifEquals}}
+
+            {{#ifEquals mType 'None'}}
+            <li class="dropdown cc_dropdown">
+                <a href="javascript:void(0);" class="cc_display_name" data-mType="{{mType}}" data-menuid="{{menuId}}">{{displayName}}</a>
+            </li>
+            {{/ifEquals}}
+            {{/if}}
+            {{/each}}
+        </ul>
+    </script>
+
+
+    <!-- LOCALE SWITCHER -->
+    <script id="CC-LocaleSwitcher-Desktop" type="text/template">
+        <a class="changeLocale cc_change_locale" href="javascript:void(0)">
+            <i class="fa fa-globe fa-xs" aria-hidden="true"></i>
+            {{pageLabelPrefixMap 'LOC_' locale locale}}
+        </a>
+        <div id="modalSecLocale"></div>
+    </script>
+
+
+    <!-- EFFECTIVE ACCOUNTS -->
+    <script id="CC-EffAcctSel-Head-View-Desktop" type="text/template">
+        {{#if this.ro}}
+        <a href="#">
+            <i class="fa fa-id-card-o fa-xs" aria-hidden="true"></i>
+            {{pageLabelMap 'SELECTED_ACCOUNT' workingEffAccount.name workingEffAccount.accountNumber workingEffAccount.shippingAddress.address1 workingEffAccount.shippingAddress.city workingEffAccount.shippingAddress.state workingEffAccount.shippingAddress.countryCode}}
+        </a>
+        {{else}}
+        <a href="#" data-toggle="modal" data-target="#effAccounts">
+            <i class="fa fa-id-card-o fa-xs" aria-hidden="true"></i>
+            {{#if this.workingEffAccount }}
+            {{pageLabelMap 'SELECTED_ACCOUNT' workingEffAccount.name workingEffAccount.accountNumber workingEffAccount.shippingAddress.address1 workingEffAccount.shippingAddress.city workingEffAccount.shippingAddress.state workingEffAccount.shippingAddress.countryCode}}
+            {{else}}
+            {{pageLabelMap 'SELECT_ACCOUNT' }}
+            {{/if}}
+
+            <span class="launchSel cc_launch_sel" aria-hidden="true"></span>
+        </a>
+        {{/if}}
+
+
+        <div class="modal fade cc_modal cc_effective_accounts_modal" id="effAccounts" tabindex="-1" role="dialog"
+                aria-labelledby="effAccountsLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content cc_modal_content">
+                    <div class="modal-header cc_modal_header">
+                        <button type="button" class="close cc_close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&#215;</span></button>
+                        <h4 class="modal-title cc_modal_title" id="effAccountsLabel">{{pageLabelMap
+                            'EFFECTIVE_ACCOUNT_TITLE'}}</h4>
+                    </div>
+                    <div class="modal-body cc_modal_body">
+                        <div class="table-responsive">
+                            <table class="table table-hover cc_table">
+                                <thead class="cc_thead">
+                                <tr class="cc_tr">
+                                    <th class="cc_th_name">{{pageLabelMap 'Name'}}</th>
+                                    <th class="cc_th_account_number">{{pageLabelMap 'ACCOUNT_NUMBER'}}</th>
+                                    <th class="cc_th_address">{{pageLabelMap 'Address'}}</th>
+                                    <th class="cc_th_picked"></th>
+                                </tr>
+                                </thead>
+                                <tbody class="cc_tbody">
+                                {{#each this.effectiveList}}
+                                <tr class="cc_tr_values">
+                                    <td class="cc_td_name">{{name}}</td>
+                                    <td class="cc_td_account_number">{{accountNumber}}</td>
+                                    <td class="cc_td_address">{{pageLabelMap 'ADDRESS_FORMAT' shippingAddress.address1
+                                        shippingAddress.city shippingAddress.state shippingAddress.postalCode
+                                        shippingAddress.countryCode}}
+                                    </td>
+                                    <td><a href="#"><i class="pickSel pickAccount cc_pick_account fa fa-chevron-right"
+                                                    data-id="{{sfid}}" aria-hidden="true"></i><span class="sr-only">Select Account</span></a>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+
+    <script id="CC-CartHeaderBrowser" type="text/template">
+        <i class="fa fa-shopping-cart fa-xs"></i>
+        <span class="badge">{{this.cartCount}}</span>
+    </script>
+
+
+    <script id="CC-MyAccount-Desktop" type="text/template">
+        {{#if this}}
+        {{#ifEquals this.UserType 'Guest'}}
+        <a href="#login" class="goToLogin cc_goto_login">
+            <i class="fa fa-sign-in" aria-hidden="true"></i>
+            <span class="">{{pageLabelMap 'Component_SiteHeader_Login'}}</span>
+        </a>
+        {{else}}
+        <a href="#logout" class="doLogout cc_do_logout">
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+            <span class="">{{pageLabelMap 'Component_SiteHeader_Logout'}}
+            {{{this.FirstName}}}
+            {{{this.LastName}}}</span>
+        </a>
+        {{/ifEquals}}
+        {{else}}
+        <a href="#login" class="cc_login">
+            <i class="fa fa-sign-in" aria-hidden="true"></i>
+            <span class="">{{pageLabelMap 'Component_SiteHeader_Login'}}</span>
+        </a>
+        {{/if}}
+    </script>
+
+    <script id="CC-productSearchTemplateDesktop" type="text/template">
+        {{#ifDisplay 'H.DisplSearch'}}
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="input-group cc_input-group">
+                    <input id="searchText" type="text" class="form-control search_input cc_search_input" placeholder="{{pageLabelMap 'ProductSearch'}}" title="{{pageLabelMap 'ProductSearch_Tooltip'}}" data-trigger="focus" autocomplete="off"/>
+                    <span class="input-group-btn">
+                            <button id="doSearch" class="btn btn-default search_button" type="Submit">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </span>
+                </div>
+            </div>
+            <!--<div class="col-xs-2">-->
+            <!--<a href="#" data-toggle="collapse" data-target="#search-header">-->
+            <!--<i class="fa fa-times" aria-hidden="true"></i>-->
+            <!--</a>-->
+            <!--</div>-->
+        </div>
+
+        <div class="row">
+            <span id="cc_search_error" data-trigger="manual" data-placement="bottom" data-content="{{pageLabelMap 'ProductSearch_Tooltip'}}"></span>
+            <div class="searchTopBarErrorMessage searchBoxWidgetError"></div>
+        </div>
+        {{/ifDisplay}}
+    </script>
+
+
+    <script type="text/javascript">
+        $(function () {
+            CCRZ.uiProperties.headerView.desktop.tmpl = 'cc_HeaderDesktop';
+            CCRZ.uiProperties.cartHeaderView.desktop.tmpl = 'CC-CartHeaderBrowser';
+            CCRZ.uiProperties.myAccountHeaderView.desktop.tmpl = 'CC-MyAccount-Desktop';
+            CCRZ.uiProperties.productSearchView.desktop.tmpl = 'CC-productSearchTemplateDesktop';
+            CCRZ.uiProperties.EffAccountSelView.header.tmpl = 'CC-EffAcctSel-Head-View-Desktop';
+            CCRZ.uiProperties.localeSwitcherView.desktop.tmpl = 'CC-LocaleSwitcher-Desktop';
+
+            CCRZ.uiProperties.Menu.desktop.selector = '.menu_container_header';
+            CCRZ.uiProperties.Menu.desktop.tmpl = 'cc_MenuDesktop';
+
+            /*CCRZ.pubSub.on('view:headerView:refresh', function () {
+                $(window).scroll(function () {
+                    var sticky = $('.middle-header'),
+                            scroll = $(window).scrollTop();
+                    if (scroll > $('.cc_home_slider').offset().top) {
+                        sticky.addClass('sticky');
+                        sticky.slideDown(200);
+                    } else {
+                        sticky.removeClass('sticky');
+                        sticky.removeAttr("style"); //slideDown adds the style="block" which needs to be removed so that next time slideDown will work
+                    }
+                });
+
+            });*/
+        });
+    </script>
+
+    <!-- SCRIPT FROM CHAT BUTTONS
+    <script type="text/javascript">
+        if (!window._laq) {
+            window._laq = [];
+        }
+
+        window._laq.push(function () {
+            liveagent.showWhenOnline('5732E000000H0C0', document.getElementById('liveagent_button_online'));
+            liveagent.showWhenOffline('5732E000000H0C0', document.getElementById('liveagent_button_offline'));
+        });
+    </script> -->
+
+
+    <!-- SCRIPTS FROM DEPLOYMENT -->
+    <script type='text/javascript' src='https://c.la1-c2-iad.salesforceliveagent.com/content/g/js/42.0/deployment.js'></script>
+
+    <script type='text/javascript'>
+        liveagent.init('https://d.la1-c2-iad.salesforceliveagent.com/chat', '5722E000000Cnot', '00D2E000000XSdK');
+    </script>
+</apex:component>

@@ -1,0 +1,57 @@
+<apex:page standardController="LiveText__Conversation_Session__c" extensions="OM_ConvSessionRelatedOrderCtrl" sidebar="false" showHeader="false" standardStylesheets="false">
+    <head>
+        <apex:includeScript value="/support/console/38.0/integration.js"/>
+        <apex:includeScript value="{!URLFOR($Resource.CatalogResources, '/js/jquery.min.js')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.BfBootstrap, 'bootstrap-3.3.2-dist/css/bootstrap.min.css')}"/>
+        <style>
+            body {
+            background-color: #F4F6F9;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="row" style="margin-bottom: 5px; color: #8392aa; margin-top: 10px; ">
+            <div class="col-xs-12">
+                <div class="col-xs-6">
+                    Orders
+                </div>
+                <div class="col-xs-6">
+                    Total Amount
+                </div>                
+            </div>
+        </div>
+        <apex:repeat value="{!ol}" var="o">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="col-xs-6">
+                        <a href="#" onclick="testOpenPrimaryTab('{!o.Id}', '{!o.OrderNumber}');">{!o.OrderNumber}</a>
+                    </div>
+                    <div class="col-xs-6">
+                        ${!o.TotalAmount}
+                    </div>
+                </div>
+            </div>
+        </apex:repeat>
+    </body>
+    <script>
+    $(document).ready(function(){
+        
+    });
+    
+    function testOpenPrimaryTab() {
+        //Open a new primary tab with the salesforce.com home page in it
+        console.log(arguments[0], arguments[1]);
+        sforce.console.openPrimaryTab(null, '/' + arguments[0], true, 
+                                      arguments[1], openSuccess, 'salesforceTab');
+    }
+    
+    var openSuccess = function openSuccess(result) {
+        //Report whether opening the new tab was successful
+        if (result.success == true) {
+            //alert('Primary tab successfully opened');
+        } else {
+            //alert('Primary tab cannot be opened');
+        }
+    };
+    </script>
+</apex:page>

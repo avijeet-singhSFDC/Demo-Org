@@ -1,0 +1,69 @@
+<apex:page sidebar="false" showHeader="true" docType="html-4.01-strict">
+<div id="tabstrip" style="display:none;"> <ul> 
+<li class="k-state-active">PRODUCTS</li>
+<li>PRODUCT FEATURES</li>
+<li>PRODUCT OPTIONS</li>
+<li>PRICE BOOKS</li>
+<li>DISCOUNT SCHEDULES</li>
+<li>QUOTE TEMPLATES</li>
+</ul>
+<!-- PRODUCTS -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="Product2" DelayLoad="true"  ViewID="aBs2E000000JHjwCAW" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+ 
+ <!-- PRODUCT FEATURES -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="SBQQ__ProductFeature__c" DelayLoad="true"  ViewID="aBs2E000000JHjxCAW" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+ 
+ <!-- PRODUCT OPTIONS -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="SBQQ__ProductOption__c" DelayLoad="true"  ViewID="aBs2E000000JHkDCAW" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+ 
+<!-- PRICE BOOKS -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="Pricebook2" DelayLoad="true"  ViewID="aBs2E000000JHkBCAW" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+<!-- DISCOUNT SCHEDULES -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="SBQQ__DiscountSchedule__c" DelayLoad="true"  ViewID="aBs2E000000JHkGCAG" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+<!-- QUOTE TEMPLATES -->
+<div style="overflow:hidden;"> 
+<CRMC_PP:Grid ObjectName="SBQQ__QuoteTemplate__c" DelayLoad="true"  ViewID="aBs2E000000JHk6CAW" 
+ EnableNewButton="true"  EnableNewInline="true"  EnableEdit="true"  EnableActions="true"  EnableFieldChooser="true" 
+ EnableStickyViews="true"  EnableToolbar="true"  EnableViews="true"  EnableFormatting="true"  EnableReadingPane="true" />
+ <CRMC_PP:DrillUp /> 
+ </div>
+
+</div>
+<script>
+$(document).ready(function() {
+    $("#tabstrip").kendoTabStrip({
+      activate: function(e){
+        setTimeout(function(){          $(window).resize();        });
+      }
+    });
+    $("#tabstrip").css("display", "block");
+});
+ </script>
+</apex:page>

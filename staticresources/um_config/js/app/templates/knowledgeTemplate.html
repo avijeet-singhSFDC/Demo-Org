@@ -1,0 +1,59 @@
+<div class="bs-docs-siteKnowledge">
+<span class="t-title">Knowledge Article Layouts</span>
+	<button class="btn btn-mini" style="margin-top:10px" type="button" id="newKa"><i class="icon-plus"></i>&nbsp;New Layout</button>
+	<%if( layouts.length < 1 ){%>
+	<div class="alert" style="margin-top:10px;">No Knowledge Articles layouts created yet.</div>
+	<%}else{%>
+	<table class="table table-hover table-condensed">
+		<thead>
+			<tr><th>#Id</th>
+			<th>API Name</th>
+			<th>Layout</th>
+			<th><!--Options--></th></tr>
+		</thead>
+		<tbody id="layoutsList">
+			<% _.each(layouts,function(k){%>
+			<tr <%if(k.delete != undefined){ print('style="text-decoration: line-through;"'); }%>><td><%=k.Id%></td>
+			<td><%=k.apiName__c%></td>
+			<td><% if(k.layout__c.length>40){print(k.layout__c.substring(0,40)+'...');} else{ print(k.layout__c); }%></td>
+			<td>
+				<% if(k.delete == undefined){%>
+				<div class="btn-group"><a class="btn btn-small kaKnowledgeEdit" href="#" data-id="<%=k.Id%>"><i class="icon-pencil"></i></a>
+				<a class="btn btn-small kaKnowledgeRemove" href="#" data-id="<%=k.Id%>"><i class="icon-remove"></i></a></div>
+				<%}%>
+			</td>
+			</tr>
+			<%},this);%>
+		</tbody>
+	</table>
+	<%}%>
+</div>
+<div class="bs-docs-siteKnowledgeDC">
+	<div class="alert" style="margin-top:10px;">
+		If Chatter Answers is enabled, the data categories selected in this menu <strong>wont</strong> be applied.
+	</div>
+	<button class="btn btn-mini" style="margin-top:10px" type="button" id="newKaDc"><i class="icon-plus"></i>&nbsp;New Knowledge data category</button>
+	<%if( kaStructure.length < 1 ){%>
+	<div class="alert" style="margin-top:10px;">No Data categories created yet.</div>
+	<%}else{%>
+	<table class="table table-hover table-condensed">
+		<thead>
+			<tr><th>#Id</th>
+			<th>Data category group</th>
+			<th>Data category</th>
+			<th><!--Options--></th></tr>
+		</thead>
+		<tbody id="kbdcList">
+			<% _.each(kaStructure,function(k){%>
+			<tr <%if(k.delete != undefined){ print('style="text-decoration: line-through;"'); }%>><td><%=k.Id%></td>
+			<td><%=k.dataCategoryGroup__c%></td>
+			<td><%=k.dataCategory__c%></td>
+			<td>
+				<% if(k.delete == undefined){%>
+				<div class="btn-group"><a class="btn btn-small kaDCKnowledgeEdit" href="#" data-id="<%=k.Id%>"><i class="icon-pencil"></i></a>
+				<a class="btn btn-small kaDCKnowledgeRemove" href="#" data-id="<%=k.Id%>"><i class="icon-remove"></i></a></div></tr>
+				<%}%>
+			<%},this);%>
+		</tbody>
+	</table>
+	<%}%>

@@ -1,0 +1,52 @@
+<aura:component access="global" controller="DemoConfigurator" implements="force:appHostable,lightning:availableForFlowScreens">
+    <aura:attribute name="SetupScreenTitle" type="String"  default="Lets Enable Stuff"/>
+    <aura:attribute name="SetupScreenDecription" type="String"  default="This tool handles some of the post trialforce setup for this IDO. After running this tool you will still need to configure anything else you need via qhome instructions. This tool is in Pilot for the Winter 19 initial release with plans to more formally release for our Final Release. Please help test this out and provide feedback send email to jchase@salesforce.com"/>
+    <aura:attribute name="FinishScreenTitle" type="String"  default="Lets Finish Up"/>
+    <aura:attribute name="FinishScreenDecription" type="String"  default="Please note, you will need to finish configurations in the Qhome Tab (Click Finish Setup Below). This tool simply configures what is available through the API. Please finish all setup items needed in your demo."/>
+    <div class="slds-card">
+        <div class="slds-media">
+        	<div class="slds-media__body padding"> 
+            	<h1 class="slds-page-header__title slds-truncate slds-align-middle" title="Store Promotions">
+                    Demo Configurator
+                </h1>
+            </div>
+        </div>      
+        <div class="padding">
+            <div class="show" aura:id="chooseyouroptions">
+                <div class="desc">
+                    <div class="center">
+                        <div class="padding">
+                            <img src="/resource/DemoConfigurator/assets/images/HomeIcon.png" class="alldone"/>
+                            <h1 class="largeh1">
+                                <strong>
+                                    {!v.SetupScreenTitle}
+                                </strong>
+                            </h1>
+                            <p>This tool handles some of the post trialforce setup for this IDO. After running this tool you will still need to configure anything else you need via qhome instructions.</p>
+                            <p>This tool is in Pilot for the Winter 19 initial release with plans to more formally release for our Final Release. Please help test this out and provide feedback send email to <a href="mailto:jchase@salesforce.com">jchase@salesforce.com</a></p>
+                        	<div class="padding">
+                                <lightning:button label="Next" onclick="{!c.GoToFinish}"/>
+                            </div>
+                        </div>
+                    </div>
+                    <c:DemoConfiguratorDemoSetup /> 
+                </div>
+            </div>
+        </div>
+        <div class="hide" aura:id="finishedPage">
+            <div class="center">
+                <div class="padding">
+                    <img src="/resource/DemoConfigurator/assets/images/CheckIcon.png" class="alldone"/>
+                    <h1 class="largeh1"><strong>{!v.FinishScreenTitle}</strong></h1>
+                    <p>{!v.FinishScreenDecription}</p>
+                    <div class="padding">
+                        <lightning:button label="Back" onclick="{!c.GoToHome}"/>
+                        <lightning:button label="Finish Setup" onclick="{!c.GoToQHome}" class="slds-button_brand"/>
+                        <div class="spacer"></div>
+                        <lightning:button label="Check out Demo Content" onclick="{!c.GoToDemoContent}"/> 
+                	</div>
+                </div>    
+            </div>
+        </div>
+    </div>
+</aura:component>

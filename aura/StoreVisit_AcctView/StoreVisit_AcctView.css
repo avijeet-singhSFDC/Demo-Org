@@ -1,0 +1,21 @@
+.THIS .fieldsCont{
+    padding: 10px 0;
+}
+.THIS .largeModal{
+	max-width: 90% !important;
+	width:90% !important;
+}
+.THIS hr{
+    margin:5px 0;
+}
+.THIS .slds-item_label{
+    font-weight:bold;
+}
+.THIS .leftalign{
+    text-align:right;
+    padding:10px 0;
+}
+.THIS .slds-modal__container{
+	max-width: 100rem !important;
+	width:100% !important;               
+}

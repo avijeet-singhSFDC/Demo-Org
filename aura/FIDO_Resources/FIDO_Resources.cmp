@@ -1,0 +1,222 @@
+<aura:component controller="FIDO">
+    <aura:attribute name="ScreenChoice" type="String"/>
+    <aura:attribute name="Settings" type="String[]" />
+    <aura:attribute name="Industry" type="String"/>
+    <aura:attribute name="ComponentTitle" type="String" />
+    <aura:attribute name="Resources" type="String[]"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    	<div class="slds-card minicard">
+        	<div class="slds-media">
+            	<div class="slds-media__body"> 
+                	<div class="center">
+                    	<h2 class="slds-page-header__title slds-truncate slds-align-middle padding h2borderbottom ">
+                        	{!v.Industry} Resources
+                        </h2>
+                    </div>    
+                </div>
+            </div> 
+            <div class="padding">
+                <div class="owner">
+            		<div class="textleft paddingleftright">
+                		<div class="third borderright lightgreybg sidebar">
+                            <h3 class="borderbottom">
+                                <div class="padding">
+                                    <lightning:icon iconName="standard:partners" size="medium" alternativeText=""/> 
+                                    <span class="marginleft">IDO Owners</span>
+                                </div>    
+                            </h3>
+                            <div class="padding">
+                                <div class=" textleft">
+                                    <div class=" textleft sidebardesc">
+                                        These are your IDO Owners. Feel free to contact us anytime with suggestions or comments.
+                                    </div>
+                                </div>
+                            </div>                              
+						</div>
+                        <div class="twothirds">
+                            <div class="padding">
+                                <aura:iteration items="{!v.Resources}" var="resource">
+                                    <aura:if isTrue="{!resource.type__c == 'IDO Owner'}">
+                                        <div class="">
+                                            <h3 class="borderbottom relative">
+                                                <div class="padding">
+                                                    {!resource.name}
+                                                    <span class="slds-badge slds-badge absolutetopright">{!resource.title__c}</span>
+                                                </div>
+                                            </h3>
+                                            <div class="padding">
+                                                <div class="fifth">
+                                                    <img src="{!resource.image__c}" class="brandlogo resourcepic"/>
+                                                </div>
+                                                <div class="fourfifths">
+                                                        <aura:unescapedHtml value="{!resource.description__c}"/>
+                                                        <aura:if isTrue="{!resource.email__c != null}">
+                                                            <strong>Contact Info: </strong> <a href="{! 'mailto:' + resource.email__c}">{!resource.email__c}</a>
+                                                        </aura:if>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>                       	
+                                        </div>
+                                        </aura:if>
+                                </aura:iteration>
+                            </div>
+                        </div>
+                		<div class="clear"></div>
+        			</div>
+        		</div>
+                <div class="owner">
+            		<div class="textleft paddingleftright">
+                		<div class="third borderright lightgreybg sidebar">
+                            <h3 class="borderbottom">
+                                <div class="padding">
+                                    <lightning:icon iconName="standard:live_chat_visitor" size="medium" alternativeText=""/> 
+                                    <span class="marginleft">Chatter Groups</span>
+                                </div>    
+                            </h3>
+                            <div class="padding">
+                                <div class=" textleft">
+                                    <div class=" textleft sidebardesc">
+                                        Please ensure you follow our chatter groups to stay up to date on all releases and information. Make sure you are set to receive a notification for every post in the chatter group.
+                                    </div>
+                                </div>
+                            </div>                              
+						</div>
+                        <div class="twothirds">
+                            <div class="padding">
+                                <aura:iteration items="{!v.Resources}" var="resource">
+                                    <aura:if isTrue="{!resource.type__c == 'Chatter Group'}">
+                                        <div class="">
+                                            <h3 class="borderbottom relative">
+                                                <div class="padding">
+                                                    {!resource.name}
+                                                    <span class="slds-badge slds-badge absolutetopright">{!resource.title__c}</span>
+                                                </div>
+                                            </h3>
+                                            <div class="padding">
+                                                	<aura:unescapedHtml value="{!resource.description__c}"/>
+                                                    <aura:if isTrue="{!resource.url__c != NULL}">
+                                                        <div class="paddingtopbottom">
+                                                            <button class="slds-button slds-button_brand"  aura:id="{!resource.url__c}" id="{!resource.url__c}" onclick="{!c.toURL}">
+                                                                View Chatter Group
+                                                            </button>
+                                                        </div>
+                                                    </aura:if>
+                                                <div class="clear"></div>
+                                            </div>                       	
+                                        </div>
+                                        </aura:if>
+                                </aura:iteration>
+                            </div>
+                        </div>
+                		<div class="clear"></div>
+        			</div>
+        		</div>
+                <aura:iteration items="{!v.Settings}" var="setting">
+                    <aura:if isTrue="{!setting.industry__c == v.Industry}">
+                        <aura:if isTrue="{!setting.show_resources_docs__c == true}">
+                            <div class="owner">
+                                <div class="textleft paddingleftright">
+                                    <div class="third borderright lightgreybg sidebar">
+                                        <h3 class="borderbottom">
+                                            <div class="padding">
+                                                <lightning:icon iconName="standard:document" size="medium" alternativeText=""/> 
+                                                <span class="marginleft">Important Docs</span>
+                                            </div>    
+                                        </h3>
+                                        <div class="padding">
+                                            <div class=" textleft">
+                                                <div class=" textleft sidebardesc">
+                                                    Keep up to date with important quip docs here.
+                                                </div>
+                                            </div>
+                                        </div>                              
+                                    </div>
+                                    <div class="twothirds">
+                                        <div class="padding">
+                                            <aura:iteration items="{!v.Resources}" var="resource">
+                                                <aura:if isTrue="{!resource.type__c == 'Quip Doc'}">
+                                                    <div class="">
+                                                        <h3 class="borderbottom relative">
+                                                            <div class="padding">
+                                                                {!resource.name}
+                                                                <span class="slds-badge slds-badge absolutetopright">{!resource.title__c}</span>
+                                                            </div>
+                                                        </h3>
+                                                        <div class="padding">
+                                                                <aura:unescapedHtml value="{!resource.description__c}"/>
+                                                                <aura:if isTrue="{!resource.url__c != NULL}">
+                                                                    <div class="paddingtopbottom">
+                                                                        <button class="slds-button slds-button_brand"  aura:id="{!resource.url__c}" id="{!resource.url__c}" onclick="{!c.toURL}">
+                                                                            View Document
+                                                                        </button>
+                                                                    </div>
+                                                                </aura:if>
+                                                            <div class="clear"></div>
+                                                        </div>                       	
+                                                    </div>
+                                                    </aura:if>
+                                            </aura:iteration>
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                        </aura:if>
+                    </aura:if>
+                    <aura:if isTrue="{!setting.industry__c == v.Industry}">
+                        <aura:if isTrue="{!setting.show_resources_websites__c  == true}">
+                            <div class="owner">
+                                <div class="textleft paddingleftright">
+                                    <div class="third borderright lightgreybg sidebar">
+                                        <h3 class="borderbottom">
+                                            <div class="padding">
+                                                <lightning:icon iconName="standard:customer_portal_users" size="medium" alternativeText=""/> 
+                                                <span class="marginleft">Important Websites</span>
+                                            </div>    
+                                        </h3>
+                                        <div class="padding">
+                                            <div class=" textleft">
+                                                <div class=" textleft sidebardesc">
+                                                    Keep up to date with important Websites here.
+                                                </div>
+                                            </div>
+                                        </div>                              
+                                    </div>
+                                    <div class="twothirds">
+                                        <div class="padding">
+                                            <aura:iteration items="{!v.Resources}" var="resource">
+                                                <aura:if isTrue="{!resource.type__c == 'Website'}">
+                                                    <div class="">
+                                                        <h3 class="borderbottom relative">
+                                                            <div class="padding">
+                                                                {!resource.name}
+                                                                <span class="slds-badge slds-badge absolutetopright">{!resource.title__c}</span>
+                                                            </div>
+                                                        </h3>
+                                                        <div class="padding">
+                                                            <div class="">
+                                                                <aura:unescapedHtml value="{!resource.description__c}"/>
+                                                                <aura:if isTrue="{!resource.url__c != NULL}">
+                                                                    <div class="paddingtopbottom">
+                                                                        <button class="slds-button slds-button_brand"  aura:id="{!resource.url__c}" id="{!resource.url__c}" onclick="{!c.toURL}">
+                                                                            View Website
+                                                                        </button>
+                                                                    </div>
+                                                                </aura:if>
+                                                            </div>
+                                                            <div class="clear"></div>
+                                                        </div>                       	
+                                                    </div>
+                                                    </aura:if>
+                                            </aura:iteration>
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                        </aura:if>
+                    </aura:if>
+                </aura:iteration>
+        	</div>
+		</div>
+</aura:component>

@@ -1,0 +1,10 @@
+<design:component label="C360 Profile Metrics">
+    <design:attribute name="metric1Name" label="Metric 1 Label"></design:attribute>
+    <design:attribute name="b1color" label="Metric 1 Background color"></design:attribute>
+    <design:attribute name="metric2Name" label="Metric 2 Label"></design:attribute>
+    <design:attribute name="b2color" label="Metric 2 Background color"></design:attribute>
+    <design:attribute name="metric3Name" label="Metric 3 Label"></design:attribute>
+    <design:attribute name="b3color" label="Metric 3 Background color"></design:attribute>
+    <design:attribute name="metric4Name" label="Metric 4 Label"></design:attribute>
+    <design:attribute name="b4color" label="Metric 4 Background color"></design:attribute>
+</design:component>

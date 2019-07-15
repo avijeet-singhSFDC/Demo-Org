@@ -1,0 +1,24 @@
+<div class="modal hide fade" id="modalProfile">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Org Profiles</h3>
+  </div>
+  <div class="modal-body">
+    <% if ( typeof profiles == "object" && profiles.length > 0 ){%>
+    <table class="table table-striped table-condensed">
+      <thead>
+        <th>Id</th>
+        <th>Name</th>
+      </thead>
+      <tbody id="profilesTable">
+        <% _.each(profiles,function(s){%>
+          <tr style="cursor:pointer;" data-name="<%=s.Name%>"><td style="width:45%;"><%=s.Id%></td><td><%=s.Name%></td></tr>
+        <%},this)%>
+      </tbody>
+    </table>
+    <%}else{%>
+    <div class="alert">No profiles available for this organization.</div>
+    <%}%>
+  </div>
+  <div class="modal-footer">Please select a profile...</div>
+</div>

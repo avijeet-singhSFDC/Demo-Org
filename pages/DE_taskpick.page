@@ -1,0 +1,68 @@
+<apex:page showHeader="true" sidebar="false" controller="DE_taskpick" title="Mass Task Scheduler" action="{!createRecords}">
+    <title>Mass Task Scheduler</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Imported Monserrat Google Font -->
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,700' rel='stylesheet' type='text/css' />
+        
+    <style>
+        .panel-title, h3{
+            font-family: "Raleway", Arial, sans-serif !important;
+            color: #fff;
+            text-shadow: 1px 1px 1px #292929;
+        }
+        .bodyDiv, body, body.sfdcBody{
+            margin: 0;
+            background-color: #344A5F !important;
+        }
+        .tableClass{
+            width:100%;
+        }
+        .outer td{
+            padding:5px 10px 5px 0px;
+        }
+        .panel{
+            border: none;
+        }
+        ul li, ol li{
+            margin-left: 0;
+        }
+        .zen .zen-tabMenu a, .globalHeaderBar .zen-select .zen-trigger{
+            font-family: Arial,Helvetica,sans-serif;
+            font-size: .95em;
+        }
+    </style>
+    <div class="container">
+                <br />
+        <h3>Mass Task Scheduler</h3>
+        <br />  <br />
+        <div class="panel panel-default">
+            <div class="panel-heading" style="background: #2A94D6 !important;">
+              <h4 class="panel-title">
+                  Step 1: &nbsp;&nbsp;Choose your Activity Template
+              </h4>
+            </div>
+              <div class="panel-body">
+                <ul class="list-group">
+                <apex:repeat value="{!MyTempz}" var="string" id="theRepeat">
+                    <li class="list-group-item">    <a href="{!$Page.DE_taska}?id={!string.id}">{!string.name}</a> </li>
+                </apex:repeat>
+                <apex:outputPanel rendered="{!MyTempz.size == 0}">
+                    <li class="list-group-item">Please refresh the page to view the initial templates.</li>
+                </apex:outputPanel>
+                </ul>
+              </div>
+        </div>
+    </div>
+
+    
+</apex:page>

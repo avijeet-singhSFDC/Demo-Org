@@ -1,0 +1,66 @@
+.THIS .ul-hidebullet {
+
+list-style-type: none;
+
+}
+
+.THIS table{
+    table-layout: fixed;
+}
+
+
+.THIS td
+{
+
+    word-wrap:break-word;
+}
+
+.THIS hr{
+   margin: 0rem 0 !important;
+}
+.THIS hr.style-six {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+   
+}
+
+.THIS .dContent{
+    padding-top: 15px;
+    padding-left: 15px;
+}
+
+.THIS .bulletStyle
+{
+    padding-right:5px;
+}
+
+.THIS .prescriptionStyle
+{
+    padding: 5px; 
+}
+
+.THIS .descriptionStyle
+{
+    padding: 5px;
+}
+
+.THIS .slds-icon-text-default {
+   fill: rgb(0, 112, 210)!important;
+}
+
+.THIS .c100 >span:hover {
+    color:red !important;
+}
+.THIS .rr
+{
+    color: red; 
+    font-weight:bold; 
+}
+
+.THIS .gg
+{
+    color: green; 
+    font-weight:bold; 
+}

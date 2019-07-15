@@ -1,0 +1,119 @@
+<apex:component id="cc_spec_filters">
+    <script id="CC-FeatureFilter-View-Desktop" type="text/template">
+   <div class="panel panel-default cc_panel cc_feature_filter_panel">
+    <div class="panel-heading cc_heading">
+     <h3 class="panel-title cc_title">{{pageLabelMap 'Filter_Title'}}
+      <span class="pull-right">
+       <span class="icon-toggle cc_filter_icon" role="button" data-toggle="collapse" data-target="#collapseFeatureFilter" aria-expanded="true" aria-controls="collapseFeatureFilter">
+        <i class="fa fa-caret-down" aria-hidden="true"></i>
+       </span>
+      </span>
+     </h3>
+    </div>
+    <div id="collapseFeatureFilter" class="panel-collapse collapse in">
+    <div class="panel-body cc_body">
+     <div class="col-md-12 filters cc_filters">
+      <div class="filter_breadcrumb_container cc_breadcrumbs"></div>
+       <div class="filter_reset cc_filter_reset">
+        <button type="button" class="resetFilters btn btn-default btn-xs cc_reset_filters_btn">{{pageLabelMap 'FeatFilt_Reset'}}</button>
+       </div>
+      <div class="row filter_search cc_filter_search_row">
+       <div class="messagingSectionFilter-Error" role="alert" style="display: none"></div>
+       <div class="messagingSectionFilter-Warn" role="alert" style="display: none"></div>
+       <div class="messagingSectionFilter-Info" role="alert" style="display: none"></div>
+       <div>
+        <div class="input-group">
+         <input type="text" class="form-control filterSearch cc_filter_search" placeholder="Search for...">
+         <span class="input-group-btn">
+          <button type="button" class="btn btn-default searchFilter cc_seaerch_filter_btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+         </span>
+        </div>
+        <div class="filter_breadcrumb_container_join cc_filter_breadcrumb_join"></div>
+        <hr>
+       </div>
+      </div>
+
+      <div class="row">
+       <div>
+        <div class="panel-group cc_panel_group" id="filter-accordion" role="tablist" aria-multiselectable="true">
+         {{#eachInMap this 'CCRZ.featureFilter.sortSpecs'}}
+         <div class="panel panel-default cc_panel cc_panel_filter_inner">
+          <div class="panel-heading cc_heading" role="tab" id="heading-{{value.specId}}">
+          {{#ifEquals value.displayType 'Pricing'}}
+           <h5 class="panel-title cc_title">{{pageLabelMap 'FeatFilt_Price'}}
+            <span class="pull-right">
+             <span class="icon-toggle cc_filter_icon" role="button" data-toggle="collapse" data-target="#collapse-{{value.specId}}" aria-expanded="true" aria-controls="collapse-{{value.specId}}">
+              <i class="fa fa-caret-down" aria-hidden="true"></i>
+             </span>
+            </span>
+           </h5>
+          {{else}}
+           <h5 class="panel-title cc_title">{{key}}
+            <span class="pull-right">
+             <span class="icon-toggle cc_filter_icon" role="button" data-toggle="collapse" data-target="#collapse-{{value.specId}}" aria-expanded="true" aria-controls="collapse-{{value.specId}}">
+              <i class="fa fa-caret-down" aria-hidden="true"></i>
+             </span>
+            </span>
+           </h5>
+           {{/ifEquals}}
+          </div>
+
+           <div id="collapse-{{value.specId}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-{{value.specId}}">
+           <div class="panel-body cc_body">
+            {{#ifEquals value.displayType 'Checkbox'}}
+             {{#eachInMap value.specValues }}
+              <div class="value cc_value">
+               <input type="checkbox" class="checkfilter cc_check_filter_input" data-spec="{{../key}}" data-id="{{key}}" {{#if (lookup ../value.specSelect key)}}checked="checked"{{/if}} />
+               <span class="checkfilter cc_check_filter" data-spec="{{../key}}" data-id="{{key}}">{{key}}</span>
+               <span class="label label-default pull-right cc_label cc_check_filter_label">{{pageLabelMap 'filter_count' value.length}}</span>
+              </div>
+             {{/eachInMap}}
+            {{/ifEquals}}
+            {{#ifEquals value.displayType 'Slider'}}
+             <div class="spec cc_spec">
+              {{key}}
+              <div class="messagingSectionFilter-Error{{value.specId}}" role="alert" style="display: none"></div>
+              <div class="messagingSectionFilter-Warn{{value.specId}}" role="alert" style="display: none"></div>
+              <div class="messagingSectionFilter-Info{{value.specId}}" role="alert" style="display: none"></div>
+              <div class="slider_{{value.specId}} cc_slider"></div>
+              <div class="lowerDisp lower_{{value.specId}} cc_lower_disp"></div><div class="upperDisp higher_{{value.specId}} cc_upper_disp"></div>
+              <button type="button" data-id="{{value.specId}}" data-spec="{{key}}" class="slideFilter btn btn-default btn-xs cc_slide_filter">{{pageLabelMap 'Go'}}</button>
+             </div>
+            {{/ifEquals}}
+            {{#ifEquals value.displayType 'Pricing'}}
+             <div class="spec cc_spec">
+              <!-- {{pageLabelMap 'FeatFilt_Price'}} -->
+               <div class="messagingSectionFilter-ErrorpriceFlt" role="alert" style="display: none"></div>
+               <div class="messagingSectionFilter-WarnpriceFlt" role="alert" style="display: none"></div>
+               <div class="messagingSectionFilter-InfopriceFlt" role="alert" style="display: none"></div>
+               <div class="col-md-10">
+               <div class="slider_priceFlt cc_slider_price_flt"></div>
+               <div class="lowerDisp lower_priceFlt cc_lower_price_flt"></div><div class="upperDisp higher_priceFlt cc_upper_price_flt"></div>
+               </div>
+               <div class="col-md-2">
+               <button type="button" data-id="priceFlt" data-spec="pricingFlt" class="slideFilter btn btn-default btn-xs cc_slide_filter">{{pageLabelMap 'Go'}}</button>
+               </div>
+             </div>
+            {{/ifEquals}}
+           </div>
+          </div>
+         </div>
+         {{/eachInMap}}
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   </div>
+  </script>
+
+  <script>
+      $(function(){
+
+      CCRZ.uiProperties.FeatureFilterView.desktop.tmpl = "CC-FeatureFilter-View-Desktop";
+
+    });
+  </script>
+
+</apex:component>

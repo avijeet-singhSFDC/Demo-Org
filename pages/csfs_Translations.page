@@ -1,0 +1,24 @@
+<apex:page showHeader="true" sidebar="true" controller="csfs_TranslationsController">
+	<apex:form >
+
+	    <apex:commandButton action="{!saveTranslation}" value="{!$Label.CSFS_SAVE}" />
+
+		<apex:pageBlock title="Translations"> 
+			<apex:pageBlockSection columns="3" showHeader="false">
+				<apex:repeat value="{!translations}" var="translation">
+					<apex:pageBlockSectionItem >
+						<apex:outputLink value="{!'/'+translation.NativeId}" target="_blank">{!translation.Name}</apex:outputLink>
+					</apex:pageBlockSectionItem>
+
+					<apex:pageBlockSectionItem >
+						<apex:outputLink value="{!'/'+translation.NativeId}" target="_blank">{!translation.Native}</apex:outputLink>
+					</apex:pageBlockSectionItem>
+
+					<apex:pageBlockSectionItem >
+							<apex:inputText value="{!translation.Translated}" />
+					</apex:pageBlockSectionItem>
+				</apex:repeat>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

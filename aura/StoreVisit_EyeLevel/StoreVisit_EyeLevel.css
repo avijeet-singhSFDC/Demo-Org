@@ -1,0 +1,8 @@
+.THIS .errorMsg{
+    color: red;
+    margin: 1.5em;
+    padding: 1em;
+    border: 1px solid black;
+    background: #e0e0e0;
+    border-radius: 5px;
+}

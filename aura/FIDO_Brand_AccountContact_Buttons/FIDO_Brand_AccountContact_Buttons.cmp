@@ -1,0 +1,13 @@
+<aura:component controller="FIDO">
+    <aura:attribute name="accountname" type="String" default=''/>
+    <aura:attribute name="contactname" type="String" default=''/>
+    <aura:attribute name="recId" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+	<div class="footer">
+    	<div class="padding">
+        	<button class="slds-button slds-button_neutral" aura:id="{!v.recId}" id="{!v.recId}" onclick="{!c.toAccount}">
+                View
+            </button>
+        </div>
+	</div>
+</aura:component>

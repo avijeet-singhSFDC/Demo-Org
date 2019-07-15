@@ -1,0 +1,52 @@
+<div class="bs-docs-siteca">
+	<label class="checkbox">
+  		<input type="checkbox" value="umChatterAnswers_richTextEnabled__c" id="umChatterAnswers_richTextEnabled__c" <%if(site.get("umChatterAnswers_richTextEnabled__c")==true){print("checked");}%>> Rich Text Editor Enabled
+  	</label>
+	<div class="input-prepend">
+  		<span class="add-on" style="width:135px;text-align:left;">Data Category Group</span>
+  		<input class="span7" id="umChatterAnswers_dataCategoryGroup__c" type="text" placeholder="Chatter Answers Data Category Group..." value="<%if(site.get("umChatterAnswers_dataCategoryGroup__c")!=null){print(site.get("umChatterAnswers_dataCategoryGroup__c"));}%>">
+	</div>
+	<div class="input-prepend">
+  		<span class="add-on" style="width:135px;text-align:left;">Zone label singular</span>
+  		<input class="span7" id="umChatterAnswers_zoneLabelSingular__c" type="text" placeholder="zone label singular..." value="<%if(site.get("umChatterAnswers_zoneLabelSingular__c")!=null){print(site.get("umChatterAnswers_zoneLabelSingular__c"));}%>">
+	</div>
+	<div class="input-prepend">
+  		<span class="add-on" style="width:135px;text-align:left;">Zone label plural</span>
+  		<input class="span7" id="umChatterAnswers_zoneLabelPlural__c" type="text" placeholder="zone label plural..." value="<%if(site.get("umChatterAnswers_zoneLabelPlural__c")!=null){print(site.get("umChatterAnswers_zoneLabelPlural__c"));}%>">
+	</div><br/><br/>
+	<button class="btn btn-mini" style="margin-top:10px" type="button" id="newZone"><i class="icon-plus"></i>&nbsp;New Zone</button>
+
+	<%if( site.get("Zones").length < 1 ){%>
+	<div class="alert" style="margin-top:10px;">No zones created yet.</div>
+	<%}else{%>
+
+	<div class="alert" style="margin-top:10px;">
+		If there is <strong>only one zone configured</strong>, the background &amp; logo image paths, zone public name, and search banner label are not used.
+	</div>
+
+	<table class="table table-hover table-condensed">
+		<thead>
+			<tr><th>#Id</th>
+			<th>Public Name</th>
+			<th>Data Category</th>
+			<th><!--Options--></th></tr>
+		</thead>
+		<tbody id="zonesList">
+			<% _.each(site.get("Zones"),function(z){%>
+				<tr <%if(z.delete!=undefined){ print('style="text-decoration: line-through;"'); }%>><td><%=z.id%></td>
+				<td><%=z.publicName__c%></td>
+				<td><%=z.dataCategory__c%></td>
+				<td>
+					<% if(z.delete == undefined){%>
+					<div class="btn-group">
+						<a class="btn btn-small zoneTableViewEdit" href="#" data-id="<%=z.id%>"><i class="icon-pencil"></i></a>
+						<a class="btn btn-small zoneTableViewRemove" href="#" data-id="<%=z.id%>"><i class="icon-remove"></i></a>
+					</div>
+					<%}%>
+				</td>
+				</tr>
+			<%},this); %>
+		</tbody>
+	</table>
+	<%}%>
+</div>

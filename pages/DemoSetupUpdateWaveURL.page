@@ -1,0 +1,31 @@
+<apex:page controller="DemoConfigurator">
+<script type="text/javascript">
+getRemoteAccount();
+function getRemoteAccount() {
+    Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.DemoConfigurator.WaveDashboardIds}' ,
+            function(result, event){
+                console.log(result);
+                var Dashboards = result;
+                for(var i = 0; i < Dashboards.length; i++)
+                {
+                   if (Dashboards[i].name === 'Account_Product_Insights') { 
+                       break; 
+                   } 
+                }
+                var did = Dashboards[i].id;
+                updateValue(did);
+            }, 
+        );
+    }
+function updateValue(id) {
+    Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.DemoConfigurator.UpdateWaveDashboardURL}', 
+            id,
+            function(response, event){
+                console.log('Update Wave URL');
+            }, 
+    );
+}
+</script>
+</apex:page>

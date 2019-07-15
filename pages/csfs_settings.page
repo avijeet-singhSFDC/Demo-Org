@@ -1,0 +1,395 @@
+<apex:page showHeader="true" sidebar="true" docType="html-5.0" controller="csfs_SettingsController">
+
+    <head>
+        <link href="{!URLFOR($Resource.csfs_SLDS, 'assets/styles/salesforce-lightning-design-system-vf.css')}"
+            rel="stylesheet" type="text/css" />
+
+        <style>
+            .header-spacer {
+                padding-top: 5px;
+                padding-left: 10px;
+            }
+            
+            .back-link {
+                padding: 10px;
+            }
+            
+            .slds-form--compound {
+                width: 100%;
+            }
+            
+            .slds-input select,
+            .languageDropdown select,
+            .dataSyncDropdown select {
+                background-color: white;
+                color: #16325c;
+                border: 1px solid #d8dde6;
+                border-radius: 4px;
+                width: 59px;
+                transition: border 0.1s linear, background-color 0.1s linear;
+                height: 34px;
+                width: 180px;
+            }
+            
+            .smallHeading {
+                font-size: 12px;
+            }
+            
+            .rowOdd {}
+            
+            .colorLabel {
+                margin-right: 36px;
+                white-space: nowrap;
+                overflow: scroll;
+            }
+            
+            .colorSwatch {
+                width: 28px;
+                height: 18px;
+                background-color: #FFFFFF;
+                float: right;
+                vertical-align: middle;
+                outline: #999999 solid 1px;
+                margin-left: 8px;
+            }
+            /* Tooltip container */
+            
+            .tooltip {
+                position: relative;
+                display: inline-block;
+                border-bottom: 1px dotted black;
+                /* If you want dots under the hoverable text */
+            }
+            /* Tooltip text */
+            
+            .tooltip .tooltiptext {
+                visibility: hidden;
+                width: 120px;
+                background-color: black;
+                color: #fff;
+                text-align: center;
+                padding: 5px 0;
+                border-radius: 6px;
+                /* Position the tooltip text - see examples below! */
+                position: absolute;
+                z-index: 1;
+            }
+            /* Show the tooltip text when you mouse over the tooltip container */
+            
+            .tooltip:hover .tooltiptext {
+                visibility: visible;
+            }
+
+        </style>
+
+        <script>
+            function resetColorSwatch(formElement, swatchID) {
+                var colorValue = formElement.value;
+                document.getElementById("colorSwatch_" + swatchID).style.backgroundColor =
+                    "#" + colorValue;
+            }
+
+        </script>
+    </head>
+
+    <apex:form enctype="multipart/form-data">
+
+        <div class="slds" style="font-size:10px; width:50%">
+
+            <div class="page-break">
+
+                <div class="back-link">
+                    <a href="/setup/forcecomHomepage.apexp">Back to Setup</a>
+                </div>
+
+                <div class="slds-page-header slds-box" role="banner">
+                    <span class="slds-text-heading--large">
+                        {!$ObjectType.csfs_Field_Sales_Settings__c.label}
+                    </span>
+                    <div class="slds-text-align--center slds-col slds-size--2-of-2">
+                        <apex:commandButton action="{!save}" value="{!$Label.CSFS_SAVE}" />
+                    </div>
+                </div>
+
+                <div>
+                    <div class="slds">
+                        <div class="slds-box" style="font-size:10px;">
+
+                            <apex:pageBlock mode="edit">
+                                <apex:facet name="header">
+                                    <h2 class="slds-section-title--divider">{!$Label.csfs_General}</h2>
+                                </apex:facet>
+                                <apex:pageBlockSection columns="2" showHeader="false">
+                                    <apex:repeat value="{!generalSettingList}" var="setting">
+                                        <apex:pageBlockSectionItem >
+                                            <apex:outputPanel >
+                                                <div class="colorLabel"><label class="slds-form-element__label">{!setting.title}</label></div>
+                                                
+                                                <apex:inputText styleClass="slds-input" value="{!setting.value}" rendered="{!setting.fieldType!='BOOLEAN'}"/>
+                                                <apex:inputCheckbox styleClass="slds-input" value="{!setting.value}" rendered="{!setting.fieldType=='BOOLEAN'}"/>
+                                                <apex:outputPanel styleClass="tooltip" layout="block" rendered="{!setting.helpText != null}">
+                                                    Help
+                                                    <apex:outputPanel styleClass="tooltiptext">{!setting.helpText}</apex:outputPanel>
+                                                </apex:outputPanel>
+                                                <br/><br/>
+                                            </apex:outputPanel>
+                                        </apex:pageBlockSectionItem>
+                                    </apex:repeat>
+                                    <apex:pageBlockSectionItem >
+                                        <apex:outputPanel styleClass="dataSyncDropdown">
+                                            <label class="slds-form-element__label">{!$ObjectType.csfs_Field_Sales_Settings__c.fields.csfs_Data_Sync_Option__c.label}</label>
+                                            <apex:selectList value="{!selectedDataSyncOption}" size="1" styleClass="slds-input">
+                                                <apex:selectOptions value="{!dataSyncOptions}" />
+                                            </apex:selectList>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem rendered="{!MOD(generalSettingList.size,2)==1}">&nbsp;</apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem >
+                                        <apex:outputPanel styleClass="dataSyncDropdown">
+                                            <label class="slds-form-element__label">{!$ObjectType.csfs_Field_Sales_Settings__c.fields.csfs_Account_Sync_Option__c.label}</label>
+                                            <apex:selectList value="{!selectedAccountSyncOption}" size="1" styleClass="slds-input">
+                                                <apex:selectOptions value="{!accountSyncOptions}" />
+                                            </apex:selectList>
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem rendered="{!MOD(generalSettingList.size,2)==0}">&nbsp;</apex:pageBlockSectionItem>
+
+                                </apex:pageBlockSection>
+                            </apex:pageBlock>
+
+                            <apex:variable value="{!0}" var="i" />
+                            <apex:pageBlock mode="edit">
+                                <apex:facet name="header">
+                                    <h2 class="slds-section-title--divider">{!$Label.Colors}</h2>
+                                </apex:facet>
+                                <apex:pageBlockSection columns="2" showHeader="false">
+                                    <apex:repeat value="{!themeColorList}" var="color">
+                                        <apex:pageBlockSectionItem >
+                                            <apex:outputPanel >
+                                                <apex:variable value="{!i+1}" var="i" />
+                                                <div class="colorSwatch" style="background-color: #{!color.value};" id="colorSwatch_{!i}"></div>
+                                                <div class="colorLabel"><label class="slds-form-element__label"
+                                                        for="input-{!i}">{!color.title}</label></div>
+                                                <apex:inputText styleClass="slds-input" value="{!color.value}" onkeyup="resetColorSwatch(this, '{!i}')"/>
+                                                
+                                                <apex:outputPanel styleClass="tooltip" layout="block" rendered="{!color.helpText != null}">
+                                                    Help
+                                                    <apex:outputPanel styleClass="tooltiptext">{!color.helpText}</apex:outputPanel>
+                                                </apex:outputPanel>
+                                                <br/><br/>
+                                            </apex:outputPanel>
+                                        </apex:pageBlockSectionItem>
+                                    </apex:repeat>
+                                    <apex:pageBlockSectionItem rendered="{!MOD(themeColorList.size,2)==1}">&nbsp;</apex:pageBlockSectionItem>
+                                </apex:pageBlockSection>
+                            </apex:pageBlock>
+
+
+
+                            <h2 class="slds-section-title--divider">{!$Label.csfs_Upload_Images}</h2>
+                            <div class="slds-grid header-spacer">
+
+                                <fieldset class="slds-form--compound">
+                                    <div class="slds-form-element__row">
+                                        <div class="slds-form-element slds-size--1-of-2">
+                                            <div class="smallHeading">App Background</div>
+                                        </div>
+                                        <div class="slds-form-element slds-size--1-of-2">
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-form-element__row">
+                                        <div class="slds-form-element slds-size--1-of-2">
+
+                                            <apex:outputLink value="{!'/'+backgroundImage.Id}" target="_blank">{!backgroundImage.Name}</apex:outputLink>
+                                            &nbsp;&nbsp;
+                                            <apex:commandLink value="[{!$Label.csfs_Delete}]" action="{!deleteImage}">
+                                                <apex:param name="imageName" value="{!appBackgroundType}" />
+                                            </apex:commandLink>
+
+                                        </div>
+                                        <div class="slds-form-element slds-size--1-of-2">
+                                        </div>
+                                    </div>
+                                    <!-- <apex:inputText styleClass="slds-input" value="{!backgroundImageTitle}" /> -->
+                                    <apex:inputFile value="{!backgroundImageData}" fileName="{!backgroundFileName}" />
+                                    <apex:commandbutton action="{!uploadAppBackground}" value="Upload" />
+                                    <div style="padding-top: 10px">
+                                        <span class="slds-badge">Maximum file size: 10 MB</span><br/>
+                                        <span class="slds-badge">Recommended dimension: 2048 × 1536</span><br/>
+                                        <span class="slds-badge">Recommended file type: PNG</span>
+                                    </div>
+                                </fieldset>
+
+
+
+                                <!-- LOGO -->
+                                <fieldset class="slds-form--compound">
+                                    <div class="slds-form-element__row">
+                                        <div class="slds-form-element slds-size--1-of-2">
+                                            <div class="smallHeading">Logo</div>
+                                        </div>
+                                        <div class="slds-form-element slds-size--1-of-2">
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-form-element__row">
+                                        <div class="slds-form-element slds-size--1-of-2">
+
+                                            <apex:outputLink value="{!'/'+logoImage.Id}" target="_blank">{!logoImage.Name}</apex:outputLink>
+                                            &nbsp;&nbsp;
+                                            <apex:commandLink value="[{!$Label.csfs_Delete}]" action="{!deleteImage}">
+                                                <apex:param name="imageName" value="{!logoType}" />
+                                            </apex:commandLink>
+
+                                        </div>
+                                        <div class="slds-form-element slds-size--1-of-2">
+                                        </div>
+                                    </div>
+                                    <!-- <apex:inputText styleClass="slds-input" value="{!backgroundImageTitle}" /> -->
+                                    <apex:inputFile value="{!logoImageData}" fileName="{!logoFileName}" />
+                                    <apex:commandbutton action="{!uploadLogo}" value="Upload" />
+                                    <div style="padding-top: 10px">
+                                        <span class="slds-badge">Maximum file size: 10 MB</span><br/>
+                                        <span class="slds-badge">Recommended dimension: 120 x 120</span><br/>
+                                        <span class="slds-badge">Recommended file type: PNG</span>
+                                    </div>
+                                </fieldset>
+                                
+                                
+                                <fieldset class="slds-form--compound">
+                                    <div class="slds-form-element__row">
+                                        <div class="slds-form-element slds-size--1-of-2">
+                                            <div class="smallHeading">Default Product Image</div>
+                                        </div>
+                                        <div class="slds-form-element slds-size--1-of-2">
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-form-element__row">
+                                        <div class="slds-form-element slds-size--1-of-2">
+
+                                            <apex:outputLink value="{!'/'+defaultProductImage.Id}" target="_blank">{!defaultProductImage.Name}</apex:outputLink>
+                                            &nbsp;&nbsp;
+                                            <apex:commandLink value="[{!$Label.csfs_Delete}]" action="{!deleteImage}">
+                                                <apex:param name="imageName" value="{!defaultProductImageType}" />
+                                            </apex:commandLink>
+
+                                        </div>
+                                        <div class="slds-form-element slds-size--1-of-2">
+                                        </div>
+                                    </div>
+                                    <!-- <apex:inputText styleClass="slds-input" value="{!backgroundImageTitle}" /> -->
+                                    <apex:inputFile value="{!defaultProductImageData}" fileName="{!defaultProductImageFileName}" />
+                                    <apex:commandbutton action="{!uploaddefaultProductImage}" value="Upload" />
+                                    <div style="padding-top: 10px">
+                                        <span class="slds-badge">Maximum file size: 10 MB</span><br/>
+                                        <span class="slds-badge">Recommended dimension: 2048 × 1536</span><br/>
+                                        <span class="slds-badge">Recommended file type: PNG</span>
+                                    </div>
+                                </fieldset>
+
+                            </div>
+                            <br/>
+
+<!--
+                            <h2 class="slds-section-title--divider">{!$Label.csfs_Triggers}</h2>
+                            <div class="slds-grid header-spacer">
+                                <fieldset class="slds-form--compound">
+
+                                </fieldset>
+                            </div>
+                            <br/>
+
+                            <h2 class="slds-section-title--divider">{!$Label.csfs_Language_Settings}</h2>
+                            <div class="slds-grid header-spacer">
+                                <fieldset class="slds-form--compound">
+                                    <div class="slds-form-element__row">
+                                        <div class="slds-form-element slds-size--1-of-4 languageDropdown">
+                                            <apex:dataTable value="{!languageSettingsList}" var="r">
+
+                                                <apex:column >
+                                                    <apex:facet name="header">
+                                                        {!$ObjectType.csfs_Field_Sales_Language_Settings__c.fields.Name.label}
+                                                    </apex:facet>
+                                                    <apex:selectList value="{!r.name}" size="1">
+                                                        <apex:selectOptions value="{!languageOptions}" />
+                                                    </apex:selectList>
+                                                </apex:column>
+
+                                                <apex:column >
+                                                    <div style="vertical-align:middle;margin-top:8px;">
+                                                        <apex:commandLink value="{!$Label.csfs_Delete}" action="{!deleteLanguageRow}" style="padding: 10px;">
+                                                            <apex:param name="languageRowIndex" value="{!r.index}" />
+                                                        </apex:commandLink>
+                                                    </div>
+                                                </apex:column>
+
+                                                <apex:facet name="footer">
+                                                    <apex:commandButton style="margin-top: 10px;" value="{!$Label.csfs_Add_Row}" action="{!addLangugeRow}"
+                                                    />
+                                                </apex:facet>
+
+                                            </apex:dataTable>
+                                        </div>
+                                        <div class="slds-form-element slds-size--1-of-4">
+                                        </div>
+                                        <div class="slds-form-element slds-size--1-of-4">
+                                        </div>
+                                        <div class="slds-form-element slds-size--1-of-4">
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <br/>
+
+<h2 class="slds-section-title--divider">{!$Label.csfs_Supported_Objects}</h2>
+<div class="slds-grid header-spacer">
+<fieldset class="slds-form--compound">
+<div class="slds-form-element__row">
+<div class="slds-form-element slds-size--1-of-4">
+<apex:dataTable value="{!supportedObjectList}" var="r">
+
+<apex:column >
+<apex:facet name="header">
+{!$ObjectType.csfs_Field_Sales_Supported_Objects__c.fields.Name.label}
+</apex:facet>
+<apex:inputText size="44" value="{!r.name}" styleClass="slds-input" />
+</apex:column>
+
+<apex:column >
+<div style="vertical-align:middle;margin-top:8px;">
+<apex:commandLink value="{!$Label.csfs_Delete}" action="{!deleteSupportedObjectRow}" style="padding: 10px;" >
+<apex:param name="supportedObjectRowIndex" value="{!r.index}" />
+</apex:commandLink>
+</div>
+</apex:column>
+
+<apex:facet name="footer">
+<apex:commandButton style="margin-top: 10px;" value="{!$Label.csfs_Add_Row}" action="{!addSupportedObjectRow}"/>
+</apex:facet>
+
+</apex:dataTable>
+</div>
+<div class="slds-form-element slds-size--1-of-4">
+</div>
+<div class="slds-form-element slds-size--1-of-4">
+</div>
+<div class="slds-form-element slds-size--1-of-4">
+</div>
+</div>
+</fieldset>
+</div> -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- page-break -->
+        </div>
+        <!-- slds -->
+
+
+    </apex:form>
+
+</apex:page>

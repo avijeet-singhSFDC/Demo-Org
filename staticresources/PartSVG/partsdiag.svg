@@ -1,0 +1,31 @@
+<svg width="70%" height="auto" viewBox="0 0 800 633" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <script type="text/ecmascript">
+    function detailStrand(evt) {
+      current_id = evt.target.getAttributeNS(null, "dataid");
+      top.CCRZ.processAction('DETAIL', current_id);
+    }
+    function selectStrand(evt) {
+      current_id = evt.target.getAttributeNS(null, "dataid");
+      top.CCRZ.processAction('SELECT', current_id);
+    }
+    function highlightStrand(evt) {
+      current_id = evt.target.getAttributeNS(null, "dataid");
+      top.CCRZ.processAction('HOVER', current_id);
+      evt.target.setAttributeNS(null,"opacity","0.5");
+    }
+    function dehighlightStrand(evt) {
+      current_id = evt.target.getAttributeNS(null, "dataid");
+      top.CCRZ.processAction('REM_HOVER', current_id);
+      evt.target.setAttributeNS(null,"opacity","0");
+
+    }
+    </script>
+        <g>
+            <image y="0" width="100%" height="100%" id="svg_4" xlink:href="cooler.png"/>
+            <path dataid="T50-4501" d="M680.53125,373.792969 L602.792969,412.089844 L533.347656,505.683594 L554.347656,596.535156 L676.089844,603.980469 L771.421875,560.273438 L780.085938,390.609375 L795.382812,321.203125 L778.828125,310.089844 L740.273438,402.203125 L680.53125,373.792969 Z" id="Steel-Shelf" opacity="0" onclick="selectStrand(evt)" onmouseover="highlightStrand(evt)" onmouseout="dehighlightStrand(evt)"></path>
+            <path dataid="R45" d="M351.46875,138.675781 L417.171875,125.566406 L396.171875,69.0117188 L347.207031,53.1953125 L319.578125,127.898438 L326.171875,138.011719 L351.46875,138.675781 Z" id="Hinge" opacity="0" onclick="selectStrand(evt)" onmouseover="highlightStrand(evt)" onmouseout="dehighlightStrand(evt)"></path>
+            <path dataid="AC-48-HV" d="M105.433594,148.960938 L59.9882812,201.070312 L7.1015625,196.628906 L6.359375,221.109375 L51.8046875,229.996094 L114.765625,263.109375 L158.988281,206.554688 L163.433594,174.40625 L160.46875,107.703125 L172.097656,88.8867188 L118.65625,82.21875 L105.433594,148.960938 Z" id="Air-Curtain" opacity="0" onclick="selectStrand(evt)" onmouseover="highlightStrand(evt)" onmouseout="dehighlightStrand(evt)"></path>
+            <path dataid="1825" d="M415.347656,224.324219 L450.160156,152.210938 L426.382812,147.507812 L391.050781,229.542969 L353.976562,248.839844 L353.976562,266.65625 L367.457031,269.839844 L413.125,247.839844 L415.347656,224.324219 Z" id="1825-01-Vent-Port-115V" opacity="0" onclick="selectStrand(evt)" onmouseover="highlightStrand(evt)" onmouseout="dehighlightStrand(evt)"></path>
+            <path dataid="1830" d="M385.84375,286.359375 L338.253906,311.507812 L336.03125,340.65625 L368.402344,348.0625 L390.4375,328.507812 L385.84375,286.359375 Z" id="1830-Vent-Port-115V" opacity="0" onclick="selectStrand(evt)" onmouseover="highlightStrand(evt)" onmouseout="dehighlightStrand(evt)"></path>
+        </g>
+</svg>

@@ -1,0 +1,100 @@
+<aura:component controller="EinsteinBuilderMegaController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="recordId" type="Id" />
+    
+    <aura:attribute name="obj" type="String" default="Contact"/>
+    <aura:attribute name="field" type="String" default="Likelihood_of_Attrition__c"/>
+    <aura:attribute name="factors" type="String" default="Income_Range__c,WPDownload__c,Current_Age__c,Months_of_Membership__c,External_Accounts__c"/>
+    <aura:attribute name="factorsField" type="String" default="Description"/>
+    
+    <aura:attribute name="predictionName" type="String" default="Likelihood of Attrition"/>
+    <aura:attribute name="showHeader" type="Boolean" default="true"/>
+    <aura:attribute name="headerStyle" type="String" default="display:inline;"/>
+    <aura:attribute name="score" type="String" default="..."/>
+    <aura:attribute name="redZoneThreshold" type="Integer" default="25"/>
+    <aura:attribute name="showAsPercentage" type="Boolean" default="true"/>
+    <aura:attribute name="circlecolor" type="String" default="goodnum"/>
+    <aura:attribute name="factor_conf1" type="String" default="True"/>
+    <aura:attribute name="factor_name1" type="String" default="Hair is"/>
+    <aura:attribute name="factor_value1" type="String" default="Thick and Full"/>
+    <aura:attribute name="factor_shown1" type="String" default="display:none;"/>
+    <aura:attribute name="factor_shown_red1" type="String" default="display:none;"/>
+    <aura:attribute name="factor_shown_green1" type="String" default="display:none;"/>
+    <aura:attribute name="factor_conf2" type="String" default="&nbsp;"/>
+    <aura:attribute name="factor_name2" type="String" default="&nbsp;"/>
+    <aura:attribute name="factor_value2" type="String" default="&nbsp;"/>
+    <aura:attribute name="factor_shown2" type="String" default="display:none;"/>
+    <aura:attribute name="factor_shown_red2" type="String" default="display:none;"/>
+    <aura:attribute name="factor_shown_green2" type="String" default="display:none;"/>
+    <aura:attribute name="factor_conf3" type="String" default="&nbsp;"/>
+    <aura:attribute name="factor_name3" type="String" default="&nbsp;"/>
+    <aura:attribute name="factor_value3" type="String" default="&nbsp;"/>
+    <aura:attribute name="factor_shown_red3" type="String" default="display:none;"/>
+    <aura:attribute name="factor_shown_green3" type="String" default="display:none;"/>
+    <aura:attribute name="factor_shown3" type="String" default="display:none;"/>
+    <aura:attribute name="factor_conf4" type="String" default="&nbsp;"/>
+    <aura:attribute name="factor_name4" type="String" default="&nbsp;"/>
+    <aura:attribute name="factor_value4" type="String" default="&nbsp;"/>
+    <aura:attribute name="factor_shown_red4" type="String" default="display:none;"/>
+    <aura:attribute name="factor_shown_green4" type="String" default="display:none;"/>
+    <aura:attribute name="factor_shown4" type="String" default="display:none;"/>
+    <aura:attribute name="factor_conf5" type="String" default="&nbsp;"/>
+    <aura:attribute name="factor_name5" type="String" default="&nbsp;"/>
+    <aura:attribute name="factor_value5" type="String" default="&nbsp;"/>
+    <aura:attribute name="factor_shown5" type="String" default="display:none;"/>
+    <aura:attribute name="factor_shown_red5" type="String" default="display:none;"/>
+    <aura:attribute name="factor_shown_green5" type="String" default="display:none;"/>    
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler event="force:refreshView" action="{!c.doInit}" />
+    
+    <!--
+   	<div class="title" style="{!v.headerStyle}">
+        <img src="https://www.dropbox.com/s/gizhr8tq5735gij/einsteinlogo.svg?raw=1" id="insightsLogoOppty"/>Einstein Prediction Builder
+    </div>
+-->
+    <div class="wrapper">      
+        <div class="top-card">
+            <div class="center-card">
+                <span class="{!v.circlecolor}">{!v.score}</span>
+                <!--<canvas id="scoreCanvas" aura:id="scoreCanvas" width="70" height="70"></canvas>-->
+                <span><h1>{!v.predictionName}</h1></span>
+            </div>
+            <div class="right-center-card">
+            	<img src="/resource/einstein_only"/>
+            </div>
+        
+            
+        </div>
+        <div class="bottom-card">
+            <div class="card">
+            <div style="background-color:#F7F9FB; height:33px; margin-bottom:9px; margin-left:-10px;">
+                <div style="margin-left:10px;margin-top:14px;margin-right:7px;width:6px;height:6px;border-radius:3px;background-color:#4BCA81;float:left;"></div>
+            	<div style="width:92%;float:left"><h3><b>Top Positive Factors</b></h3></div>
+            </div>
+            <ul>
+                <!--if you want to hard code and overwrite positive factors, do it like this <div><li>James is <b>&nbsp;tired</b></li></div>-->
+                <div style="{!v.factor_shown_green1}"><li>{!v.factor_name1} <b>&nbsp;{!v.factor_value1}</b></li></div>
+                <div style="{!v.factor_shown_green2}"><li>{!v.factor_name2} <b>&nbsp;{!v.factor_value2}</b></li></div>
+                <div style="{!v.factor_shown_green3}"><li>{!v.factor_name3} <b>&nbsp;{!v.factor_value3}</b></li></div>
+                <div style="{!v.factor_shown_green4}"><li>{!v.factor_name4} <b>&nbsp;{!v.factor_value4}</b></li></div>
+                <div style="{!v.factor_shown_green5}"><li>{!v.factor_name5} <b>&nbsp;{!v.factor_value5}</b></li></div>
+            </ul>
+            </div>
+            
+            <div class="card">
+                <div style="background-color:#F7F9FB; height:33px; margin-bottom:9px;margin-left:-10px;">
+                    <div style="margin-left:10px;margin-top:14px;margin-right:7px;width:6px;height:6px;border-radius:3px;background-color:#D0021B; float:left;"></div>
+                	<div style="width:92%;float:left"><h3><b>Top Negative Factors</b></h3></div>
+                </div>
+                <ul>
+                    <!--if you want to hard code and overwrite negative factors, do it like this <div><li>James is <b>&nbsp;tired</b></li></div>-->
+                    <div style="{!v.factor_shown_red1}"><li>{!v.factor_name1} <b>&nbsp;{!v.factor_value1}</b></li></div>
+                    <div style="{!v.factor_shown_red2}"><li>{!v.factor_name2} <b>&nbsp;{!v.factor_value2}</b></li></div>
+                    <div style="{!v.factor_shown_red3}"><li>{!v.factor_name3} <b>&nbsp;{!v.factor_value3}</b></li></div>
+                    <div style="{!v.factor_shown_red4}"><li>{!v.factor_name4} <b>&nbsp;{!v.factor_value4}</b></li></div>
+                    <div style="{!v.factor_shown_red5}"><li>{!v.factor_name5} <b>&nbsp;{!v.factor_value5}</b></li></div>
+                </ul>
+            </div>
+        </div>
+    </div>
+</aura:component>
